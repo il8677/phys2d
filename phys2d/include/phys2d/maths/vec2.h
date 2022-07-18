@@ -18,6 +18,8 @@ namespace phys2d{
 		Vec2 operator-(const Vec2& rhs) const;
 		Vec2 operator*(const float rhs) const;
 
+		float dot(const Vec2& rhs) const;
+
 		bool operator==(const Vec2& other) const;
 
 		float magnitude() const;

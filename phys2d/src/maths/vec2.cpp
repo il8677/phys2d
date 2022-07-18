@@ -3,14 +3,12 @@
 #include <cmath>
 
 namespace phys2d{
-    Vec2::Vec2(float xx, float yy){
-        x = xx;
-        y = yy;
+    Vec2::Vec2(float xx, float yy) : x(xx), y(yy){
+
     }
 
-    Vec2::Vec2(){
-        x = 0;
-        y = 0;
+    Vec2::Vec2() : x(0), y(0){
+        
     }
 
     Vec2 Vec2::operator -() const {
@@ -42,6 +40,10 @@ namespace phys2d{
 
     Vec2 Vec2::operator*(const float rhs) const {
         return Vec2(x*rhs, y*rhs);
+    }
+
+    float Vec2::dot(const Vec2& rhs) const {
+        return x * rhs.x + y * rhs.y;
     }
 
     bool Vec2::operator==(const Vec2& other) const {

@@ -41,6 +41,11 @@ namespace phys2d{
         y *= minv;
     }
 
+    void Vec2::zero(){
+        x = 0;
+        y = 0;
+    }
+
 	Vec2 Vec2::operator+(const Vec2& rhs) const {
         return Vec2(x + rhs.x, y + rhs.y);;
     }
@@ -55,6 +60,14 @@ namespace phys2d{
 
     float Vec2::dot(const Vec2& rhs) const {
         return x * rhs.x + y * rhs.y;
+    }
+
+    float Vec2::cross(const Vec2& rhs) const{
+        return x * rhs.y - y * rhs.x;
+    }
+
+    Vec2 Vec2::cross(float s) const {
+        return Vec2(s * y, -s * x);
     }
 
     bool Vec2::operator==(const Vec2& other) const {

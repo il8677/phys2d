@@ -15,12 +15,16 @@ namespace phys2d{
 		void operator*=(float s);
 
 		void normalize();
+		void zero();
 
 		Vec2 operator+(const Vec2& rhs) const;
 		Vec2 operator-(const Vec2& rhs) const;
 		Vec2 operator*(const float rhs) const;
 
 		float dot(const Vec2& rhs) const;
+		
+		float cross(const Vec2& rhs) const;
+		Vec2 cross(float s) const;
 
 		bool operator==(const Vec2& other) const;
 

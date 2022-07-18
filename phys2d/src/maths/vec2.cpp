@@ -30,6 +30,17 @@ namespace phys2d{
         y *= s;
     }
 
+    void Vec2::normalize(){
+        const float m = magnitude();
+        
+        //OPTIMIZATION: Faster than division?
+
+        float minv = 1/m;
+
+        x *= minv;
+        y *= minv;
+    }
+
 	Vec2 Vec2::operator+(const Vec2& rhs) const {
         return Vec2(x + rhs.x, y + rhs.y);;
     }

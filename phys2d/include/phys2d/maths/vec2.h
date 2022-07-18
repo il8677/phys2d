@@ -14,6 +14,8 @@ namespace phys2d{
 		void operator-=(const Vec2& v);
 		void operator*=(float s);
 
+		void normalize();
+
 		Vec2 operator+(const Vec2& rhs) const;
 		Vec2 operator-(const Vec2& rhs) const;
 		Vec2 operator*(const float rhs) const;

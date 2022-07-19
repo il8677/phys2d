@@ -77,7 +77,6 @@ int main(){
     window.setFramerateLimit(60);
 
     std::vector<GameObject> objects;
-
     std::vector<Scene> scenes;
 
     scenes.push_back(Scene("Circle Collision 1",
@@ -140,7 +139,10 @@ int main(){
         objects[0].body->velocity = Vec2(100, 0);
     }));
 
+    // IMGUI debug
     ImGui::SFML::Init(window);
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;    
 
     // Settings
     bool doPhysTick = true;
@@ -180,6 +182,7 @@ int main(){
         }
 
         ImGui::SFML::Update(window, elapsed);
+
         ImGui::Begin("Debug");
 
         ImGui::InputFloat2("Gravity", (float*)&world.d_getGravity());
@@ -228,6 +231,13 @@ int main(){
 
         if(doContactRender){
             DebugRenderer::renderContacts();
+        }
+
+        // Update and Render additional Platform Windows
+        if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
         }
 
         // end the current frame

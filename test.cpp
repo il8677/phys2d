@@ -92,8 +92,6 @@ void particleWorld(int particleCount, std::vector<GameObject>& objects){
         float incx = (endx - startx) / ((float)particleCount / 10.f);
         float incy = (endy - starty) / ((float)particleCount / 10.f);
 
-        std::cout << incx;
-
         objects.reserve(particleCount);
 
         for(int x = 0; x < particleCount/10; x++){

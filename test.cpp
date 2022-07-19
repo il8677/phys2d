@@ -18,6 +18,10 @@ phys2d::World world({0,0});
 
 using namespace phys2d;
 
+inline sf::Vector2f vec2conv(phys2d::Vec2 v){
+    return sf::Vector2f(v.x, v.y);
+}
+
 class GameObject{
     public:
 
@@ -40,6 +44,24 @@ class GameObject{
     sf::CircleShape circle;
 };
 
+class DebugRenderer{
+    public:
+    static void renderContacts(){
+        auto contacts = world.d_getContacts();
+
+        for(const auto& contact : contacts){
+            if(!contact.inContact) continue;
+
+        sf::Vertex line[] = {
+            sf::Vertex(vec2conv(contact.contactPoint - contact.normal*15)),
+            sf::Vertex(vec2conv(contact.contactPoint + contact.normal*15))
+        };
+
+            window.draw(line, 2, sf::Lines);
+        }
+    }
+};
+
 struct Scene{
     Scene(const char* name_, std::function<void()> setup_) : 
         name(name_), setup(setup_){
@@ -49,6 +71,7 @@ struct Scene{
     const char* name;
     std::function<void()> setup;  
 };
+
 
 int main(){
     window.setFramerateLimit(60);
@@ -85,7 +108,7 @@ int main(){
 
     scenes.push_back(Scene("Size Difference 2", [&](){
         objects.emplace_back(2, Vec2(50, 100));
-        objects.emplace_back(0.4f, Vec2(300, 100), 10);
+        objects.emplace_back(0.4f, Vec2(300, 125), 10);
 
         objects[0].body->velocity = Vec2(100, 0);
         objects[1].body->velocity = Vec2(0, 0);
@@ -119,8 +142,12 @@ int main(){
 
     ImGui::SFML::Init(window);
 
+    // Settings
     bool doPhysTick = true;
     bool doBreak = false;
+
+    bool doContactRender = false;
+
     float tickDT = 1/20;
 
     sf::Clock clock;
@@ -185,6 +212,10 @@ int main(){
 
         }
 
+        if(ImGui::CollapsingHeader("Rendering")){
+            ImGui::Checkbox("Contact Render", &doContactRender);
+        }
+
         if(ImGui::CollapsingHeader("Objects")){
             for(const GameObject& go : objects){
                 ImGui::Text("m %f vx %f vy %f", go.body->data.getMass(), go.body->velocity.x, go.body->velocity.y);
@@ -194,6 +225,11 @@ int main(){
         ImGui::EndFrame();
 
         ImGui::SFML::Render(window);
+
+        if(doContactRender){
+            DebugRenderer::renderContacts();
+        }
+
         // end the current frame
         window.display();
     }

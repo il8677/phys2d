@@ -22,6 +22,8 @@ class GameObject{
     public:
 
     GameObject(float mass, Vec2 pos, float r=50.f) : circle(r){
+        circle.setOrigin(circle.getRadius(), circle.getRadius());
+
         circle.setFillColor(sf::Color(150, 50, 250));
         body = world.createBody(
             std::unique_ptr<Shape>(new ShapeCircle(r)), BodyData(mass));
@@ -74,8 +76,8 @@ int main(){
     }));
 
     scenes.push_back(Scene("Size Difference 1", [&](){
-        objects.emplace_back(2, Vec2(50, 100));
-        objects.emplace_back(1, Vec2(300, 100), 25);
+        objects.emplace_back(2, Vec2(50, 100), 50);
+        objects.emplace_back(1, Vec2(150, 125), 25);
 
         objects[0].body->velocity = Vec2(100, 0);
         objects[1].body->velocity = Vec2(0, 0);
@@ -83,7 +85,7 @@ int main(){
 
     scenes.push_back(Scene("Size Difference 2", [&](){
         objects.emplace_back(2, Vec2(50, 100));
-        objects.emplace_back(1, Vec2(300, 100), 10);
+        objects.emplace_back(0.4f, Vec2(300, 100), 10);
 
         objects[0].body->velocity = Vec2(100, 0);
         objects[1].body->velocity = Vec2(0, 0);
@@ -99,12 +101,12 @@ int main(){
             }
         }
 
-        objects[0].body->velocity = Vec2(10, 0);
+        objects[0].body->velocity = Vec2(50, 0);
     }));
 
     scenes.push_back(Scene("Pool 2",
         [&](){
-        objects.emplace_back(1, Vec2(150, 400));
+        objects.emplace_back(1, Vec2(75, 400));
 
         for(int x = 0; x < 5; x++){
             for(int y = 0; y < 5; y++){
@@ -112,7 +114,7 @@ int main(){
             }
         }
 
-        objects[0].body->velocity = Vec2(25, 0);
+        objects[0].body->velocity = Vec2(100, 0);
     }));
 
     ImGui::SFML::Init(window);

@@ -7,3 +7,6 @@ Objects sink into each other and hence get "stuck" and experience magnetic attra
 
 ## a2
 Fixed sinking bug from a1, objects are now pushed away from each other during collision to ensure seperation
+
+## a2.2
+Testworld improvements

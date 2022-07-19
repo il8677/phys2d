@@ -12,6 +12,7 @@
 #include <imgui-SFML.h>
 
 #include <functional>
+#include <unordered_map>
 
 sf::RenderWindow window(sf::VideoMode(1280, 700), "My window");
 phys2d::World world({0,0});
@@ -77,9 +78,9 @@ int main(){
     window.setFramerateLimit(60);
 
     std::vector<GameObject> objects;
-    std::vector<Scene> scenes;
+    std::map<std::string, std::vector<Scene>> scenes;
 
-    scenes.push_back(Scene("Circle Collision 1",
+    scenes["circles"].push_back(Scene("Circle Collision 1",
         [&](){
         objects.emplace_back(2, Vec2(50, 100));
         objects.emplace_back(1, Vec2(300, 100));
@@ -88,7 +89,7 @@ int main(){
         objects[1].body->velocity = Vec2(-100, 0);
     }));
 
-    scenes.push_back(Scene("Circle Collision 2",
+    scenes["circles"].push_back(Scene("Circle Collision 2",
         [&](){
         objects.emplace_back(2, Vec2(50, 100));
         objects.emplace_back(1, Vec2(300, 100));
@@ -97,7 +98,7 @@ int main(){
         objects[1].body->velocity = Vec2(0, 0);
     }));
 
-    scenes.push_back(Scene("Size Difference 1", [&](){
+    scenes["circles"].push_back(Scene("Size Difference 1", [&](){
         objects.emplace_back(2, Vec2(50, 100), 50);
         objects.emplace_back(1, Vec2(150, 125), 25);
 
@@ -105,7 +106,7 @@ int main(){
         objects[1].body->velocity = Vec2(0, 0);
     }));
 
-    scenes.push_back(Scene("Size Difference 2", [&](){
+    scenes["circles"].push_back(Scene("Size Difference 2", [&](){
         objects.emplace_back(2, Vec2(50, 100));
         objects.emplace_back(0.4f, Vec2(300, 125), 10);
 
@@ -113,7 +114,7 @@ int main(){
         objects[1].body->velocity = Vec2(0, 0);
     }));
 
-    scenes.push_back(Scene("Pool 1",
+    scenes["circles"].push_back(Scene("Pool 1",
         [&](){
         objects.emplace_back(1, Vec2(150, 400), 50);
 
@@ -126,7 +127,7 @@ int main(){
         objects[0].body->velocity = Vec2(50, 0);
     }));
 
-    scenes.push_back(Scene("Pool 2",
+    scenes["circles"].push_back(Scene("Pool 2",
         [&](){
         objects.emplace_back(1, Vec2(75, 400));
 
@@ -188,12 +189,16 @@ int main(){
         ImGui::InputFloat2("Gravity", (float*)&world.d_getGravity());
 
         if(ImGui::CollapsingHeader("Scenes")){
-            for(int i = 0; i < scenes.size(); i++){
-                if(ImGui::Button(scenes[i].name)) {
-                    objects.clear();
-                    world.reset();
-                    scenes[i].setup();
+            for (std::pair<std::string, std::vector<Scene>> kv : scenes){
+            if(ImGui::CollapsingHeader(kv.first.c_str())){
+                for(int i = 0; i < kv.second.size(); i++){
+                    if(ImGui::Button(kv.second[i].name)) {
+                        objects.clear();
+                        world.reset();
+                        kv.second[i].setup();
+                    }
                 }
+            }
             }
         }
 
@@ -243,7 +248,6 @@ int main(){
         // end the current frame
         window.display();
     }
-
 
     return 0;
 }

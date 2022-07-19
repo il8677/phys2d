@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.13)
 project(phystest)
 
+add_compile_definitions(PHYS_2D_DEBUG)
+
 set(TEST_ADDITIONAL_SOURCES 
     vendor/imgui-docking/imgui.cpp
     vendor/imgui-docking/imgui_draw.cpp

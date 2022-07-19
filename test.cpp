@@ -1,7 +1,5 @@
 #include <iostream>
 
-#define PHYS_2D_DEBUG
-
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <phys2d/World.h>
@@ -23,10 +21,10 @@ using namespace phys2d;
 class GameObject{
     public:
 
-    GameObject(float mass, Vec2 pos) : circle(50.f){
+    GameObject(float mass, Vec2 pos, float r=50.f) : circle(r){
         circle.setFillColor(sf::Color(150, 50, 250));
         body = world.createBody(
-            std::unique_ptr<Shape>(new ShapeCircle(50)), BodyData(mass));
+            std::unique_ptr<Shape>(new ShapeCircle(r)), BodyData(mass));
         body->position = pos;
     }
 
@@ -51,6 +49,8 @@ struct Scene{
 };
 
 int main(){
+    window.setFramerateLimit(60);
+
     std::vector<GameObject> objects;
 
     std::vector<Scene> scenes;
@@ -73,8 +73,53 @@ int main(){
         objects[1].body->velocity = Vec2(0, 0);
     }));
 
+    scenes.push_back(Scene("Size Difference 1", [&](){
+        objects.emplace_back(2, Vec2(50, 100));
+        objects.emplace_back(1, Vec2(300, 100), 25);
+
+        objects[0].body->velocity = Vec2(100, 0);
+        objects[1].body->velocity = Vec2(0, 0);
+    }));
+
+    scenes.push_back(Scene("Size Difference 2", [&](){
+        objects.emplace_back(2, Vec2(50, 100));
+        objects.emplace_back(1, Vec2(300, 100), 10);
+
+        objects[0].body->velocity = Vec2(100, 0);
+        objects[1].body->velocity = Vec2(0, 0);
+    }));
+
+    scenes.push_back(Scene("Pool 1",
+        [&](){
+        objects.emplace_back(1, Vec2(150, 400), 50);
+
+        for(int x = 0; x < 5; x++){
+            for(int y = 0; y < 5; y++){
+                objects.emplace_back(1/5.f, Vec2(400+(x-5)*25, 500+(y-5)*25), 10);
+            }
+        }
+
+        objects[0].body->velocity = Vec2(10, 0);
+    }));
+
+    scenes.push_back(Scene("Pool 2",
+        [&](){
+        objects.emplace_back(1, Vec2(150, 400));
+
+        for(int x = 0; x < 5; x++){
+            for(int y = 0; y < 5; y++){
+                objects.emplace_back(1/5.f, Vec2(400+(x-5)*21, 500+(y-5)*21), 10);
+            }
+        }
+
+        objects[0].body->velocity = Vec2(25, 0);
+    }));
 
     ImGui::SFML::Init(window);
+
+    bool doPhysTick = true;
+    bool doBreak = false;
+    float tickDT = 1/20;
 
     sf::Clock clock;
     sf::Clock physClock;
@@ -96,7 +141,7 @@ int main(){
         window.clear(sf::Color::Black);
 
         // Phys update
-        if(physClock.getElapsedTime().asSeconds() > 1/60){
+        if(physClock.getElapsedTime().asSeconds() > 1/60 && doPhysTick){
             world.step(physClock.restart().asSeconds());
         }
 
@@ -118,6 +163,26 @@ int main(){
                     scenes[i].setup();
                 }
             }
+        }
+
+        if(ImGui::CollapsingHeader("Control")){
+            if(ImGui::Checkbox("Phys Tick", &doPhysTick)){
+                physClock.restart();
+            }
+
+            if(ImGui::Button("Tick") && !doPhysTick) world.step(tickDT);
+            ImGui::SliderFloat("Tick DT", &tickDT, 1/20, 1);
+
+            if(ImGui::Checkbox("Break On Coll", &doBreak)){
+                if(doBreak){
+                    world.collCB = [&doPhysTick](Contact& c){
+                        doPhysTick = false;
+                    };
+                }else{
+                    world.collCB = [](Contact& c){};
+                }
+            }
+
         }
 
         if(ImGui::CollapsingHeader("Objects")){

@@ -25,7 +25,9 @@ namespace phys2d{
 
         void reset();
 
-        #ifndef PHYS_2D_DEBUG
+        #ifdef PHYS_2D_DEBUG
+        std::function<void(Contact& c)> collCB;
+        #else 
         private:
         #endif
 
@@ -40,5 +42,6 @@ namespace phys2d{
 
         std::list<Body> bodies; // OPTIMIZATION: better data structure?
         std::vector<Contact> contacts; 
+
     };
 }

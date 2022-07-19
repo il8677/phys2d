@@ -9,7 +9,7 @@ namespace phys2d{
     struct Vec2;
 
     struct BodyData{
-        BodyData(float mass);
+        BodyData(float mass, float restitution=0.1f);
 
         void setMass(float mass);
 
@@ -19,6 +19,8 @@ namespace phys2d{
         private:
         float mass;
         float massinv;
+
+        float restitution;
     };
 
     struct Body{

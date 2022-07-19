@@ -1,8 +1,9 @@
 #include <phys2d/body.h>
 
 namespace phys2d{
-    BodyData::BodyData(float mass){
-        setMass(mass);
+    BodyData::BodyData(float mass_, float restitution_) : 
+        restitution(restitution_) {
+        setMass(mass_);
     }
 
     void BodyData::setMass(float mass_){

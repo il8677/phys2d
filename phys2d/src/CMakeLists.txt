@@ -4,6 +4,9 @@ set(PHYS_SOURCES
 
     body.cpp
     world.cpp
+    colliders/Shape.cpp
+    common/Contact.cpp
+    colliders/Collision.cpp
 )
 
 set(PHYS_HEADERS

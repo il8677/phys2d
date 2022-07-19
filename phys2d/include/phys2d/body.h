@@ -1,7 +1,7 @@
 #pragma once
 #include "maths/vec2.h"
-#include "maths/rotation.h"
-#include "colliders/shape.h"
+#include "maths/Rotation.h"
+#include "colliders/Shape.h"
 
 #include <memory>
 
@@ -16,17 +16,18 @@ namespace phys2d{
         float getMass();
         float getMassInv();
 
+        float restitution;
+
         private:
         float mass;
         float massinv;
-
-        float restitution;
     };
 
     struct Body{
         enum BodyType { STATIC, DYNAMIC, KINEMATIC};
 
         Body(std::unique_ptr<Shape> shape, BodyData data, BodyType type=DYNAMIC);
+        ~Body();
 
         std::unique_ptr<Shape> shape;
 

@@ -1,4 +1,4 @@
-#include <phys2d/body.h>
+#include <phys2d/Body.h>
 
 namespace phys2d{
     BodyData::BodyData(float mass_, float restitution_) : 
@@ -23,4 +23,5 @@ namespace phys2d{
         shape(std::move(shape_)), data(data_), type(type_) {
 
     }
+    Body::~Body(){}
 }

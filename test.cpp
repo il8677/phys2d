@@ -1,15 +1,22 @@
 #include <iostream>
 
+#define PHYS_2D_DEBUG
+
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
-#include <phys2d/world.h>
-#include <phys2d/body.h>
-#include <phys2d/colliders/shape.h>
+#include <phys2d/World.h>
+#include <phys2d/Body.h>
+#include <phys2d/colliders/Shape.h>
+
+#include "phys2d/src/colliders/Collision.h"
 
 #include <imgui.h>
+#include <imgui-SFML.h>
 
-sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
-phys2d::World world;
+#include <functional>
+
+sf::RenderWindow window(sf::VideoMode(1280, 700), "My window");
+phys2d::World world({0,0});
 
 using namespace phys2d;
 
@@ -18,7 +25,8 @@ class GameObject{
 
     GameObject(float mass, Vec2 pos) : circle(50.f){
         circle.setFillColor(sf::Color(150, 50, 250));
-        body = world.createBody(std::unique_ptr<Shape>(new Shape()), BodyData(mass));
+        body = world.createBody(
+            std::unique_ptr<Shape>(new ShapeCircle(50)), BodyData(mass));
         body->position = pos;
     }
 
@@ -27,36 +35,100 @@ class GameObject{
         circle.setPosition(body->position.x, body->position.y);
     }
 
+    phys2d::Body* body;
     private:
     sf::CircleShape circle;
-    phys2d::Body* body;
+};
+
+struct Scene{
+    Scene(const char* name_, std::function<void()> setup_) : 
+        name(name_), setup(setup_){
+
+    }
+    
+    const char* name;
+    std::function<void()> setup;  
 };
 
 int main(){
-    GameObject go1(1, Vec2(50, 100));
-    GameObject go2(2, Vec2(200, 100));
+    std::vector<GameObject> objects;
+
+    std::vector<Scene> scenes;
+
+    scenes.push_back(Scene("Circle Collision 1",
+        [&](){
+        objects.emplace_back(2, Vec2(50, 100));
+        objects.emplace_back(1, Vec2(300, 100));
+
+        objects[0].body->velocity = Vec2(100, 0);
+        objects[1].body->velocity = Vec2(-100, 0);
+    }));
+
+    scenes.push_back(Scene("Circle Collision 2",
+        [&](){
+        objects.emplace_back(2, Vec2(50, 100));
+        objects.emplace_back(1, Vec2(300, 100));
+
+        objects[0].body->velocity = Vec2(100, 0);
+        objects[1].body->velocity = Vec2(0, 0);
+    }));
+
+
+    ImGui::SFML::Init(window);
 
     sf::Clock clock;
+    sf::Clock physClock;
     while (window.isOpen())
     {
-        sf::Time elapsed = clock.restart();
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
         {
+            ImGui::SFML::ProcessEvent(window, event);
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
         }
 
+        sf::Time elapsed = clock.restart();
+
         // clear the window with black color
         window.clear(sf::Color::Black);
 
-        // draw everything here...
-        world.step(elapsed.asSeconds());
-        go1.tick(elapsed.asSeconds());
-        go2.tick(elapsed.asSeconds());
+        // Phys update
+        if(physClock.getElapsedTime().asSeconds() > 1/60){
+            world.step(physClock.restart().asSeconds());
+        }
 
+        // Logic update
+        for(GameObject& go : objects){
+            go.tick(elapsed.asSeconds());
+        }
+
+        ImGui::SFML::Update(window, elapsed);
+        ImGui::Begin("Debug");
+
+        ImGui::InputFloat2("Gravity", (float*)&world.d_getGravity());
+
+        if(ImGui::CollapsingHeader("Scenes")){
+            for(int i = 0; i < scenes.size(); i++){
+                if(ImGui::Button(scenes[i].name)) {
+                    objects.clear();
+                    world.reset();
+                    scenes[i].setup();
+                }
+            }
+        }
+
+        if(ImGui::CollapsingHeader("Objects")){
+            for(const GameObject& go : objects){
+                ImGui::Text("m %f vx %f vy %f", go.body->data.getMass(), go.body->velocity.x, go.body->velocity.y);
+            }
+        }
+        ImGui::End();
+        ImGui::EndFrame();
+
+        ImGui::SFML::Render(window);
         // end the current frame
         window.display();
     }

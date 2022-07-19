@@ -1,4 +1,4 @@
-#include <phys2d/maths/rotation.h>
+#include <phys2d/maths/Rotation.h>
 
 namespace phys2d{
     Rotation::Rotation(float a) : angle(a) {

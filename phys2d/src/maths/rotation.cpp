@@ -9,4 +9,9 @@ namespace phys2d{
     Rotation::Rotation() : angle(0) {
         
     }
+
+    Rotation::operator float&(){
+        return angle;
+    }
+
 }

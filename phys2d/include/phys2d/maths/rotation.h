@@ -5,6 +5,8 @@ namespace phys2d{
         Rotation(float angle);
         Rotation();
 
+        operator float&();
+
         float angle;
     };
 }

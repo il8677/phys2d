@@ -14,8 +14,10 @@
 #include <functional>
 #include <unordered_map>
 
-sf::RenderWindow window(sf::VideoMode(1280, 700), "My window");
+sf::RenderWindow window(sf::VideoMode(1920, 1200), "My window");
 phys2d::World world({0,0});
+
+sf::View mainView(sf::FloatRect(0, 0, 16, 10));
 
 using namespace phys2d;
 
@@ -23,10 +25,17 @@ inline sf::Vector2f vec2conv(phys2d::Vec2 v){
     return sf::Vector2f(v.x, v.y);
 }
 
+float randomFloat(float a, float b) {
+    float random = ((float) rand()) / (float) RAND_MAX;
+    float diff = b - a;
+    float r = random * diff;
+    return a + r;
+}
+
 class GameObject{
     public:
 
-    GameObject(float mass, Vec2 pos, float r=50.f) : circle(r){
+    GameObject(float mass, Vec2 pos, float r=1) : circle(r){
         circle.setOrigin(circle.getRadius(), circle.getRadius());
 
         circle.setFillColor(sf::Color(150, 50, 250));
@@ -54,8 +63,8 @@ class DebugRenderer{
             if(!contact.inContact) continue;
 
         sf::Vertex line[] = {
-            sf::Vertex(vec2conv(contact.contactPoint - contact.normal*15)),
-            sf::Vertex(vec2conv(contact.contactPoint + contact.normal*15))
+            sf::Vertex(vec2conv(contact.contactPoint - contact.normal*0.5f)),
+            sf::Vertex(vec2conv(contact.contactPoint + contact.normal*0.5f))
         };
 
             window.draw(line, 2, sf::Lines);
@@ -75,70 +84,101 @@ struct Scene{
 
 
 int main(){
+    // SFML setup
     window.setFramerateLimit(60);
+    window.setView(mainView);
 
     std::vector<GameObject> objects;
+
+    // Scenes
     std::map<std::string, std::vector<Scene>> scenes;
 
-    scenes["circles"].push_back(Scene("Circle Collision 1",
-        [&](){
-        objects.emplace_back(2, Vec2(50, 100));
-        objects.emplace_back(1, Vec2(300, 100));
+    { // Circles
 
-        objects[0].body->velocity = Vec2(100, 0);
-        objects[1].body->velocity = Vec2(-100, 0);
-    }));
+        scenes["circles"].push_back(Scene("Circle Collision 1",
+            [&](){
+            objects.emplace_back(2, Vec2(1, 5));
+            objects.emplace_back(1, Vec2(5, 5));
 
-    scenes["circles"].push_back(Scene("Circle Collision 2",
-        [&](){
-        objects.emplace_back(2, Vec2(50, 100));
-        objects.emplace_back(1, Vec2(300, 100));
+            objects[0].body->velocity = Vec2(1, 0);
+            objects[1].body->velocity = Vec2(-1, 0);
+        }));
 
-        objects[0].body->velocity = Vec2(100, 0);
-        objects[1].body->velocity = Vec2(0, 0);
-    }));
+        scenes["circles"].push_back(Scene("Circle Collision 2",
+            [&](){
+            objects.emplace_back(2, Vec2(1, 5));
+            objects.emplace_back(1, Vec2(5, 5));
 
-    scenes["circles"].push_back(Scene("Size Difference 1", [&](){
-        objects.emplace_back(2, Vec2(50, 100), 50);
-        objects.emplace_back(1, Vec2(150, 125), 25);
+            objects[0].body->velocity = Vec2(1, 0);
+            objects[1].body->velocity = Vec2(0, 0);
+        }));
 
-        objects[0].body->velocity = Vec2(100, 0);
-        objects[1].body->velocity = Vec2(0, 0);
-    }));
+        scenes["circles"].push_back(Scene("Size Difference 1", [&](){
+            objects.emplace_back(2, Vec2(1, 5), 1);
+            objects.emplace_back(1, Vec2(5, 6), 0.5f);
 
-    scenes["circles"].push_back(Scene("Size Difference 2", [&](){
-        objects.emplace_back(2, Vec2(50, 100));
-        objects.emplace_back(0.4f, Vec2(300, 125), 10);
+            objects[0].body->velocity = Vec2(1, 0);
+            objects[1].body->velocity = Vec2(0, 0);
+        }));
 
-        objects[0].body->velocity = Vec2(100, 0);
-        objects[1].body->velocity = Vec2(0, 0);
-    }));
+        scenes["circles"].push_back(Scene("Size Difference 2", [&](){
+            objects.emplace_back(2, Vec2(1, 5));
+            objects.emplace_back(0.4f, Vec2(5, 5.5f), 0.25f);
 
-    scenes["circles"].push_back(Scene("Pool 1",
-        [&](){
-        objects.emplace_back(1, Vec2(150, 400), 50);
+            objects[0].body->velocity = Vec2(1, 0);
+            objects[1].body->velocity = Vec2(0, 0);
+        }));
 
-        for(int x = 0; x < 5; x++){
-            for(int y = 0; y < 5; y++){
-                objects.emplace_back(1/5.f, Vec2(400+(x-5)*25, 500+(y-5)*25), 10);
+        scenes["circles"].push_back(Scene("Pool 1",
+            [&](){
+            objects.emplace_back(10, Vec2(1, 5));
+
+            for(int x = 0; x < 5; x++){
+                for(int y = 0; y < 5; y++){
+                    objects.emplace_back(1/5.f, Vec2(6+(x-5)*0.2f, 5+(y-5)*0.2f), 0.2f);
+                }
             }
-        }
 
-        objects[0].body->velocity = Vec2(50, 0);
-    }));
+            objects[0].body->velocity = Vec2(1, 0);
+        }));
+    }
 
-    scenes["circles"].push_back(Scene("Pool 2",
-        [&](){
-        objects.emplace_back(1, Vec2(75, 400));
+    { // Stress
+        std::function<void(int)> particleWorld = [&](int particleCount){
+            const int startx = 1;
+            const int endx = 15;
 
-        for(int x = 0; x < 5; x++){
-            for(int y = 0; y < 5; y++){
-                objects.emplace_back(1/5.f, Vec2(400+(x-5)*21, 500+(y-5)*21), 10);
+            const int starty = 1;
+            const int endy = 9;
+
+            float incx = (endx - startx) / ((float)particleCount / 10.f);
+            float incy = (endy - starty) / ((float)particleCount / 10.f);
+
+            std::cout << incx;
+
+            objects.reserve(particleCount);
+
+            for(int x = 0; x < particleCount/10; x++){
+                for(int y = 0; y < particleCount/10; y++){
+                    objects.emplace_back(0.1f, Vec2(startx + incx * x, starty + incy * y), incy/4);
+
+                    objects.back().body->velocity = Vec2(randomFloat(-1, 1), randomFloat(-1, 1));
+                }
             }
-        }
+        };
 
-        objects[0].body->velocity = Vec2(100, 0);
-    }));
+        scenes["stress"].emplace_back("Particle World 100", [&](){
+            particleWorld(100);
+        });
+
+        scenes["stress"].emplace_back("Particle World 500", [&](){
+            particleWorld(500);
+        });
+
+        scenes["stress"].emplace_back("Particle World 1000", [&](){
+            particleWorld(1000);
+        });
+    }
 
     // IMGUI debug
     ImGui::SFML::Init(window);
@@ -167,7 +207,26 @@ int main(){
                 window.close();
         }
 
+        const float moveAmount = 10.f;
+
         sf::Time elapsed = clock.restart();
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+            mainView.move(0, -moveAmount*elapsed.asSeconds());
+            window.setView(mainView);
+        } 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+            mainView.move(-moveAmount*elapsed.asSeconds(), 0);
+            window.setView(mainView);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+            mainView.move(0, moveAmount*elapsed.asSeconds());
+            window.setView(mainView);
+        } 
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+            mainView.move(moveAmount*elapsed.asSeconds(), 0);
+            window.setView(mainView);
+        }
 
         // clear the window with black color
         window.clear(sf::Color::Black);
@@ -184,12 +243,9 @@ int main(){
 
         ImGui::SFML::Update(window, elapsed);
 
-        ImGui::Begin("Debug");
-
-        ImGui::InputFloat2("Gravity", (float*)&world.d_getGravity());
-
-        if(ImGui::CollapsingHeader("Scenes")){
-            for (std::pair<std::string, std::vector<Scene>> kv : scenes){
+        ImGui::Begin("Scenes");
+        
+        for (std::pair<std::string, std::vector<Scene>> kv : scenes){
             if(ImGui::CollapsingHeader(kv.first.c_str())){
                 for(int i = 0; i < kv.second.size(); i++){
                     if(ImGui::Button(kv.second[i].name)) {
@@ -199,8 +255,17 @@ int main(){
                     }
                 }
             }
-            }
         }
+
+        ImGui::End();
+
+        ImGui::Begin("Peformance");
+        ImGui::Text("dt %dms", elapsed.asMilliseconds());
+        ImGui::End();
+
+        ImGui::Begin("Debug");
+
+        ImGui::InputFloat2("Gravity", (float*)&world.d_getGravity());
 
         if(ImGui::CollapsingHeader("Control")){
             ImGui::Checkbox("Phys Tick", &doPhysTick);
@@ -226,7 +291,7 @@ int main(){
 
         if(ImGui::CollapsingHeader("Objects")){
             for(const GameObject& go : objects){
-                ImGui::Text("m %f vx %f vy %f", go.body->data.getMass(), go.body->velocity.x, go.body->velocity.y);
+                ImGui::Text("m %f vx %f vy %f px %f py %f", go.body->data.getMass(), go.body->velocity.x, go.body->velocity.y, go.body->position.x, go.body->position.y);
             }
         }
         ImGui::End();

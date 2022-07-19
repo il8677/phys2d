@@ -10,3 +10,7 @@ Fixed sinking bug from a1, objects are now pushed away from each other during co
 
 ## a2.2
 Testworld improvements
+    - Scene categories
+    - View 
+        - Standardised units
+        - Movable camera

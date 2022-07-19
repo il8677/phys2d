@@ -13,6 +13,8 @@ set(TEST_ADDITIONAL_SOURCES
     vendor/imgui-sfml/imgui-SFML.cpp
 )
 
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wextra")
+
 add_subdirectory(vendor/SFML)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -26,3 +28,5 @@ target_link_libraries(phystest PUBLIC OpenGL sfml-graphics sfml-window sfml-syst
 target_include_directories(phystest PRIVATE vendor/SFML/include)
 target_include_directories(phystest PRIVATE vendor/imgui-sfml)
 target_include_directories(phystest PRIVATE vendor/imgui-docking)
+
+message(${CMAKE_CXX_FLAGS_RELEASE})

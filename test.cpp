@@ -82,6 +82,28 @@ struct Scene{
     std::function<void()> setup;  
 };
 
+void particleWorld(int particleCount, std::vector<GameObject>& objects){
+        const int startx = 1;
+        const int endx = 15;
+
+        const int starty = 1;
+        const int endy = 9;
+
+        float incx = (endx - startx) / ((float)particleCount / 10.f);
+        float incy = (endy - starty) / ((float)particleCount / 10.f);
+
+        std::cout << incx;
+
+        objects.reserve(particleCount);
+
+        for(int x = 0; x < particleCount/10; x++){
+            for(int y = 0; y < particleCount/10; y++){
+                objects.emplace_back(0.1f, Vec2(startx + incx * x, starty + incy * y), incy/4);
+
+                objects.back().body->velocity = Vec2(randomFloat(-1, 1), randomFloat(-1, 1));
+            }
+        }
+}
 
 int main(){
     // SFML setup
@@ -144,39 +166,16 @@ int main(){
     }
 
     { // Stress
-        std::function<void(int)> particleWorld = [&](int particleCount){
-            const int startx = 1;
-            const int endx = 15;
-
-            const int starty = 1;
-            const int endy = 9;
-
-            float incx = (endx - startx) / ((float)particleCount / 10.f);
-            float incy = (endy - starty) / ((float)particleCount / 10.f);
-
-            std::cout << incx;
-
-            objects.reserve(particleCount);
-
-            for(int x = 0; x < particleCount/10; x++){
-                for(int y = 0; y < particleCount/10; y++){
-                    objects.emplace_back(0.1f, Vec2(startx + incx * x, starty + incy * y), incy/4);
-
-                    objects.back().body->velocity = Vec2(randomFloat(-1, 1), randomFloat(-1, 1));
-                }
-            }
-        };
-
         scenes["stress"].emplace_back("Particle World 100", [&](){
-            particleWorld(100);
+            particleWorld(100, objects);
         });
 
         scenes["stress"].emplace_back("Particle World 500", [&](){
-            particleWorld(500);
+            particleWorld(500, objects);
         });
 
         scenes["stress"].emplace_back("Particle World 1000", [&](){
-            particleWorld(1000);
+            particleWorld(1000, objects);
         });
     }
 
@@ -247,7 +246,7 @@ int main(){
         
         for (std::pair<std::string, std::vector<Scene>> kv : scenes){
             if(ImGui::CollapsingHeader(kv.first.c_str())){
-                for(int i = 0; i < kv.second.size(); i++){
+                for(size_t i = 0; i < kv.second.size(); i++){
                     if(ImGui::Button(kv.second[i].name)) {
                         objects.clear();
                         world.reset();

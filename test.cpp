@@ -1,10 +1,12 @@
-#include<iostream>
+#include <iostream>
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <phys2d/world.h>
 #include <phys2d/body.h>
 #include <phys2d/colliders/shape.h>
+
+#include <imgui.h>
 
 sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
 phys2d::World world;

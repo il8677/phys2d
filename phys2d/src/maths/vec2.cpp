@@ -46,6 +46,12 @@ namespace phys2d{
         y = 0;
     }
 
+    Vec2 Vec2::normalized() const {
+        Vec2 v = *this;
+        v.normalize();
+        return v;
+    }
+
 	Vec2 Vec2::operator+(const Vec2& rhs) const {
         return Vec2(x + rhs.x, y + rhs.y);;
     }
@@ -77,4 +83,9 @@ namespace phys2d{
     float Vec2::magnitude() const{
         return sqrt(x*x + y*y);
     }
+
+    Vec2 operator*(const float lhs, const Vec2 rhs){
+		return Vec2(rhs.x*lhs, rhs.y*lhs);
+	}
+
 }

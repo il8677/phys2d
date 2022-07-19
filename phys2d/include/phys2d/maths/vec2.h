@@ -17,6 +17,8 @@ namespace phys2d{
 		void normalize();
 		void zero();
 
+		Vec2 normalized() const;
+
 		Vec2 operator+(const Vec2& rhs) const;
 		Vec2 operator-(const Vec2& rhs) const;
 		Vec2 operator*(const float rhs) const;
@@ -29,5 +31,7 @@ namespace phys2d{
 		bool operator==(const Vec2& other) const;
 
 		float magnitude() const;
+
+		friend Vec2 operator*(const float lhs, const Vec2 rhs);
 	};
 }

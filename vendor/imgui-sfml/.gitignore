@@ -1,6 +1,0 @@
-Ignore folders named build
-build/**
-Build/**
-
-Ignore Visual Studio folder
-.vs/**

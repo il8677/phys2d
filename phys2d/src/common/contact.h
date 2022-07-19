@@ -16,5 +16,9 @@ namespace phys2d{
         Contact(Body* A, Body* B);
 
         void resolve();
+
+        private:
+        void updateVelocities();
+        void fixError();
     };
 }

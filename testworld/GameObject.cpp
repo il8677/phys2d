@@ -9,10 +9,12 @@ GameObject GameObject::createCircle(World& world, BodyData data, Vec2 pos, float
     sf::CircleShape* s = (sf::CircleShape*)go.renderable.get();
     s->setFillColor(sf::Color(150, 50, 250));
     s->setOrigin(r, r);
+
+    return go;
 }
 
 GameObject::GameObject(Body* body_, Vec2 pos) {
-    body = body;
+    body = body_;
     body->position = pos;
 }
 

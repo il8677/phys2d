@@ -4,6 +4,10 @@ project(phystest)
 add_compile_definitions(PHYS_2D_DEBUG)
 #add_compile_definitions(IMGUI_SFML_VIEWPORTS_ENABLE)
 
+set(TEST_SOURCES
+    GameObject.cpp
+)
+
 set(TEST_ADDITIONAL_SOURCES 
     vendor/imgui-docking/imgui.cpp
     vendor/imgui-docking/imgui_draw.cpp
@@ -18,7 +22,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wextra")
 add_subdirectory(vendor/SFML)
 
 set(CMAKE_CXX_STANDARD 17)
-add_executable(phystest test.cpp ${TEST_ADDITIONAL_SOURCES})
+add_executable(phystest test.cpp ${TEST_SOURCES} ${TEST_ADDITIONAL_SOURCES})
 
 add_subdirectory(../phys2d phys2d)
 

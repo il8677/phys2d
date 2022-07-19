@@ -8,6 +8,7 @@
 
 // Debug header
 #include "../phys2d/src/colliders/Collision.h"
+#include "GameObject.h"
 
 #include <imgui.h>
 #include <imgui-SFML.h>
@@ -33,27 +34,6 @@ float randomFloat(float a, float b) {
     return a + r;
 }
 
-class GameObject{
-    public:
-
-    GameObject(float mass, Vec2 pos, float r=1) : circle(r){
-        circle.setOrigin(circle.getRadius(), circle.getRadius());
-
-        circle.setFillColor(sf::Color(150, 50, 250));
-        body = world.createBody(
-            std::unique_ptr<Shape>(new ShapeCircle(r)), BodyData(mass));
-        body->position = pos;
-    }
-
-    void tick(float dt){
-        window.draw(circle);
-        circle.setPosition(body->position.x, body->position.y);
-    }
-
-    phys2d::Body* body;
-    private:
-    sf::CircleShape circle;
-};
 
 class DebugRenderer{
     public:
@@ -97,7 +77,7 @@ void particleWorld(int particleCount, std::vector<GameObject>& objects){
 
         for(int x = 0; x < particleCount/10; x++){
             for(int y = 0; y < particleCount/10; y++){
-                objects.emplace_back(0.1f, Vec2(startx + incx * x, starty + incy * y), incy/4);
+                objects.push_back(GameObject::createCircle(world, BodyData(0.1f), Vec2(startx + incx * x, starty + incy * y), incy/4));
 
                 objects.back().body->velocity = Vec2(randomFloat(-1, 1), randomFloat(-1, 1));
             }
@@ -117,9 +97,9 @@ int main(){
     { // Circles
 
         scenes["circles"].push_back(Scene("Circle Collision 1",
-            [&](){
-            objects.emplace_back(2, Vec2(1, 5));
-            objects.emplace_back(1, Vec2(5, 5));
+        [&](){
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(1, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5, 5)));
 
             objects[0].body->velocity = Vec2(1, 0);
             objects[1].body->velocity = Vec2(-1, 0);
@@ -127,24 +107,25 @@ int main(){
 
         scenes["circles"].push_back(Scene("Circle Collision 2",
             [&](){
-            objects.emplace_back(2, Vec2(1, 5));
-            objects.emplace_back(1, Vec2(5, 5));
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(1, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5, 5)));
+
 
             objects[0].body->velocity = Vec2(1, 0);
             objects[1].body->velocity = Vec2(0, 0);
         }));
 
         scenes["circles"].push_back(Scene("Size Difference 1", [&](){
-            objects.emplace_back(2, Vec2(1, 5), 1);
-            objects.emplace_back(1, Vec2(5, 6), 0.5f);
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(1, 5), 1));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5, 6), 0.5f));
 
             objects[0].body->velocity = Vec2(1, 0);
             objects[1].body->velocity = Vec2(0, 0);
         }));
 
         scenes["circles"].push_back(Scene("Size Difference 2", [&](){
-            objects.emplace_back(2, Vec2(1, 5));
-            objects.emplace_back(0.4f, Vec2(5, 5.5f), 0.25f);
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(1, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(0.4f), Vec2(5, 5.5f), 0.25f));
 
             objects[0].body->velocity = Vec2(1, 0);
             objects[1].body->velocity = Vec2(0, 0);
@@ -152,11 +133,11 @@ int main(){
 
         scenes["circles"].push_back(Scene("Pool 1",
             [&](){
-            objects.emplace_back(10, Vec2(1, 5));
+            objects.push_back(GameObject::createCircle(world, BodyData(10), Vec2(1, 5)));
 
             for(int x = 0; x < 5; x++){
                 for(int y = 0; y < 5; y++){
-                    objects.emplace_back(1/5.f, Vec2(6+(x-5)*0.2f, 5+(y-5)*0.2f), 0.2f);
+                    objects.push_back(GameObject::createCircle(world, BodyData(1/5.f), Vec2(6+(x-5)*0.2f, 5+(y-5)*0.2f), 0.2f));
                 }
             }
 
@@ -236,7 +217,7 @@ int main(){
 
         // Logic update
         for(GameObject& go : objects){
-            go.tick(elapsed.asSeconds());
+            go.tick(elapsed.asSeconds(), window);
         }
 
         ImGui::SFML::Update(window, elapsed);

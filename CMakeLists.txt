@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 project(phystest)
 
 add_compile_definitions(PHYS_2D_DEBUG)
+#add_compile_definitions(IMGUI_SFML_VIEWPORTS_ENABLE)
 
 set(TEST_ADDITIONAL_SOURCES 
     vendor/imgui-docking/imgui.cpp

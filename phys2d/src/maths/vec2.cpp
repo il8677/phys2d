@@ -1,4 +1,5 @@
 #include <phys2d/maths/vec2.h>
+#include <phys2d/maths/Rotation.h>
 
 #include <cmath>
 
@@ -82,6 +83,10 @@ namespace phys2d{
 
     float Vec2::magnitude() const{
         return sqrt(x*x + y*y);
+    }
+
+    Rotation Vec2::getAngle() const {
+        return Rotation(std::atan2(y, x));
     }
 
     Vec2 operator*(const float lhs, const Vec2 rhs){

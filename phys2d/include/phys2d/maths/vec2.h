@@ -1,6 +1,8 @@
 #pragma once
 
 namespace phys2d{
+	class Rotation;
+
 	struct Vec2{
 		float x, y;
 
@@ -31,6 +33,7 @@ namespace phys2d{
 		bool operator==(const Vec2& other) const;
 
 		float magnitude() const;
+		Rotation getAngle() const;
 
 		friend Vec2 operator*(const float lhs, const Vec2 rhs);
 	};

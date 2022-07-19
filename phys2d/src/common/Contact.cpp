@@ -2,6 +2,8 @@
 
 #include <phys2d/Body.h>
 
+#include <cmath>
+
 namespace phys2d{
     Contact::Contact(Body* A_, Body* B_) : 
         A(A_), B(B_) {
@@ -13,7 +15,7 @@ namespace phys2d{
 
         float sN = rv.dot(normal);
 
-        if(!sN) return;
+        if(std::abs(sN) <= 1e-7) return;
 
         float r = std::min(A->data.restitution, B->data.restitution);
 

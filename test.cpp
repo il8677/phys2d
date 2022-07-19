@@ -143,8 +143,8 @@ int main(){
         window.clear(sf::Color::Black);
 
         // Phys update
-        if(physClock.getElapsedTime().asSeconds() > 1/60 && doPhysTick){
-            world.step(physClock.restart().asSeconds());
+        if(physClock.getElapsedTime().asSeconds() > 1/60.f && doPhysTick){
+            world.step(1/60.f);
         }
 
         // Logic update
@@ -168,9 +168,7 @@ int main(){
         }
 
         if(ImGui::CollapsingHeader("Control")){
-            if(ImGui::Checkbox("Phys Tick", &doPhysTick)){
-                physClock.restart();
-            }
+            ImGui::Checkbox("Phys Tick", &doPhysTick);
 
             if(ImGui::Button("Tick") && !doPhysTick) world.step(tickDT);
             ImGui::SliderFloat("Tick DT", &tickDT, 1/20, 1);

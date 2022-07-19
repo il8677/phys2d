@@ -1,4 +1,4 @@
 phys2d/build
-build/
+build*
 .vscode
 imgui.ini

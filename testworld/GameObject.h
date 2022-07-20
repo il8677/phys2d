@@ -1,3 +1,5 @@
+#include "Renderer.h"
+
 #include <phys2d/Body.h>
 #include <phys2d/World.h>
 #include <SFML/Graphics.hpp>
@@ -19,7 +21,8 @@ class GameObject{
     Body* body;
 
     private:
-    GameObject(Body* body, Vec2 pos);
+    GameObject(Body* body, Vec2 pos, std::unique_ptr<Renderer> renderer_);
 
-    std::unique_ptr<sf::Shape> renderable;
+    std::unique_ptr<Renderer> renderer;
+    
 };

@@ -14,3 +14,10 @@ Testworld improvements
     - View 
         - Standardised units
         - Movable camera
+### Peformance notes
+sfml circles taking up a lot of memory. Or maybe broadphase contact allocs? (3.19GiB)
+
+## a3
+- Testworld
+    - Better more optimised rendering
+    - Sweep and prune

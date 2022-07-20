@@ -63,25 +63,27 @@ struct Scene{
     std::function<void()> setup;  
 };
 
-void particleWorld(int particleCount, std::vector<GameObject>& objects){
-        const int startx = 1;
-        const int endx = 15;
+void particleWorld(int particlen, std::vector<GameObject>& objects){
+    
+    const int startx = 1;
+    const int endx = 15;
 
-        const int starty = 1;
-        const int endy = 9;
+    const int starty = 1;
+    const int endy = 9;
 
-        float incx = (endx - startx) / ((float)particleCount / 10.f);
-        float incy = (endy - starty) / ((float)particleCount / 10.f);
+    float incx = (endx - startx) / ((float)particlen / 10.f);
+    float incy = (endy - starty) / ((float)particlen / 10.f);
 
-        objects.reserve(particleCount);
+    objects.reserve(particlen);
+    world.reserveBodies(particlen);
 
-        for(int x = 0; x < particleCount/10; x++){
-            for(int y = 0; y < particleCount/10; y++){
-                objects.push_back(GameObject::createCircle(world, BodyData(0.1f), Vec2(startx + incx * x, starty + incy * y), incy/4));
+    for(int x = 0; x < particlen; x++){
+        for(int y = 0; y < particlen; y++){
+            objects.emplace_back(GameObject::createCircle(world, BodyData(0.1f), Vec2(startx + incx * x, starty + incy * y), incy/4));
 
-                objects.back().body->velocity = Vec2(randomFloat(-1, 1), randomFloat(-1, 1));
-            }
+            objects.back().body->velocity = Vec2(randomFloat(-1, 1), randomFloat(-1, 1));
         }
+    }
 }
 
 int main(){
@@ -197,16 +199,16 @@ int main(){
     }
 
     { // Stress
-        scenes["stress"].emplace_back("Particle World 100", [&](){
-            particleWorld(100, objects);
+        scenes["stress"].emplace_back("Particle World 10^2", [&](){
+            particleWorld(10, objects);
         });
 
-        scenes["stress"].emplace_back("Particle World 500", [&](){
-            particleWorld(500, objects);
+        scenes["stress"].emplace_back("Particle World 16^2", [&](){
+            particleWorld(16, objects);
         });
 
-        scenes["stress"].emplace_back("Particle World 1000", [&](){
-            particleWorld(1000, objects);
+        scenes["stress"].emplace_back("Particle World 32^2", [&](){
+            particleWorld(32, objects);
         });
     }
 
@@ -320,6 +322,7 @@ int main(){
         }
 
         if(ImGui::CollapsingHeader("Objects")){
+            ImGui::Text("Object count: %d", objects.size());
             for(const GameObject& go : objects){
                 ImGui::Text("m %f vx %f vy %f px %f py %f", go.body->data.getMass(), go.body->velocity.x, go.body->velocity.y, go.body->position.x, go.body->position.y);
             }

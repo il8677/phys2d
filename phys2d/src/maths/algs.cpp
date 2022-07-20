@@ -36,19 +36,19 @@ namespace phys2d{
     }
 
     bool operator< (const SPEntry& A, const SPEntry& B){
-        return A.axPos() < B.axPos();
+        return A.min() < B.min();
     }
 
     bool operator> (const SPEntry& A, const SPEntry& B){
-        return A.axPos() > B.axPos();
+        return A.min() > B.min();
     }
 
     bool operator== (const SPEntry& A, const SPEntry& B){
-        return A.axPos() == B.axPos();
+        return A.min() == B.min();
     }
 
     bool operator!= (const SPEntry& A, const SPEntry& B){
-        return A.axPos() != B.axPos();
+        return A.min() != B.min();
     }
 
 

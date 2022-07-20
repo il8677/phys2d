@@ -114,6 +114,19 @@ int main(){
             objects[0].body->velocity = Vec2(1.5f, 0);
             objects[1].body->velocity = Vec2(0, 0);
         }));
+
+        scenes["glitched"].push_back(Scene("Connected System",
+            [&](){
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(1, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(4, 4.75), 0.25));
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(4, 5), 0.25));
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(4, 5.25), 0.25));
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(4.25, 5), 0.25));
+
+
+            objects[0].body->velocity = Vec2(1.5f, 0);
+            objects[1].body->velocity = Vec2(0, 0);
+        }));
     }
 
     { // Circles
@@ -258,7 +271,7 @@ int main(){
 
     float tickDT = 1/20;
     
-    scenes["glitched"][1].setup();
+    scenes["glitched"][2].setup();
     
     sf::Clock clock;
     sf::Clock physClock;

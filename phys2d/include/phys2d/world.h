@@ -36,6 +36,7 @@ namespace phys2d{
 
         Vec2& d_getGravity();
         const std::vector<Contact>& d_getContacts() const;
+        const std::list<Body>& d_getBodies() const;
 
         private:
         void broadphase();

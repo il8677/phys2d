@@ -46,7 +46,7 @@ namespace phys2d{
         for(Body& body : bodies){
             if(body.type != Body::BodyType::STATIC){
                 if(body.type != Body::BodyType::KINEMATIC)
-                    body.velocity += (body.force + gravity) * dt;
+                    body.velocity += (body.data.getMassInv() * body.force + gravity) * dt;
                     
                 body.position += body.velocity * dt;
                 body.force.zero();
@@ -62,6 +62,9 @@ namespace phys2d{
         return contacts;
     }
 
+    const std::list<Body>& World::d_getBodies() const{
+        return bodies;
+    }
 
     void World::broadphase(){
         insertionSort(bodiesX);

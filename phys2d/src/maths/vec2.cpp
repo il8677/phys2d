@@ -85,6 +85,10 @@ namespace phys2d{
         return sqrt(x*x + y*y);
     }
 
+    float Vec2::magnitudeSq() const{
+        return x*x + y*y;
+    }
+
     Rotation Vec2::getAngle() const {
         return Rotation(std::atan2(y, x));
     }
@@ -93,4 +97,18 @@ namespace phys2d{
 		return Vec2(rhs.x*lhs, rhs.y*lhs);
 	}
 
+    bool operator< (const Vec2& v1, const Vec2& v2){
+        return v1.magnitudeSq() < v2.magnitudeSq();
+    }
+
+    bool operator> (const Vec2& v1, const Vec2& v2){
+        return v1.magnitudeSq() > v2.magnitudeSq();
+    }
+
+    bool operator<= (const Vec2& v1, const Vec2& v2){
+        return v1.magnitudeSq() <= v2.magnitudeSq();
+    }
+    bool operator>= (const Vec2& v1, const Vec2& v2){
+        return v1.magnitudeSq() >= v2.magnitudeSq();
+    }
 }

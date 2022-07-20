@@ -12,8 +12,10 @@ namespace phys2d{
 
 
         const Type type;
+        const float maxExtent;
+
         protected:
-        Shape(Type type);
+        Shape(Type type, float maxExtent);
     };
 
     struct ShapePoly : Shape {
@@ -21,12 +23,16 @@ namespace phys2d{
         ShapePoly(float halfext=1.f); // Square
         ShapePoly(float halfextX, float halfextY); // Rect
 
-        std::vector<Vec2> points; // OPTIMIZATION: data structure
+        const std::vector<Vec2> points; // OPTIMIZATION: data structure
+
+        private:
+        std::vector<Vec2> getPoints(std::initializer_list<Vec2> points_);
+        std::vector<Vec2> getPoints(float halfextX, float halfextY);
     };
 
     struct ShapeCircle : Shape {
         ShapeCircle(float radius);
 
-        float radius;
+        const float radius;
     };
 }

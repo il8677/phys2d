@@ -33,8 +33,14 @@ namespace phys2d{
 		bool operator==(const Vec2& other) const;
 
 		float magnitude() const;
+		float magnitudeSq() const;
 		Rotation getAngle() const;
 
 		friend Vec2 operator*(const float lhs, const Vec2 rhs);
+
+		friend bool operator< (const Vec2& v1, const Vec2& v2);
+		friend bool operator> (const Vec2& v1, const Vec2& v2);
+		friend bool operator<= (const Vec2& v1, const Vec2& v2);
+		friend bool operator>= (const Vec2& v1, const Vec2& v2);
 	};
 }

@@ -28,6 +28,13 @@ sfml circles taking up a lot of memory. Or maybe broadphase contact allocs? (3.1
 ### Bugs:
 Sorting done by center. Causing small objects to come before bigger objects even though the bigger objects extent might start first. Meaning objects that are colliding aren't always registered.
 
+## a3pre3
+- Sweep and prune functional
+- Slower than brute force
+
+### Optimization:
+
+
 ## a3
 - Testworld
     - Better more optimised rendering

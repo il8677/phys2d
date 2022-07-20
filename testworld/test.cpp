@@ -265,8 +265,12 @@ int main(){
             particleWorld(16, objects);
         });
 
-        scenes["stress"].emplace_back("Particle World 100^2", [&](){
-            particleWorld(100, objects);
+        scenes["stress"].emplace_back("Particle World 25^2", [&](){
+            particleWorld(25, objects);
+        });
+
+        scenes["stress"].emplace_back("Particle World 50^2", [&](){
+            particleWorld(50, objects);
         });
     }
 

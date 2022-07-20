@@ -64,11 +64,6 @@ namespace phys2d{
             dispatchContact(c);
 
             if(c.inContact){
-                #ifdef PHYS_2D_DEBUG
-                if(collCB){
-                    collCB(c);
-                }
-                #endif
                 c.resolve();
             }
         }

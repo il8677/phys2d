@@ -17,7 +17,8 @@ set(TEST_ADDITIONAL_SOURCES
     vendor/imgui-sfml/imgui-SFML.cpp
 )
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wextra")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wextra -g")
+set(CMAKE_XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym")
 
 add_subdirectory(vendor/SFML)
 

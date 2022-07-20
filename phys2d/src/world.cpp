@@ -79,7 +79,7 @@ namespace phys2d{
         for(SPEntry& entry : bodiesX){
             current.erase(std::remove_if(
                 current.begin(), current.end(), [&](const SPEntry& e){
-                    return e != entry;
+                    return e.isBehind(entry);
                 }), current.end());
 
             for(auto it = current.begin(); it != current.end(); it++){
@@ -94,7 +94,7 @@ namespace phys2d{
         for(SPEntry& entry : bodiesY){
             current.erase(std::remove_if(
                 current.begin(), current.end(), [&](const SPEntry& e){
-                    return e != entry;
+                    return e.isBehind(entry);
                 }), current.end());
             for(auto it = current.begin(); it != current.end(); it++){
                 possibleY.emplace_back(entry.body, it->body);

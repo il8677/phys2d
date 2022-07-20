@@ -12,31 +12,43 @@ namespace phys2d{
     }
 
     float SPEntry::min() const {
-        const float axPos = ((float*)(&body->position))[axis];
-
-        return axPos - body->shape->maxExtent;;
+        return axPos() - body->shape->maxExtent;;
     }
 
     float SPEntry::max() const {
-        const float axPos = ((float*)(&body->position))[axis];
+        return axPos() + body->shape->maxExtent;
+    }
 
-        return axPos + body->shape->maxExtent;
+    float SPEntry::axPos() const{
+        return ((float*)(&body->position))[axis];
+    }
+
+    bool SPEntry::isPast(const SPEntry& other) const {
+        return min() > other.max();
+    }
+
+    bool SPEntry::isBehind(const SPEntry& other) const {
+        return max() < other.min();
+    }
+
+    bool SPEntry::isIn(const SPEntry& other) const {
+        return !isBehind(other) && !isPast(other);
     }
 
     bool operator< (const SPEntry& A, const SPEntry& B){
-        return A.max() < B.min();
+        return A.axPos() < B.axPos();
     }
 
     bool operator> (const SPEntry& A, const SPEntry& B){
-        return A.min() > B.max();
+        return A.axPos() > B.axPos();
     }
 
     bool operator== (const SPEntry& A, const SPEntry& B){
-        return !(A < B) && !(A > B);
+        return A.axPos() == B.axPos();
     }
 
     bool operator!= (const SPEntry& A, const SPEntry& B){
-        return A < B || A > B;
+        return A.axPos() != B.axPos();
     }
 
 

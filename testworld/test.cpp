@@ -247,7 +247,7 @@ int main(){
 
     float tickDT = 1/20;
     
-    scenes["circles"][1].setup();
+    scenes["glitched"][1].setup();
     
     sf::Clock clock;
     sf::Clock physClock;

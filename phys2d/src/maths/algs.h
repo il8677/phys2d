@@ -13,6 +13,13 @@ namespace phys2d{
 
         SPEntry(Body* body, int axis);
 
+        float axPos() const;
+
+        bool isPast(const SPEntry& other) const;
+        bool isBehind(const SPEntry& other) const;
+
+        bool isIn(const SPEntry& other) const;
+
         friend bool operator< (const SPEntry& A, const SPEntry& B);
         friend bool operator> (const SPEntry& A, const SPEntry& B);
 

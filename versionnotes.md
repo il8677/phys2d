@@ -20,10 +20,10 @@ sfml circles taking up a lot of memory. Or maybe broadphase contact allocs? (3.1
 ## a3pre1
 - Testworld
     - Better more optimised rendering
-        - 10% frame time reduction
+        - 28% frame time reduction (900->650)
 
 ## a3
 - Testworld
     - Better more optimised rendering
-        - 10% frame time reduction
+        - 28% frame time reduction (900->650)
     - Sweep and prune

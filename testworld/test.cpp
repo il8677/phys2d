@@ -65,17 +65,18 @@ struct Scene{
 
 void particleWorld(int particlen, std::vector<GameObject>& objects){
     
+    int particleCount = particlen*particlen;
+
     const int startx = 1;
     const int endx = 15;
 
     const int starty = 1;
     const int endy = 9;
 
-    float incx = (endx - startx) / ((float)particlen / 10.f);
-    float incy = (endy - starty) / ((float)particlen / 10.f);
+    float incx = (endx - startx) / (float)particlen;
+    float incy = (endy - starty) / (float)particlen;
 
-    objects.reserve(particlen);
-    world.reserveBodies(particlen);
+    objects.reserve(particleCount);
 
     for(int x = 0; x < particlen; x++){
         for(int y = 0; y < particlen; y++){
@@ -293,6 +294,7 @@ int main(){
 
         ImGui::Begin("Peformance");
         ImGui::Text("dt %dms", elapsed.asMilliseconds());
+        ImGui::Text("Ct %u", world.d_getContacts().size());
         ImGui::End();
 
         ImGui::Begin("Debug");

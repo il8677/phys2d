@@ -17,6 +17,8 @@ namespace phys2d{
 
         void resolve();
 
+        friend bool operator==(const Contact& A, const Contact& B);
+
         private:
         void updateVelocities();
         void fixError();

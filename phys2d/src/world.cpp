@@ -1,17 +1,25 @@
 #include <phys2d/World.h>
 #include <phys2d/Body.h>
+
 #include "common/Contact.h"
 #include "colliders/Collision.h"
+#include "maths/algs.h"
 
 namespace phys2d{
-    World::World(Vec2 gravity) : gravity(gravity){
+    World::World(Vec2 gravity) : 
+        gravity(gravity) {
         
     }
 
     World::~World()=default;
 
     Body* World::createBody(Shape* shape, BodyData data){
-        return &bodies.emplace_back(shape, data);
+        Body* b = &bodies.emplace_back(shape, data);;
+
+        insertInPlace(bodiesX, SPEntry(b,0));
+        insertInPlace(bodiesX, SPEntry(b,1));
+
+        return b;
     }
 
     void World::setGravity(Vec2 g){
@@ -20,6 +28,10 @@ namespace phys2d{
 
     void World::reset(){
         bodies.clear();
+
+        bodiesX.clear();
+        bodiesY.clear();
+
         contacts.clear();
     }
 
@@ -50,13 +62,52 @@ namespace phys2d{
 
 
     void World::broadphase(){
-        contacts.reserve(bodies.size());
+        insertionSort(bodiesX);
+        insertionSort(bodiesY);
 
+        std::vector<SPEntry> current;
+        current.reserve(bodiesX.size());
+
+        std::vector<Contact> possibleX;
+        std::vector<Contact> possibleY;
+
+        possibleX.reserve(bodies.size()/2);
+        possibleY.reserve(bodies.size()/2);
+
+        for(SPEntry& entry : bodiesX){
+            for(auto it = current.begin(); it != current.end(); it++){
+                if(entry < *it) {
+                    it = current.erase(it);
+                    continue;
+                }
+
+                possibleX.emplace_back(entry.body, it->body);
+            }
+        }
+
+        for(SPEntry& entry : bodiesY){
+            for(auto it = current.begin(); it != current.end(); it++){
+                if(entry < *it) {
+                    it = current.erase(it);
+                    continue;
+                }
+
+                possibleY.emplace_back(entry.body, it->body);
+            }
+        }
+
+
+        for(Contact& c : possibleX) {
+            if(std::find(possibleY.begin(), possibleY.end(), c) != possibleY.end()){
+                contacts.push_back(c);
+            }
+        }
+        /*
         for(auto A = bodies.begin(); A != bodies.end(); A++){
             for(auto B = std::next(A); B != bodies.end(); B++){
                 contacts.emplace_back(&*A, &*B);
             }
-        }
+        }*/
     }
 
     void World::narrowphase(){

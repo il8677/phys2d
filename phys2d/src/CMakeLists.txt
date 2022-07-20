@@ -1,6 +1,7 @@
 set(PHYS_SOURCES
     maths/vec2.cpp
     maths/rotation.cpp
+    maths/algs.cpp
 
     body.cpp
     world.cpp

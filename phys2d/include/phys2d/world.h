@@ -4,11 +4,14 @@
 #include <list>
 #include <memory>
 #include <vector>
+#include <set>
+#include <functional>
 
 
 namespace phys2d{
     struct Body;
     struct BodyData;
+    struct SPEntry;
     class Shape;
     class Contact;
 
@@ -41,7 +44,11 @@ namespace phys2d{
         Vec2 gravity;
 
         std::list<Body> bodies; // OPTIMIZATION: better data structure?
-        std::vector<Contact> contacts; 
 
+        std::vector<SPEntry> bodiesX;
+        std::vector<SPEntry> bodiesY;
+
+
+        std::vector<Contact> contacts; 
     };
 }

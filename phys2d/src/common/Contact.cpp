@@ -45,4 +45,9 @@ namespace phys2d{
         A->position -= A->data.getMassInv() * correctionVec;
         B->position += B->data.getMassInv() * correctionVec;
     }
+
+    bool operator==(const Contact& A, const Contact& B){
+        return (A.A == B.A && A.B == B.B) ||
+               (A.B == B.A && A.A == B.B);
+    }
 }

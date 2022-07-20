@@ -27,6 +27,7 @@ PolyRenderer::PolyRenderer(std::initializer_list<Vec2> verts) {
     int i = 0;
 
     shape.setFillColor(sf::Color(56, 94, 156));
+    shape.setPointCount(verts.size());
 
     for(auto it = verts.begin(); it != verts.end(); it++){
         shape.setPoint(i, sf::Vector2f(it->x, it->y));
@@ -39,6 +40,8 @@ PolyRenderer::PolyRenderer(std::vector<Vec2> verts) {
 
     shape.setFillColor(sf::Color(56, 94, 156));
 
+    shape.setPointCount(verts.size());
+    
     for(auto it = verts.begin(); it != verts.end(); it++){
         shape.setPoint(i, sf::Vector2f(it->x, it->y));
         i++;

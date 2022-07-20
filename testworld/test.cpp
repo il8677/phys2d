@@ -287,7 +287,7 @@ int main(){
                 window.close();
         }
 
-        const float moveAmount = 10.f;
+        float moveAmount = 10.f;
 
         sf::Time elapsed = clock.restart();
 
@@ -305,6 +305,16 @@ int main(){
         } 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
             mainView.move(moveAmount*elapsed.asSeconds(), 0);
+            window.setView(mainView);
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
+            moveAmount+=1;
+            mainView.zoom(1.1);
+            window.setView(mainView);
+        }
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
+            moveAmount-=1;
+            mainView.zoom(0.9);
             window.setView(mainView);
         }
 

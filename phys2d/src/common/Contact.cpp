@@ -36,7 +36,7 @@ namespace phys2d{
 
     // PAPERNOTE: Floating point precision error solved with "Linear projection"
     void Contact::fixError(){
-        const float correction = 0.2f;
+        const float correction = 0.4f;
 
         float mWeightedPen = pen / ((A->data.getMassInv() + B->data.getMassInv()));
 

@@ -44,11 +44,23 @@ class DebugRenderer{
             if(!contact.inContact) continue;
 
         sf::Vertex line[] = {
-            sf::Vertex(vec2conv(contact.contactPoint - contact.normal*0.5f)),
-            sf::Vertex(vec2conv(contact.contactPoint + contact.normal*0.5f))
+            sf::Vertex(vec2conv(contact.contactPoint - contact.normal*0.5f), sf::Color(255,0,255)),
+            sf::Vertex(vec2conv(contact.contactPoint + contact.normal*0.5f), sf::Color(255,0,255))
         };
 
             window.draw(line, 2, sf::Lines);
+        }
+    }
+
+    static void renderVelocities(){
+        for(const Body& body : world.d_getBodies()){
+            sf::Vertex line[] = {
+                sf::Vertex(vec2conv(body.position), sf::Color(255,255,0)),
+                sf::Vertex(vec2conv(body.position+body.velocity), sf::Color(255,255,0))
+            };
+
+            window.draw(line, 2, sf::Lines);
+
         }
     }
 };
@@ -268,6 +280,7 @@ int main(){
     bool doBreak = false;
 
     bool doContactRender = false;
+    bool doVelRender = false;
 
     float tickDT = 1/20;
     
@@ -378,6 +391,7 @@ int main(){
 
         if(ImGui::CollapsingHeader("Rendering")){
             ImGui::Checkbox("Contact Render", &doContactRender);
+            ImGui::Checkbox("Velocity Render", &doVelRender);
         }
 
         if(ImGui::CollapsingHeader("Objects")){
@@ -393,6 +407,10 @@ int main(){
 
         if(doContactRender){
             DebugRenderer::renderContacts();
+        }
+
+        if(doVelRender){
+            DebugRenderer::renderVelocities();
         }
 
         // Update and Render additional Platform Windows

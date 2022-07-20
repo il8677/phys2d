@@ -49,7 +49,6 @@ namespace phys2d{
                     body.velocity += (body.data.getMassInv() * body.force + gravity) * dt;
                     
                 body.position += body.velocity * dt;
-                body.force.zero();
             }
         }
     }

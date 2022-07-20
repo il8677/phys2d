@@ -145,6 +145,57 @@ int main(){
         }));
     }
 
+    { // Squares
+
+        scenes["squares"].push_back(Scene("Circle Collision 1",
+        [&](){
+            objects.push_back(GameObject::createSquare(world, BodyData(2), Vec2(1, 5)));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5, 5)));
+
+            objects[0].body->velocity = Vec2(1, 0);
+            objects[1].body->velocity = Vec2(-1, 0);
+        }));
+
+        scenes["squares"].push_back(Scene("Circle Collision 2",
+            [&](){
+            objects.push_back(GameObject::createSquare(world, BodyData(2), Vec2(1, 5)));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5, 5)));
+
+
+            objects[0].body->velocity = Vec2(1, 0);
+            objects[1].body->velocity = Vec2(0, 0);
+        }));
+
+        scenes["squares"].push_back(Scene("Size Difference 1", [&](){
+            objects.push_back(GameObject::createSquare(world, BodyData(2), Vec2(1, 5), 1));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5, 6), 0.5f));
+
+            objects[0].body->velocity = Vec2(1, 0);
+            objects[1].body->velocity = Vec2(0, 0);
+        }));
+
+        scenes["squares"].push_back(Scene("Size Difference 2", [&](){
+            objects.push_back(GameObject::createSquare(world, BodyData(2), Vec2(1, 5)));
+            objects.push_back(GameObject::createSquare(world, BodyData(0.4f), Vec2(5, 5.5f), 0.25f));
+
+            objects[0].body->velocity = Vec2(1, 0);
+            objects[1].body->velocity = Vec2(0, 0);
+        }));
+
+        scenes["squares"].push_back(Scene("Pool 1",
+            [&](){
+            objects.push_back(GameObject::createSquare(world, BodyData(10), Vec2(1, 5)));
+
+            for(int x = 0; x < 5; x++){
+                for(int y = 0; y < 5; y++){
+                    objects.push_back(GameObject::createSquare(world, BodyData(1/5.f), Vec2(6+(x-5)*0.2f, 5+(y-5)*0.2f), 0.2f));
+                }
+            }
+
+            objects[0].body->velocity = Vec2(1, 0);
+        }));
+    }
+
     { // Stress
         scenes["stress"].emplace_back("Particle World 100", [&](){
             particleWorld(100, objects);

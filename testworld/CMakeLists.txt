@@ -33,4 +33,3 @@ target_include_directories(phystest PRIVATE vendor/SFML/include)
 target_include_directories(phystest PRIVATE vendor/imgui-sfml)
 target_include_directories(phystest PRIVATE vendor/imgui-docking)
 
-message(${CMAKE_CXX_FLAGS_RELEASE})

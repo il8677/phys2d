@@ -5,6 +5,8 @@
 #include "colliders/Collision.h"
 #include "maths/algs.h"
 
+#include <iostream>
+
 namespace phys2d{
     World::World(Vec2 gravity) : 
         gravity(gravity) {
@@ -17,7 +19,7 @@ namespace phys2d{
         Body* b = &bodies.emplace_back(shape, data);;
 
         insertInPlace(bodiesX, SPEntry(b,0));
-        insertInPlace(bodiesX, SPEntry(b,1));
+        insertInPlace(bodiesY, SPEntry(b,1));
 
         return b;
     }
@@ -75,25 +77,30 @@ namespace phys2d{
         possibleY.reserve(bodies.size()/2);
 
         for(SPEntry& entry : bodiesX){
-            for(auto it = current.begin(); it != current.end(); it++){
-                if(entry < *it) {
-                    it = current.erase(it);
-                    continue;
-                }
+            current.erase(std::remove_if(
+                current.begin(), current.end(), [&](const SPEntry& e){
+                    return e != entry;
+                }), current.end());
 
+            for(auto it = current.begin(); it != current.end(); it++){
                 possibleX.emplace_back(entry.body, it->body);
             }
+
+            current.push_back(entry);
         }
 
-        for(SPEntry& entry : bodiesY){
-            for(auto it = current.begin(); it != current.end(); it++){
-                if(entry < *it) {
-                    it = current.erase(it);
-                    continue;
-                }
+        current.clear();
 
+        for(SPEntry& entry : bodiesY){
+            current.erase(std::remove_if(
+                current.begin(), current.end(), [&](const SPEntry& e){
+                    return e != entry;
+                }), current.end());
+            for(auto it = current.begin(); it != current.end(); it++){
                 possibleY.emplace_back(entry.body, it->body);
             }
+
+            current.push_back(entry);
         }
 
 

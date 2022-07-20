@@ -97,6 +97,25 @@ int main(){
     // Scenes
     std::map<std::string, std::vector<Scene>> scenes;
 
+    { // Special tests
+        scenes["glitched"].push_back(Scene("Inside", [&](){
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(1, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(2.5, 5)));
+        }));
+
+        scenes["glitched"].push_back(Scene("Connected Chain",
+            [&](){
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(2.9, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(0.1f), Vec2(7, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(0.1f), Vec2(9, 5)));
+
+
+            objects[0].body->velocity = Vec2(1.5f, 0);
+            objects[1].body->velocity = Vec2(0, 0);
+        }));
+    }
+
     { // Circles
 
         scenes["circles"].push_back(Scene("Circle Collision 1",
@@ -112,9 +131,11 @@ int main(){
             [&](){
             objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(1, 5)));
             objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(0.1f), Vec2(7.1, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(0.1f), Vec2(9.2, 5)));
 
 
-            objects[0].body->velocity = Vec2(1, 0);
+            objects[0].body->velocity = Vec2(1.5f, 0);
             objects[1].body->velocity = Vec2(0, 0);
         }));
 
@@ -208,8 +229,8 @@ int main(){
             particleWorld(16, objects);
         });
 
-        scenes["stress"].emplace_back("Particle World 32^2", [&](){
-            particleWorld(32, objects);
+        scenes["stress"].emplace_back("Particle World 100^2", [&](){
+            particleWorld(100, objects);
         });
     }
 
@@ -225,7 +246,9 @@ int main(){
     bool doContactRender = false;
 
     float tickDT = 1/20;
-
+    
+    scenes["circles"][1].setup();
+    
     sf::Clock clock;
     sf::Clock physClock;
     while (window.isOpen())

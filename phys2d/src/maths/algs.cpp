@@ -6,23 +6,33 @@
 #include <algorithm>
 
 namespace phys2d{
-    SPEntry::SPEntry(Body* body_, int axis) {
+    SPEntry::SPEntry(Body* body_, int axis_) {
         body = body_;
+        axis = axis_;
+    }
+
+    float SPEntry::min() const {
         const float axPos = ((float*)(&body->position))[axis];
-        min = axPos - body->shape->maxExtent;
-        max = axPos - body->shape->maxExtent;
+
+        return axPos - body->shape->maxExtent;;
+    }
+
+    float SPEntry::max() const {
+        const float axPos = ((float*)(&body->position))[axis];
+
+        return axPos + body->shape->maxExtent;
     }
 
     bool operator< (const SPEntry& A, const SPEntry& B){
-        return A.max < B.min;
+        return A.max() < B.min();
     }
 
     bool operator> (const SPEntry& A, const SPEntry& B){
-        return A.min > B.max;
+        return A.min() > B.max();
     }
 
     bool operator== (const SPEntry& A, const SPEntry& B){
-        return B.min < A.min && A.min < B.max;
+        return !(A < B) && !(A > B);
     }
 
     bool operator!= (const SPEntry& A, const SPEntry& B){

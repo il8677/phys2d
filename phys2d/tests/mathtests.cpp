@@ -31,3 +31,35 @@ TEST_CASE("Vector math"){
         REQUIRE(a * 5 == Vec2(5, 10));
     }
 }
+
+#include <phys2d/world.h>
+#include <phys2d/colliders/shape.h>
+#include <phys2d/body.h>
+#include "../src/maths/algs.h"
+
+TEST_CASE("SP"){
+    World w;
+    Body* a = w.createBody(new ShapeCircle(1), BodyData(1));
+    Body* b = w.createBody(new ShapeCircle(1), BodyData(1));
+
+    b->position = {3,0};
+
+    SPEntry ae(a, 0);
+    SPEntry be(b, 0);
+
+
+    REQUIRE(ae < be);
+    REQUIRE(ae != be);
+
+    REQUIRE(!(ae > be));
+    REQUIRE(!(ae == be));
+
+    b->position = {0.9, 0};
+
+    REQUIRE(!(ae < be));
+    REQUIRE(!(ae != be));
+
+    REQUIRE(!(ae > be));
+    REQUIRE((ae == be));
+
+}

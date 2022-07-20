@@ -6,9 +6,10 @@ namespace phys2d{
 
     struct SPEntry{
         Body* body = nullptr;
+        int axis;
 
-        float min;
-        float max;
+        float min() const;
+        float max() const;
 
         SPEntry(Body* body, int axis);
 

@@ -80,7 +80,7 @@ void particleWorld(int particlen, std::vector<GameObject>& objects){
 
     for(int x = 0; x < particlen; x++){
         for(int y = 0; y < particlen; y++){
-            objects.emplace_back(GameObject::createCircle(world, BodyData(0.1f), Vec2(startx + incx * x, starty + incy * y), incy/4));
+            objects.emplace_back(GameObject::createCircle(world, BodyData(0.1f, 1), Vec2(startx + incx * x, starty + incy * y), incy/4));
 
             objects.back().body->velocity = Vec2(randomFloat(-1, 1), randomFloat(-1, 1));
         }
@@ -106,9 +106,9 @@ int main(){
         scenes["glitched"].push_back(Scene("Connected Chain",
             [&](){
             objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(2.9, 5)));
-            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5, 5)));
-            objects.push_back(GameObject::createCircle(world, BodyData(0.1f), Vec2(7, 5)));
-            objects.push_back(GameObject::createCircle(world, BodyData(0.1f), Vec2(9, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(5, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(7, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(9, 5)));
 
 
             objects[0].body->velocity = Vec2(1.5f, 0);
@@ -150,9 +150,11 @@ int main(){
         scenes["circles"].push_back(Scene("Size Difference 2", [&](){
             objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(1, 5)));
             objects.push_back(GameObject::createCircle(world, BodyData(0.4f), Vec2(5, 5.5f), 0.25f));
+            objects.push_back(GameObject::createCircle(world, BodyData(0.4f), Vec2(5.3, 5.8), 0.25f));
+            objects.push_back(GameObject::createCircle(world, BodyData(0.4f), Vec2(5.6, 6.1), 0.25f));
+            objects.push_back(GameObject::createCircle(world, BodyData(0.4f), Vec2(5.9, 6.4), 0.25f));
 
             objects[0].body->velocity = Vec2(1, 0);
-            objects[1].body->velocity = Vec2(0, 0);
         }));
 
         scenes["circles"].push_back(Scene("Pool 1",
@@ -166,6 +168,15 @@ int main(){
             }
 
             objects[0].body->velocity = Vec2(1, 0);
+        }));
+
+        scenes["circles"].push_back(Scene("Diagonal",
+            [&](){
+            objects.push_back(GameObject::createCircle(world, BodyData(10), Vec2(1, 1)));
+            objects.push_back(GameObject::createCircle(world, BodyData(5), Vec2(4, 4)));
+
+            objects[0].body->velocity = Vec2(1, 1);
+            objects[1].body->velocity = Vec2(-1, -1);
         }));
     }
 

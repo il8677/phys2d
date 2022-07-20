@@ -19,8 +19,8 @@ namespace phys2d{
         Body* bA = contact.A;
         Body* bB = contact.B;
 
-        ShapeCircle* A = (ShapeCircle*)bA->shape.get();
-        ShapeCircle* B = (ShapeCircle*)bB->shape.get();
+        ShapeCircle* A = (ShapeCircle*)bA->shape;
+        ShapeCircle* B = (ShapeCircle*)bB->shape;
 
         Vec2 colNormal = bB->position - bA->position;
         float dist = colNormal.magnitude();
@@ -49,8 +49,6 @@ namespace phys2d{
             bB = contact.A;
         }
 
-        ShapeCircle* A = (ShapeCircle*)bA->shape.get();
-        ShapeCircle* B = (ShapeCircle*)bB->shape.get();
     }
 
     void PolyPoly(Contact& contact){

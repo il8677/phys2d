@@ -26,10 +26,16 @@ namespace phys2d{
     struct Body{
         enum BodyType { STATIC, DYNAMIC, KINEMATIC};
 
-        Body(std::unique_ptr<Shape> shape, BodyData data, BodyType type=DYNAMIC);
+        Body(Shape* shape, BodyData data, BodyType type=DYNAMIC);
+        Body(const Body& other);
+        Body& operator=(const Body& other);
+
+        Body(Body&& other);
+        Body& operator=(Body&& other);
+
         ~Body();
 
-        std::unique_ptr<Shape> shape;
+        Shape* shape = nullptr;
 
         Vec2 velocity;
 

@@ -1,7 +1,7 @@
 #include "GameObject.h"
 
 GameObject GameObject::createCircle(World& world, BodyData data, Vec2 pos, float r){
-    Body* b = world.createBody(std::make_unique<ShapeCircle>(r), data);
+    Body* b = world.createBody(new ShapeCircle(r), data);
 
     GameObject go(b, pos, std::make_unique<CircleRenderer>(r));
 
@@ -9,7 +9,7 @@ GameObject GameObject::createCircle(World& world, BodyData data, Vec2 pos, float
 }
 
 GameObject GameObject::createPoly(World& world, BodyData data, Vec2 pos, std::initializer_list<Vec2> verts){
-    Body* b = world.createBody(std::make_unique<ShapePoly>(verts), data);
+    Body* b = world.createBody(new ShapePoly(verts), data);
 
     GameObject go(b, pos, std::make_unique<PolyRenderer>(verts));
 
@@ -17,9 +17,9 @@ GameObject GameObject::createPoly(World& world, BodyData data, Vec2 pos, std::in
 }
 
 GameObject GameObject::createRect(World& world, BodyData data, Vec2 pos, float hextx, float hexty){
-    Body* b = world.createBody(std::make_unique<ShapePoly>(hextx, hexty), data);
+    Body* b = world.createBody(new ShapePoly(hextx, hexty), data);
 
-    ShapePoly* sp = (ShapePoly*)b->shape.get();
+    ShapePoly* sp = (ShapePoly*)b->shape;
 
     GameObject go(b, pos, std::make_unique<PolyRenderer>(sp->points));
     

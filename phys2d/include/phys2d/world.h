@@ -17,7 +17,7 @@ namespace phys2d{
         World(Vec2 gravity=Vec2(0,9.8f));
         ~World();
 
-        Body* createBody(std::unique_ptr<Shape> shape, BodyData data);
+        Body* createBody(Shape* shape, BodyData data);
 
         void step(float dt);
 

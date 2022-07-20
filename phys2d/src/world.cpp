@@ -10,8 +10,8 @@ namespace phys2d{
 
     World::~World()=default;
 
-    Body* World::createBody(std::unique_ptr<Shape> shape, BodyData data){
-        return &bodies.emplace_back(std::move(shape), data);
+    Body* World::createBody(Shape* shape, BodyData data){
+        return &bodies.emplace_back(shape, data);
     }
 
     void World::setGravity(Vec2 g){

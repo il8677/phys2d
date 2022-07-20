@@ -17,7 +17,13 @@ Testworld improvements
 ### Peformance notes
 sfml circles taking up a lot of memory. Or maybe broadphase contact allocs? (3.19GiB)
 
+## a3pre1
+- Testworld
+    - Better more optimised rendering
+        - 10% frame time reduction
+
 ## a3
 - Testworld
     - Better more optimised rendering
+        - 10% frame time reduction
     - Sweep and prune

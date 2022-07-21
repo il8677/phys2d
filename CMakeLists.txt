@@ -4,7 +4,13 @@ project(phys_2d)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/)
+set(CMAKE_OSX_ARCHITECTURES "arm64")
+
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wextra -g")
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
+set(CMAKE_XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym")
+
+#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/)
 
 add_subdirectory(src)
 add_subdirectory(tests)

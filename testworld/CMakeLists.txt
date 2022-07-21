@@ -18,11 +18,6 @@ set(TEST_ADDITIONAL_SOURCES
     vendor/imgui-docking/imgui_demo.cpp
     vendor/imgui-sfml/imgui-SFML.cpp
 )
-set(CMAKE_OSX_ARCHITECTURES "arm64")
-
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wextra -g")
-set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
-set(CMAKE_XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym")
 
 add_subdirectory(vendor/SFML)
 

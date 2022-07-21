@@ -16,7 +16,7 @@
 #include <functional>
 #include <unordered_map>
 
-sf::RenderWindow window(sf::VideoMode(1920, 1200), "My window");
+sf::RenderWindow window(sf::VideoMode(16*60, 10*60), "My window");
 phys2d::World world({0,0});
 
 sf::View mainView(sf::FloatRect(0, 0, 16, 10));

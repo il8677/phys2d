@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
 project(phystest)
+set(CMAKE_CXX_STANDARD 17)
 
 add_compile_definitions(PHYS_2D_DEBUG)
 #add_compile_definitions(IMGUI_SFML_VIEWPORTS_ENABLE)
@@ -17,6 +18,7 @@ set(TEST_ADDITIONAL_SOURCES
     vendor/imgui-docking/imgui_demo.cpp
     vendor/imgui-sfml/imgui-SFML.cpp
 )
+set(CMAKE_OSX_ARCHITECTURES "arm64")
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wextra -g")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
@@ -24,7 +26,6 @@ set(CMAKE_XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym")
 
 add_subdirectory(vendor/SFML)
 
-set(CMAKE_CXX_STANDARD 17)
 add_executable(phystest test.cpp ${TEST_SOURCES} ${TEST_ADDITIONAL_SOURCES})
 
 add_subdirectory(../phys2d phys2d)

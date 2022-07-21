@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2018 Laurent Gomila (laurent@sfml-dev.org)
+// Copyright (C) 2007-2022 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -307,7 +307,7 @@ private:
     XIC                m_inputContext;   ///< Input context used to get unicode input in our window
     std::deque<XEvent> m_events;         ///< Queue we use to store pending events for this window
     bool               m_isExternal;     ///< Tell whether the window has been created externally or by SFML
-    int                m_oldVideoMode;   ///< Video mode in use before we switch to fullscreen
+    RRMode             m_oldVideoMode;   ///< Video mode in use before we switch to fullscreen
     RRCrtc             m_oldRRCrtc;      ///< RRCrtc in use before we switch to fullscreen
     ::Cursor           m_hiddenCursor;   ///< As X11 doesn't provide cursor hiding, we must create a transparent one
     ::Cursor           m_lastCursor;     ///< Last cursor used -- this data is not owned by the window and is required to be always valid

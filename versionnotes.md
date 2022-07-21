@@ -42,3 +42,6 @@ Sorting done by center. Causing small objects to come before bigger objects even
  - 1 axis Sweep and prune (2nd axis commented)
     - 1000 @ 18ms
     - 40000 @ 82ms
+
+## a3.2
+- File / Folder restructuring

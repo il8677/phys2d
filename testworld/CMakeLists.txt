@@ -28,8 +28,6 @@ add_subdirectory(vendor/SFML)
 
 add_executable(phystest test.cpp ${TEST_SOURCES} ${TEST_ADDITIONAL_SOURCES})
 
-add_subdirectory(../phys2d phys2d)
-
 target_link_libraries(phystest PRIVATE phys_2d)
 target_link_libraries(phystest PUBLIC OpenGL sfml-graphics sfml-window sfml-system)
 

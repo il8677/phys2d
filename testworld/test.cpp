@@ -7,7 +7,7 @@
 #include <phys2d/colliders/Shape.h>
 
 // Debug header
-#include "../phys2d/src/colliders/Collision.h"
+#include "../src/colliders/Collision.h"
 #include "GameObject.h"
 
 #include <imgui.h>

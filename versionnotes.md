@@ -39,4 +39,6 @@ Sorting done by center. Causing small objects to come before bigger objects even
 - Testworld
     - Better more optimised rendering
         - 28% frame time reduction (900->650)
- - Sweep and prune
+ - 1 axis Sweep and prune (2nd axis commented)
+    - 1000 @ 18ms
+    - 40000 @ 82ms

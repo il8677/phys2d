@@ -85,12 +85,12 @@ namespace phys2d{
                 }), current.end());
 
             for(auto it = current.begin(); it != current.end(); it++){
-                possibleX.emplace_back(entry.body, it->body);
+                contacts.emplace_back(entry.body, it->body);
             }
 
             current.push_back(entry);
         }
-
+        return;
         current.clear();
 
         for(SPEntry& entry : bodiesY){
@@ -107,8 +107,11 @@ namespace phys2d{
 
 
         for(Contact& c : possibleX) {
-            if(std::find(possibleY.begin(), possibleY.end(), c) != possibleY.end()){
+            auto loc = std::find(possibleY.begin(), possibleY.end(), c);
+            if(loc != possibleY.end()){
                 contacts.push_back(c);
+
+                possibleY.erase(loc);
             }
         }
         /*

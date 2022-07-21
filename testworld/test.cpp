@@ -261,16 +261,16 @@ int main(){
             particleWorld(10, objects);
         });
 
-        scenes["stress"].emplace_back("Particle World 16^2", [&](){
-            particleWorld(16, objects);
+        scenes["stress"].emplace_back("Particle World 30^2", [&](){
+            particleWorld(30, objects);
         });
 
-        scenes["stress"].emplace_back("Particle World 25^2", [&](){
-            particleWorld(25, objects);
+        scenes["stress"].emplace_back("Particle World 120^2", [&](){
+            particleWorld(120, objects);
         });
 
-        scenes["stress"].emplace_back("Particle World 50^2", [&](){
-            particleWorld(50, objects);
+        scenes["stress"].emplace_back("Particle World 200^2", [&](){
+            particleWorld(200, objects);
         });
     }
 
@@ -282,6 +282,7 @@ int main(){
     // Settings
     bool doPhysTick = true;
     bool doBreak = false;
+    bool fpsLimit = true;
 
     bool doContactRender = false;
     bool doVelRender = false;
@@ -341,6 +342,7 @@ int main(){
         // Phys update
         if(physClock.getElapsedTime().asSeconds() > 1/60.f && doPhysTick){
             world.step(1/60.f);
+            physClock.restart();
         }
 
         // Logic update
@@ -367,6 +369,13 @@ int main(){
         ImGui::End();
 
         ImGui::Begin("Peformance");
+        if(ImGui::Checkbox("Framerate limit", &fpsLimit)){
+            if(fpsLimit)
+                window.setFramerateLimit(60);
+            else
+                window.setFramerateLimit(0);
+            
+        }
         ImGui::Text("dt %dms", elapsed.asMilliseconds());
         ImGui::Text("Ct %u", world.d_getContacts().size());
         ImGui::End();

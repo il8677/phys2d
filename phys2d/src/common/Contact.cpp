@@ -5,9 +5,14 @@
 #include <cmath>
 
 namespace phys2d{
-    Contact::Contact(Body* A_, Body* B_) : 
-        A(A_), B(B_) {
-
+    Contact::Contact(Body* A_, Body* B_) {
+        if(A_ < B_){
+            A = A_;
+            B = B_;
+        }else{
+            B = A_;
+            A = B_;
+        }
     }
 
     void Contact::resolve(){
@@ -47,7 +52,6 @@ namespace phys2d{
     }
 
     bool operator==(const Contact& A, const Contact& B){
-        return (A.A == B.A && A.B == B.B) ||
-               (A.B == B.A && A.A == B.B);
+        return (A.A == B.A && A.B == B.B);
     }
 }

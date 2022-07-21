@@ -1,9 +1,10 @@
 #pragma once
 #include <phys2d/maths/vec2.h>
 
-namespace phys2d{
-    struct Body;
-    
+#include <functional>
+#include <phys2d/body.h>
+
+namespace phys2d{    
     struct Contact{
         Body* A;
         Body* B;
@@ -23,4 +24,13 @@ namespace phys2d{
         void updateVelocities();
         void fixError();
     };
+
 }
+
+using namespace phys2d;
+template<>
+struct std::hash<Contact>{
+    std::size_t operator()(Contact const& c) const noexcept{
+        return std::hash<Body*>()(c.A) ^ std::hash<Body*>()(c.B);
+    }
+};

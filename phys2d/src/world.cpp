@@ -5,7 +5,7 @@
 #include "colliders/Collision.h"
 #include "maths/algs.h"
 
-#include <iostream>
+#include <unordered_set>
 
 namespace phys2d{
     World::World(Vec2 gravity) : 
@@ -72,8 +72,8 @@ namespace phys2d{
         std::vector<SPEntry> current;
         current.reserve(bodiesX.size());
 
-        std::vector<Contact> possibleX;
-        std::vector<Contact> possibleY;
+        std::unordered_set<Contact> possibleX;
+        std::unordered_set<Contact> possibleY;
 
         possibleX.reserve(bodies.size()/2);
         possibleY.reserve(bodies.size()/2);
@@ -99,21 +99,12 @@ namespace phys2d{
                     return e.isBehind(entry);
                 }), current.end());
             for(auto it = current.begin(); it != current.end(); it++){
-                possibleY.emplace_back(entry.body, it->body);
+                possibleY.emplace(entry.body, it->body);
             }
 
             current.push_back(entry);
         }
 
-
-        for(Contact& c : possibleX) {
-            auto loc = std::find(possibleY.begin(), possibleY.end(), c);
-            if(loc != possibleY.end()){
-                contacts.push_back(c);
-
-                possibleY.erase(loc);
-            }
-        }
         /*
         for(auto A = bodies.begin(); A != bodies.end(); A++){
             for(auto B = std::next(A); B != bodies.end(); B++){

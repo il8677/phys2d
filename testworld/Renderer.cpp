@@ -3,6 +3,7 @@
 void CircleRenderer::render(RenderInfo ri, sf::RenderWindow& window){
     circle.setRadius(r);
     circle.setOrigin(r, r);
+    circle.setRotation(ri.rot);
     circle.setPosition(ri.p.x, ri.p.y);
     window.draw(circle);
 }
@@ -19,6 +20,7 @@ sf::CircleShape CircleRenderer::circle;
 
 void PolyRenderer::render(RenderInfo ri, sf::RenderWindow& window){
     shape.setPosition(ri.p.x, ri.p.y);
+    shape.setRotation(ri.rot);
 
     window.draw(shape);
 }

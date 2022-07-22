@@ -1,10 +1,12 @@
 #include <phys2d/maths/vec2.h>
+#include <phys2d/maths/Rotation.h>
 #include <SFML/Graphics.hpp>
 
 using namespace phys2d;
 
 struct RenderInfo{
     Vec2 p;
+    Rotation rot;
 };
 
 class Renderer{

@@ -2,7 +2,7 @@
 #include <phys2d/maths/vec2.h>
 
 #include <functional>
-#include <phys2d/body.h>
+#include <phys2d/Body.h>
 
 namespace phys2d{    
     struct Contact{

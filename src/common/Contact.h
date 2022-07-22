@@ -9,10 +9,10 @@ namespace phys2d{
         Body* A;
         Body* B;
 
-        bool inContact;
         float pen;
         Vec2 normal;
-        Vec2 contactPoint;
+        Vec2 contactPoints[2];
+        int contactCount=0;
 
         Contact(Body* A, Body* B);
 

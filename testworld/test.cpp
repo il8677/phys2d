@@ -41,14 +41,15 @@ class DebugRenderer{
         auto contacts = world.d_getContacts();
 
         for(const auto& contact : contacts){
-            if(!contact.inContact) continue;
+            for(int i = 0; i < contact.contactCount; i++){
+                auto contactPoint = contact.contactPoints[i];
+                sf::Vertex line[] = {
+                    sf::Vertex(vec2conv(contactPoint - contact.normal*0.5f), sf::Color(255,0,255)),
+                    sf::Vertex(vec2conv(contactPoint + contact.normal*0.5f), sf::Color(255,0,255))
+                };
 
-        sf::Vertex line[] = {
-            sf::Vertex(vec2conv(contact.contactPoint - contact.normal*0.5f), sf::Color(255,0,255)),
-            sf::Vertex(vec2conv(contact.contactPoint + contact.normal*0.5f), sf::Color(255,0,255))
-        };
-
-            window.draw(line, 2, sf::Lines);
+                window.draw(line, 2, sf::Lines);
+            }
         }
     }
 
@@ -109,35 +110,9 @@ int main(){
     // Scenes
     std::map<std::string, std::vector<Scene>> scenes;
 
-    { // Special tests
-        scenes["glitched"].push_back(Scene("Inside", [&](){
-            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(1, 5)));
-            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(2.5, 5)));
-        }));
-
-        scenes["glitched"].push_back(Scene("Connected Chain",
-            [&](){
-            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(2.9, 5)));
-            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(5, 5)));
-            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(7, 5)));
-            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(9, 5)));
-
-
-            objects[0].body->velocity = Vec2(1.5f, 0);
-            objects[1].body->velocity = Vec2(0, 0);
-        }));
-
-        scenes["glitched"].push_back(Scene("Connected System",
-            [&](){
-            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(1, 5)));
-            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(4, 4.75), 0.25));
-            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(4, 5), 0.25));
-            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(4, 5.25), 0.25));
-            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(4.25, 5), 0.25));
-
-
-            objects[0].body->velocity = Vec2(1.5f, 0);
-            objects[1].body->velocity = Vec2(0, 0);
+    {
+        scenes["specific"].push_back(Scene("Friction", [&](){
+            
         }));
     }
 
@@ -145,7 +120,7 @@ int main(){
 
         scenes["circles"].push_back(Scene("Circle Collision 1",
         [&](){
-            objects.push_back(GameObject::createCircle(world, BodyData(2), Vec2(1, 5)));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1, 5)));
             objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5, 5)));
 
             objects[0].body->velocity = Vec2(1, 0);
@@ -206,8 +181,13 @@ int main(){
     }
 
     { // Squares
+        scenes["squares"].push_back(Scene("Square In",
+        [&](){
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(3, 5)));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(4, 5)));
+        }));
 
-        scenes["squares"].push_back(Scene("Circle Collision 1",
+        scenes["squares"].push_back(Scene("Square Collision 1",
         [&](){
             objects.push_back(GameObject::createSquare(world, BodyData(2), Vec2(1, 5)));
             objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5, 5)));
@@ -216,7 +196,7 @@ int main(){
             objects[1].body->velocity = Vec2(-1, 0);
         }));
 
-        scenes["squares"].push_back(Scene("Circle Collision 2",
+        scenes["squares"].push_back(Scene("Square Collision 2",
             [&](){
             objects.push_back(GameObject::createSquare(world, BodyData(2), Vec2(1, 5)));
             objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5, 5)));
@@ -226,7 +206,7 @@ int main(){
             objects[1].body->velocity = Vec2(0, 0);
         }));
 
-        scenes["squares"].push_back(Scene("Size Difference 1", [&](){
+        scenes["squares"].push_back(Scene("Square Size Difference 1", [&](){
             objects.push_back(GameObject::createSquare(world, BodyData(2), Vec2(1, 5), 1));
             objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5, 6), 0.5f));
 
@@ -234,7 +214,7 @@ int main(){
             objects[1].body->velocity = Vec2(0, 0);
         }));
 
-        scenes["squares"].push_back(Scene("Size Difference 2", [&](){
+        scenes["squares"].push_back(Scene("Square Size Difference 2", [&](){
             objects.push_back(GameObject::createSquare(world, BodyData(2), Vec2(1, 5)));
             objects.push_back(GameObject::createSquare(world, BodyData(0.4f), Vec2(5, 5.5f), 0.25f));
 
@@ -242,7 +222,7 @@ int main(){
             objects[1].body->velocity = Vec2(0, 0);
         }));
 
-        scenes["squares"].push_back(Scene("Pool 1",
+        scenes["squares"].push_back(Scene("Square Pool 1",
             [&](){
             objects.push_back(GameObject::createSquare(world, BodyData(10), Vec2(1, 5)));
 
@@ -289,8 +269,8 @@ int main(){
 
     float tickDT = 1/20;
     
-    scenes["glitched"][2].setup();
-    
+    scenes["squares"][0].setup();
+
     sf::Clock clock;
     sf::Clock physClock;
     while (window.isOpen())

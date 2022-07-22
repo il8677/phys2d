@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 project(phystest)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/)
 
 add_compile_definitions(PHYS_2D_DEBUG)
 #add_compile_definitions(IMGUI_SFML_VIEWPORTS_ENABLE)

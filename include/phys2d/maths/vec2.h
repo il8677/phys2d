@@ -21,6 +21,8 @@ namespace phys2d{
 
 		Vec2 normalized() const;
 
+		Vec2 getNormal() const;
+
 		Vec2 operator+(const Vec2& rhs) const;
 		Vec2 operator-(const Vec2& rhs) const;
 		Vec2 operator*(const float rhs) const;

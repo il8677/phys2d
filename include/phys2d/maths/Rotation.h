@@ -1,4 +1,4 @@
-
+#pragma once
 
 namespace phys2d{
     struct Rotation{

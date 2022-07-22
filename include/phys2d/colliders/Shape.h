@@ -24,10 +24,17 @@ namespace phys2d{
         ShapePoly(float halfextX, float halfextY); // Rect
 
         const std::vector<Vec2> points; // OPTIMIZATION: data structure
+        const std::vector<Vec2> normals;
+
+        Vec2 getMaxPoint(Vec2 dir) const;
+
+
 
         private:
         std::vector<Vec2> getPoints(std::initializer_list<Vec2> points_);
         std::vector<Vec2> getPoints(float halfextX, float halfextY);
+
+        std::vector<Vec2> calculateNormals();
     };
 
     struct ShapeCircle : Shape {

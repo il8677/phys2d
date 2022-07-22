@@ -53,6 +53,10 @@ namespace phys2d{
         return v;
     }
 
+    Vec2 Vec2::getNormal() const{
+        return Vec2(y, -x).normalized();
+    }
+
 	Vec2 Vec2::operator+(const Vec2& rhs) const {
         return Vec2(x + rhs.x, y + rhs.y);;
     }

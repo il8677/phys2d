@@ -1,6 +1,6 @@
 #include "algs.h"
 
-#include <phys2d/body.h>
+#include <phys2d/Body.h>
 
 #include <functional>
 #include <algorithm>

@@ -16,9 +16,14 @@ namespace phys2d{
         float getMass();
         float getMassInv();
 
+        float getInertia();
+        float getInertiaInv();
+
         float restitution;
 
         private:
+        float inertia;
+        float inertiainv;
         float mass;
         float massinv;
     };
@@ -37,12 +42,14 @@ namespace phys2d{
 
         Shape* shape = nullptr;
 
+        Vec2 force;
         Vec2 velocity;
-
         Vec2 position;
+
         Rotation rotation;
 
-        Vec2 force;
+        Rotation angularVel;
+        Rotation torque;
 
         BodyData data;
         

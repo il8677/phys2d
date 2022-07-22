@@ -1,11 +1,21 @@
 #include "Renderer.h"
 
+#include <cmath>
+
 void CircleRenderer::render(RenderInfo ri, sf::RenderWindow& window){
     circle.setRadius(r);
     circle.setOrigin(r, r);
     circle.setRotation(ri.rot);
     circle.setPosition(ri.p.x, ri.p.y);
+
+    sf::Vertex line[2] = {
+        sf::Vertex(sf::Vector2f(ri.p.x, ri.p.y)),
+        sf::Vertex(sf::Vector2f(ri.p.x + r*std::sin(ri.p.x), ri.p.y + r * std::cos(ri.p.x)))
+    };
+
+
     window.draw(circle);
+    window.draw(line, 2, sf::Lines);
 }
 
 CircleRenderer::CircleRenderer(float r_) : r(r_){

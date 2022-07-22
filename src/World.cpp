@@ -45,10 +45,13 @@ namespace phys2d{
 
         for(Body& body : bodies){
             if(body.type != Body::BodyType::STATIC){
-                if(body.type != Body::BodyType::KINEMATIC)
+                if(body.type != Body::BodyType::KINEMATIC){
                     body.velocity += (body.data.getMassInv() * body.force + gravity) * dt;
+                    body.angularVel += body.torque * body.data.getInertiaInv() * dt;
+                }
                     
                 body.position += body.velocity * dt;
+                body.rotation += body.angularVel * dt;
             }
         }
     }
@@ -117,7 +120,7 @@ namespace phys2d{
         for(Contact& c : contacts){
             dispatchContact(c);
 
-            if(c.inContact){
+            if(c.contactCount){
                 c.resolve();
             }
         }

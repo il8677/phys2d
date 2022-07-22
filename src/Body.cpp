@@ -9,6 +9,8 @@ namespace phys2d{
     void BodyData::setMass(float mass_){
         mass = mass_;
         massinv = 1/mass_;
+        inertia = mass_;
+        inertiainv = 1/mass_;
     }
 
     float BodyData::getMass(){
@@ -17,6 +19,14 @@ namespace phys2d{
 
     float BodyData::getMassInv(){
         return massinv;
+    }
+
+    float BodyData::getInertia(){
+        return inertia;
+    }
+
+    float BodyData::getInertiaInv(){
+        return inertiainv;
     }
 
     Body::Body(Shape* shape_, BodyData data_, BodyType type_) : 
@@ -84,6 +94,7 @@ namespace phys2d{
 
         data = std::move(other.data);
 
+        return *this;
     }
 
     Body::Body::~Body(){

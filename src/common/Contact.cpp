@@ -21,22 +21,36 @@ namespace phys2d{
     }
 
     void Contact::updateVelocities(){
-        Vec2 rv = B->velocity - A->velocity;
-
-        float sN = rv.dot(normal);
-
-        if(std::abs(sN) <= 1e-7) return;
-
         float r = std::min(A->data.restitution, B->data.restitution);
 
-        float mImpulse = (-(1+r) * sN) / (A->data.getMassInv() + B->data.getMassInv());
-        
-        Vec2 impulse = mImpulse * normal;
+        for(int i = 0; i < contactCount; i++){
+            Vec2 ra = contactPoints[i] - A->position;
+            Vec2 rb = contactPoints[i] - B->position;
 
-        // Apply scaled impulse based on body mass
-        // Have to apply directly, applying a force would be affected by delta time
-        A->velocity -= A->data.getMassInv() * impulse;
-        B->velocity += B->data.getMassInv() * impulse;
+            Vec2 rv = B->velocity - A->velocity + rb.cross(B->angularVel) - ra.cross(A->angularVel);
+
+            float sN = rv.dot(normal);
+
+            if(std::abs(sN) <= 1e-7) return;
+
+            float raN = ra.cross(normal);
+            float rbN = rb.cross(normal);
+
+            float invMSum = A->data.getMassInv() + B->data.getMassInv();
+            invMSum += raN * raN * A->data.getInertiaInv() + rbN * rbN * A->data.getInertiaInv();
+
+            float impulse = -(1.0f+r) * sN;
+            impulse /= invMSum;
+            impulse /= (float)contactCount;
+
+            Vec2 impulseV = impulse * normal;
+
+            A->velocity -= A->data.getMassInv() * impulseV;
+            A->angularVel -= A->data.getInertiaInv() * ra.cross(impulseV);
+
+            B->velocity += B->data.getMassInv() * impulseV;
+            B->angularVel += B->data.getInertiaInv() * rb.cross(impulseV);
+        }
     }
 
     // PAPERNOTE: Floating point precision error solved with "Linear projection"

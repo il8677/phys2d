@@ -139,6 +139,15 @@ int main(){
             objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5,-5), 0.3f));
             objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5,-7), 0.35f));
         }));
+
+        scenes["specific"].push_back(Scene("Static Bounce", [&](){
+            objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(9.5f,5), 0.2f, 4, Body::BodyType::STATIC));
+            objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(1,5), 0.1f, 4, Body::BodyType::STATIC));
+
+            objects.push_back(GameObject::createCircle(world, BodyData(1,1), Vec2(7,1.5f), 0.35f));
+
+            objects[2].body->velocity = Vec2(3,0);
+        }));
     }
 
     { // Circles

@@ -45,3 +45,9 @@ Sorting done by center. Causing small objects to come before bigger objects even
 
 ## a3.2
 - File / Folder restructuring
+
+## a4pre1
+- Polygonal collisions
+
+## a4
+- Polygonal collisions

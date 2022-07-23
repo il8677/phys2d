@@ -78,7 +78,7 @@ namespace phys2d{
     }
 
     Vec2 Vec2::cross(float s) const {
-        return Vec2(s * y, -s * x);
+        return Vec2(-s * y, s * x);
     }
 
     bool Vec2::operator==(const Vec2& other) const {

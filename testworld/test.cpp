@@ -16,10 +16,13 @@
 #include <functional>
 #include <unordered_map>
 
-sf::RenderWindow window(sf::VideoMode(16*60, 10*60), "My window");
+#define VX 16
+#define VY 10
+
+sf::RenderWindow window(sf::VideoMode(VX*60, VY*60), "My window");
 phys2d::World world({0,0});
 
-sf::View mainView(sf::FloatRect(0, 0, 16, 10));
+sf::View mainView(sf::FloatRect(0, 0, VX, VY));
 
 using namespace phys2d;
 
@@ -77,6 +80,7 @@ struct Scene{
 };
 
 void particleWorld(int particlen, std::vector<GameObject>& objects){
+    world.setGravity({0, 0});
     
     int particleCount = particlen*particlen;
 
@@ -89,7 +93,11 @@ void particleWorld(int particlen, std::vector<GameObject>& objects){
     float incx = (endx - startx) / (float)particlen;
     float incy = (endy - starty) / (float)particlen;
 
-    objects.reserve(particleCount);
+    objects.reserve(particleCount + 4);
+    objects.push_back(GameObject::createRect(world, BodyData(0,1), Vec2(0, VY/2.f), 0.1f, VY/2, Body::BodyType::STATIC));
+    objects.push_back(GameObject::createRect(world, BodyData(0,1), Vec2(VX, VY/2.f), 0.1f, VY/2, Body::BodyType::STATIC));
+    objects.push_back(GameObject::createRect(world, BodyData(0,1), Vec2(VX/2.f, 0), VX/2, 0.1f, Body::BodyType::STATIC));
+    objects.push_back(GameObject::createRect(world, BodyData(0,1), Vec2(VX/2.f, VY), VX/2, 0.1f, Body::BodyType::STATIC));
 
     for(int x = 0; x < particlen; x++){
         for(int y = 0; y < particlen; y++){

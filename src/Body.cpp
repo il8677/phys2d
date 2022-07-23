@@ -10,12 +10,12 @@ namespace phys2d{
         mass = mass_;
         if(mass!=0){
             massinv = 1/mass_;
-            inertiainv = 1/mass_;
+            inertiainv = 1/(mass_*2);
         }else{
             massinv = 0;
             inertiainv = 0;
         }
-        inertia = mass_;
+        inertia = 2*mass_;
     }
 
     float BodyData::getMass(){

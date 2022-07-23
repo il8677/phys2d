@@ -50,10 +50,28 @@ namespace phys2d{
 
             B->velocity += B->data.getMassInv() * impulseV;
             B->angularVel += B->data.getInertiaInv() * rb.cross(impulseV);
+
+            // Friction
+
+            Vec2 t = rv - normal * rv.dot(normal);
+            t.normalize();
+
+            float jt = -rv.dot(t) / invMSum / (float)contactCount;
+
+            Vec2 tanJ;
+            if(std::abs(jt) < impulse * 0.15f)
+                tanJ = -t * jt;
+            else
+                tanJ = t * jt * 0.15f;
+
+            A->velocity -= A->data.getMassInv() * tanJ;
+            A->angularVel -= A->data.getInertiaInv() * ra.cross(tanJ);
+
+            B->velocity += B->data.getMassInv() * tanJ;
+            B->angularVel += B->data.getInertiaInv() * rb.cross(tanJ);
         }
     }
 
-    // PAPERNOTE: Floating point precision error solved with "Linear projection"
     void Contact::fixError(){
         const float correction = 0.4f;
 

@@ -125,10 +125,10 @@ int main(){
 
             objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(9.5f,5), 0.1f, 4, Body::BodyType::STATIC));
 
-            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5,1), 0.25f));
-            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5,-1), 0.25f));
-            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5,-3), 0.25f));
-            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5,-5), 0.25f));
+            objects.push_back(GameObject::createSquare(world, BodyData(3), Vec2(5,1), 0.3f));
+            objects.push_back(GameObject::createSquare(world, BodyData(3), Vec2(5,-1), 0.3f));
+            objects.push_back(GameObject::createSquare(world, BodyData(3), Vec2(5,-3), 0.3f));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5,-5), 0.3f));
             objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5,-7), 0.35f));
         }));
     }

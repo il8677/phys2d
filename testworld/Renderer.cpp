@@ -66,5 +66,5 @@ PolyRenderer::PolyRenderer(std::vector<Vec2> verts) {
 void PolyRenderer::setupShape(){
     shape.setOutlineColor(sf::Color(rand()%255, rand()%255, rand()%255));
     shape.setOutlineThickness(0.01);
-    shape.setFillColor(sf::Color(rand()%255, rand()%255, rand()%255, 100));
+    shape.setFillColor(sf::Color(rand()%255, rand()%255, rand()%255, 200));
 }

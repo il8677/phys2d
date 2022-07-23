@@ -49,7 +49,7 @@ namespace phys2d{
 
         if(contact.A->shape->type == Shape::Type::CIRCLE){
             bA = contact.A;
-            bA = contact.B;
+            bB = contact.B;
 
             doFlip = false;
         }else{
@@ -69,7 +69,6 @@ namespace phys2d{
 
         circleCenter = bOrient.transposed() * (circleCenter - bB->position);
 
-
         float bestPen = -FLT_MAX;
         size_t bestIndex = 0;
 
@@ -83,7 +82,6 @@ namespace phys2d{
                 bestIndex = i;
             }
         }
-
         if(bestPen < 0.1e-10f){
             contact.contactCount = 1;
             contact.normal = -(bOrient * B->normals[bestIndex]);

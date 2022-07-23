@@ -7,8 +7,6 @@
 #include <float.h>
 #include <tuple>
 
-#include <iostream>
-
 namespace phys2d{
     void dispatchContact(Contact& contact){
         static std::function<void(Contact&)> resolves[2][2] = {
@@ -55,6 +53,79 @@ namespace phys2d{
             bB = contact.A;
         }
 
+        ShapeCircle* A = (ShapeCircle*)bA->shape;
+        ShapePoly* B = (ShapePoly*)bB->shape;
+
+        Mat2 aOrient(bA->rotation);
+        Mat2 bOrient(bB->rotation);
+
+        Vec2 circleCenter = bA->position;
+        circleCenter = bOrient.transposed() * (circleCenter - bA->position);
+
+        float bestPen = -FLT_MAX;
+        size_t bestIndex;
+
+        for(int i = 0; i < B->points.size(); i++){
+            float p = B->normals[i].dot(circleCenter - B->points[i]);
+
+            if(p > A->radius) return;
+
+            if(p > bestPen){
+                bestPen = p;
+                bestIndex = i;
+            }
+        }
+
+        if(bestPen < 0.1e-10f){
+            contact.contactCount = 1;
+            contact.normal = -(bOrient * B->normals[bestIndex]);
+            contact.contactPoints[0] = contact.normal * A->radius + bA->position;
+            contact.pen = A->radius;
+        }
+
+        Vec2 bFace[2];
+        bFace[0] = B->points[bestIndex];
+        int next = bestIndex++;
+        if(next == B->points.size()) next = 0;
+        bFace[1] = B->points[bestIndex];
+
+        float d1 = (circleCenter-bFace[0]).dot(bFace[1] - bFace[0]);
+        float d2 = (circleCenter-bFace[1]).dot(bFace[0] - bFace[1]);
+        contact.pen = A->radius - bestPen;
+
+        if(d1 <= 0.0f){
+            float dist = (circleCenter - bFace[0]).dot(circleCenter - bFace[0]);
+
+            if(dist > A->radius * A->radius) return;
+
+            contact.contactCount = 1;
+            Vec2 n = bFace[1] - circleCenter;
+            bFace[1] = bOrient * bFace[1] + bB->position;
+            contact.contactPoints[0] = bFace[1];
+            n = bOrient * n;
+            n.normalize();
+            contact.normal = n;
+        }else if (d2 <= 0.0f){
+            float dist = (circleCenter - bFace[1]).dot(circleCenter - bFace[1]);
+
+            if(dist > A->radius * A->radius) return;
+
+            contact.contactCount = 1;
+            Vec2 n = bFace[0] - circleCenter;
+            bFace[0] = bOrient * bFace[0] + bB->position;
+            contact.contactPoints[1] = bFace[0];
+            n = bOrient * n;
+            n.normalize();
+            contact.normal = n;
+        }else{
+            Vec2 n = B->normals[bestIndex];
+            if((circleCenter-bFace[0]).dot(n) > A->radius) return;
+
+            n = bOrient * n;
+            contact.normal = -n;
+            contact.contactPoints[0] = -n * A->radius + bA->position;
+            contact.contactCount = 1;
+        }
     }
 
     // Returns the index of the face, and the amount it penetrates

@@ -210,6 +210,7 @@ int main(){
         [&](){
             objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(3, 5)));
             objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(4, 5)));
+            objects[0].body->velocity = {1,0};
         }));
 
         scenes["squares"].push_back(Scene("Square Collision 1",

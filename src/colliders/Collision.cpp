@@ -45,12 +45,18 @@ namespace phys2d{
         Body* bA;
         Body* bB;
 
+        bool doFlip;
+
         if(contact.A->shape->type == Shape::Type::CIRCLE){
             bA = contact.A;
             bA = contact.B;
+
+            doFlip = false;
         }else{
             bA = contact.B;
             bB = contact.A;
+
+            doFlip = true;
         }
 
         ShapeCircle* A = (ShapeCircle*)bA->shape;
@@ -60,10 +66,12 @@ namespace phys2d{
         Mat2 bOrient(bB->rotation);
 
         Vec2 circleCenter = bA->position;
-        circleCenter = bOrient.transposed() * (circleCenter - bA->position);
+
+        circleCenter = bOrient.transposed() * (circleCenter - bB->position);
+
 
         float bestPen = -FLT_MAX;
-        size_t bestIndex;
+        size_t bestIndex = 0;
 
         for(int i = 0; i < B->points.size(); i++){
             float p = B->normals[i].dot(circleCenter - B->points[i]);
@@ -85,9 +93,9 @@ namespace phys2d{
 
         Vec2 bFace[2];
         bFace[0] = B->points[bestIndex];
-        int next = bestIndex++;
+        size_t next = bestIndex + 1;
         if(next == B->points.size()) next = 0;
-        bFace[1] = B->points[bestIndex];
+        bFace[1] = B->points[next];
 
         float d1 = (circleCenter-bFace[0]).dot(bFace[1] - bFace[0]);
         float d2 = (circleCenter-bFace[1]).dot(bFace[0] - bFace[1]);
@@ -121,7 +129,7 @@ namespace phys2d{
             contact.normal = n;
 
             bFace[1] = bOrient * bFace[1] + bB->position;
-            contact.contactPoints[1] = bFace[1];
+            contact.contactPoints[0] = bFace[1];
 
         }else{
             Vec2 n = B->normals[bestIndex];
@@ -129,9 +137,11 @@ namespace phys2d{
 
             n = bOrient * n;
             contact.normal = -n;
-            contact.contactPoints[0] = -n * A->radius + bA->position;
+            contact.contactPoints[0] = contact.normal * A->radius + bA->position;
             contact.contactCount = 1;
         }
+
+        if(doFlip) contact.normal = -contact.normal;
     }
 
     // Returns the index of the face, and the amount it penetrates

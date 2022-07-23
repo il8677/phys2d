@@ -99,24 +99,30 @@ namespace phys2d{
             if(dist > A->radius * A->radius) return;
 
             contact.contactCount = 1;
-            Vec2 n = bFace[1] - circleCenter;
-            bFace[1] = bOrient * bFace[1] + bB->position;
-            contact.contactPoints[0] = bFace[1];
+
+            Vec2 n = bFace[0] - circleCenter;
             n = bOrient * n;
             n.normalize();
             contact.normal = n;
+
+            bFace[0] = bOrient * bFace[0] + bB->position;
+            contact.contactPoints[0] = bFace[0];
+
         }else if (d2 <= 0.0f){
             float dist = (circleCenter - bFace[1]).dot(circleCenter - bFace[1]);
 
             if(dist > A->radius * A->radius) return;
 
             contact.contactCount = 1;
-            Vec2 n = bFace[0] - circleCenter;
-            bFace[0] = bOrient * bFace[0] + bB->position;
-            contact.contactPoints[1] = bFace[0];
+
+            Vec2 n = bFace[1] - circleCenter;
             n = bOrient * n;
             n.normalize();
             contact.normal = n;
+
+            bFace[1] = bOrient * bFace[1] + bB->position;
+            contact.contactPoints[1] = bFace[1];
+
         }else{
             Vec2 n = B->normals[bestIndex];
             if((circleCenter-bFace[0]).dot(n) > A->radius) return;

@@ -122,6 +122,8 @@ namespace phys2d{
         Body* bA = contact.A;
         Body* bB = contact.B;
 
+        if(bA->getType() == Body::BodyType::STATIC && bB->getType() == Body::BodyType::STATIC) return;
+
         ShapePoly* A = (ShapePoly*)bA->shape;
         ShapePoly* B = (ShapePoly*)bB->shape;
 

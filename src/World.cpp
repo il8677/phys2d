@@ -15,8 +15,8 @@ namespace phys2d{
 
     World::~World()=default;
 
-    Body* World::createBody(Shape* shape, BodyData data){
-        Body* b = &bodies.emplace_back(shape, data);;
+    Body* World::createBody(Shape* shape, BodyData data, Body::BodyType type){
+        Body* b = &bodies.emplace_back(shape, data, type);
 
         insertInPlace(bodiesX, SPEntry(b,0));
         insertInPlace(bodiesY, SPEntry(b,1));
@@ -44,8 +44,8 @@ namespace phys2d{
         narrowphase();
 
         for(Body& body : bodies){
-            if(body.type != Body::BodyType::STATIC){
-                if(body.type != Body::BodyType::KINEMATIC){
+            if(body.getType() != Body::BodyType::STATIC){
+                if(body.getType() != Body::BodyType::KINEMATIC){
                     body.velocity += (body.data.getMassInv() * body.force + gravity) * dt;
                     body.angularVel += body.torque * body.data.getInertiaInv() * dt;
                 }

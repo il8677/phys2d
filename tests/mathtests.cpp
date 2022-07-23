@@ -32,9 +32,9 @@ TEST_CASE("Vector math"){
     }
 }
 
-#include <phys2d/world.h>
-#include <phys2d/colliders/shape.h>
-#include <phys2d/body.h>
+#include <phys2d/World.h>
+#include <phys2d/colliders/Shape.h>
+#include <phys2d/Body.h>
 #include "../src/maths/algs.h"
 
 TEST_CASE("SP"){

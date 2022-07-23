@@ -8,9 +8,14 @@ namespace phys2d{
 
     void BodyData::setMass(float mass_){
         mass = mass_;
-        massinv = 1/mass_;
+        if(mass!=0){
+            massinv = 1/mass_;
+            inertiainv = 1/mass_;
+        }else{
+            massinv = 0;
+            inertiainv = 0;
+        }
         inertia = mass_;
-        inertiainv = 1/mass_;
     }
 
     float BodyData::getMass(){
@@ -30,8 +35,8 @@ namespace phys2d{
     }
 
     Body::Body(Shape* shape_, BodyData data_, BodyType type_) : 
-        shape(shape_), data(data_), type(type_) {
-
+        shape(shape_), data(data_) {
+        setType(type_);
     }
 
     Body::Body(const Body& other) : data(other.data){
@@ -42,7 +47,7 @@ namespace phys2d{
 
         force = other.force;
 
-        type = other.type;
+        setType(other.type);
     }
 
     Body& Body::operator=(const Body& other){
@@ -56,7 +61,7 @@ namespace phys2d{
 
         data = other.data;
 
-        type = other.type;
+        setType(other.type);
 
         return *this;
     }
@@ -71,7 +76,7 @@ namespace phys2d{
 
         force = std::move(other.force);
 
-        type = std::move(other.type);
+        setType(other.type);
     }
 
     Body& Body::operator=(Body&& other){
@@ -90,7 +95,7 @@ namespace phys2d{
 
         force = std::move(other.force);
 
-        type = std::move(other.type);
+        setType(other.type);
 
         data = std::move(other.data);
 
@@ -99,5 +104,18 @@ namespace phys2d{
 
     Body::Body::~Body(){
         delete shape;
+    }
+
+    Body::BodyType Body::getType() const{
+        return type;
+    }
+
+    void Body::setType(Body::BodyType type_){
+        type = type_;
+
+        if(type == Body::BodyType::STATIC){
+            data.setMass(0);
+            data.restitution = 1;
+        }
     }
 }

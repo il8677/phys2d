@@ -1,23 +1,23 @@
 #include "GameObject.h"
 
-GameObject GameObject::createCircle(World& world, BodyData data, Vec2 pos, float r){
-    Body* b = world.createBody(new ShapeCircle(r), data);
+GameObject GameObject::createCircle(World& world, BodyData data, Vec2 pos, float r, Body::BodyType type){
+    Body* b = world.createBody(new ShapeCircle(r), data, type);
 
     GameObject go(b, pos, std::make_unique<CircleRenderer>(r));
 
     return go;
 }
 
-GameObject GameObject::createPoly(World& world, BodyData data, Vec2 pos, std::initializer_list<Vec2> verts){
-    Body* b = world.createBody(new ShapePoly(verts), data);
+GameObject GameObject::createPoly(World& world, BodyData data, Vec2 pos, std::initializer_list<Vec2> verts, Body::BodyType type){
+    Body* b = world.createBody(new ShapePoly(verts), data, type);
 
     GameObject go(b, pos, std::make_unique<PolyRenderer>(verts));
 
     return go;
 }
 
-GameObject GameObject::createRect(World& world, BodyData data, Vec2 pos, float hextx, float hexty){
-    Body* b = world.createBody(new ShapePoly(hextx, hexty), data);
+GameObject GameObject::createRect(World& world, BodyData data, Vec2 pos, float hextx, float hexty, Body::BodyType type){
+    Body* b = world.createBody(new ShapePoly(hextx, hexty), data, type);
 
     ShapePoly* sp = (ShapePoly*)b->shape;
 
@@ -26,8 +26,8 @@ GameObject GameObject::createRect(World& world, BodyData data, Vec2 pos, float h
     return go;
 }
 
-GameObject GameObject::createSquare(World& world, BodyData data, Vec2 pos, float hext){
-    return createRect(world, data, pos, hext, hext);
+GameObject GameObject::createSquare(World& world, BodyData data, Vec2 pos, float hext, Body::BodyType type){
+    return createRect(world, data, pos, hext, hext, type);
 }
 
 

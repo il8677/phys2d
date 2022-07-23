@@ -1,5 +1,6 @@
 #pragma once
 #include "maths/vec2.h"
+#include "Body.h"
 
 #include <list>
 #include <memory>
@@ -20,7 +21,7 @@ namespace phys2d{
         World(Vec2 gravity=Vec2(0,9.8f));
         ~World();
 
-        Body* createBody(Shape* shape, BodyData data);
+        Body* createBody(Shape* shape, BodyData data, Body::BodyType type = Body::BodyType::DYNAMIC);
 
         void step(float dt);
 

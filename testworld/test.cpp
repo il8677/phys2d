@@ -100,6 +100,10 @@ void particleWorld(int particlen, std::vector<GameObject>& objects){
     }
 }
 
+constexpr float degToRad(float angle){
+    return angle * 3.1415 / 180;
+}
+
 int main(){
     // SFML setup
     window.setFramerateLimit(60);
@@ -112,7 +116,20 @@ int main(){
 
     {
         scenes["specific"].push_back(Scene("Friction", [&](){
-            
+            world.setGravity({0,3});
+            objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(5,3), 3, 0.1f, Body::BodyType::STATIC));
+            objects[0].body->rotation = degToRad(20);
+
+            objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(7,7), 3, 0.1f, Body::BodyType::STATIC));
+            objects[1].body->rotation = degToRad(360-20);
+
+            objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(9.5f,5), 0.1f, 4, Body::BodyType::STATIC));
+
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5,1), 0.25f));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5,-1), 0.25f));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5,-3), 0.25f));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5,-5), 0.25f));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5,-7), 0.35f));
         }));
     }
 
@@ -269,7 +286,7 @@ int main(){
 
     float tickDT = 1/20;
     
-    scenes["squares"][0].setup();
+    scenes["specific"][0].setup();
 
     sf::Clock clock;
     sf::Clock physClock;
@@ -388,7 +405,7 @@ int main(){
         }
 
         if(ImGui::CollapsingHeader("Objects")){
-            ImGui::Text("Object count: %d", objects.size());
+            ImGui::Text("Object count: %lu", objects.size());
             for(const GameObject& go : objects){
                 ImGui::Text("m %f vx %f vy %f\n av %f px %f py %f", go.body->data.getMass(), go.body->velocity.x, go.body->velocity.y, go.body->angularVel, go.body->position.x, go.body->position.y);
             }

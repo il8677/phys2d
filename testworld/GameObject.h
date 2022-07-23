@@ -11,10 +11,10 @@ using namespace phys2d;
 class GameObject{
     public:
 
-    static GameObject createCircle(World& world, BodyData data, Vec2 pos, float r=1);
-    static GameObject createPoly(World& world, BodyData data, Vec2 pos, std::initializer_list<Vec2> verts);
-    static GameObject createRect(World& world, BodyData data, Vec2 pos, float hextx, float hexty);
-    static GameObject createSquare(World& world, BodyData data, Vec2 pos, float hext=1);
+    static GameObject createCircle(World& world, BodyData data, Vec2 pos, float r=1, Body::BodyType type = Body::BodyType::DYNAMIC);
+    static GameObject createPoly(World& world, BodyData data, Vec2 pos, std::initializer_list<Vec2> verts, Body::BodyType type = Body::BodyType::DYNAMIC);
+    static GameObject createRect(World& world, BodyData data, Vec2 pos, float hextx, float hexty, Body::BodyType type = Body::BodyType::DYNAMIC);
+    static GameObject createSquare(World& world, BodyData data, Vec2 pos, float hext=1, Body::BodyType type = Body::BodyType::DYNAMIC);
 
     void tick(float dt, sf::RenderWindow& window);
 

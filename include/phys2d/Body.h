@@ -52,7 +52,11 @@ namespace phys2d{
         Rotation torque;
 
         BodyData data;
-        
+
+        BodyType getType() const;
+        void setType(BodyType type);
+
+        private:
         BodyType type;
     };
 }

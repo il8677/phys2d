@@ -34,5 +34,7 @@ class PolyRenderer : public Renderer{
     PolyRenderer(std::vector<Vec2> points);
 
     private:
+    void setupShape();
+
     sf::ConvexShape shape;
 };

@@ -189,7 +189,7 @@ int main(){
 
         scenes["squares"].push_back(Scene("Square Collision 1",
         [&](){
-            objects.push_back(GameObject::createSquare(world, BodyData(2), Vec2(1, 5)));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(1, 5)));
             objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(5, 5)));
 
             objects[0].body->velocity = Vec2(1, 0);
@@ -216,10 +216,10 @@ int main(){
 
         scenes["squares"].push_back(Scene("Square Size Difference 2", [&](){
             objects.push_back(GameObject::createSquare(world, BodyData(2), Vec2(1, 5)));
-            objects.push_back(GameObject::createSquare(world, BodyData(0.4f), Vec2(5, 5.5f), 0.25f));
+            objects.push_back(GameObject::createSquare(world, BodyData(4), Vec2(5, 5.5f), 0.25f));
 
             objects[0].body->velocity = Vec2(1, 0);
-            objects[1].body->velocity = Vec2(0, 0);
+            objects[1].body->velocity = Vec2(-1, 0);
         }));
 
         scenes["squares"].push_back(Scene("Square Pool 1",
@@ -390,7 +390,7 @@ int main(){
         if(ImGui::CollapsingHeader("Objects")){
             ImGui::Text("Object count: %d", objects.size());
             for(const GameObject& go : objects){
-                ImGui::Text("m %f vx %f vy %f px %f py %f", go.body->data.getMass(), go.body->velocity.x, go.body->velocity.y, go.body->position.x, go.body->position.y);
+                ImGui::Text("m %f vx %f vy %f\n av %f px %f py %f", go.body->data.getMass(), go.body->velocity.x, go.body->velocity.y, go.body->angularVel, go.body->position.x, go.body->position.y);
             }
         }
         ImGui::End();

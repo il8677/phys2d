@@ -2,10 +2,12 @@
 
 #include <cmath>
 
+#include <random>
+
 void CircleRenderer::render(RenderInfo ri, sf::RenderWindow& window){
     circle.setRadius(r);
     circle.setOrigin(r, r);
-    circle.setRotation(ri.rot);
+    circle.setRotation(ri.rot * 180 / 3.14159265);
     circle.setPosition(ri.p.x, ri.p.y);
 
     sf::Vertex line[2] = {
@@ -30,7 +32,7 @@ sf::CircleShape CircleRenderer::circle;
 
 void PolyRenderer::render(RenderInfo ri, sf::RenderWindow& window){
     shape.setPosition(ri.p.x, ri.p.y);
-    shape.setRotation(ri.rot);
+    shape.setRotation(ri.rot * 180 / 3.14159265);
 
     window.draw(shape);
 }
@@ -38,7 +40,8 @@ void PolyRenderer::render(RenderInfo ri, sf::RenderWindow& window){
 PolyRenderer::PolyRenderer(std::initializer_list<Vec2> verts) {
     int i = 0;
 
-    shape.setFillColor(sf::Color(56, 94, 156));
+    setupShape();
+
     shape.setPointCount(verts.size());
 
     for(auto it = verts.begin(); it != verts.end(); it++){
@@ -50,7 +53,7 @@ PolyRenderer::PolyRenderer(std::initializer_list<Vec2> verts) {
 PolyRenderer::PolyRenderer(std::vector<Vec2> verts) {
     int i = 0;
 
-    shape.setFillColor(sf::Color(56, 94, 156));
+    setupShape();
 
     shape.setPointCount(verts.size());
     
@@ -58,4 +61,10 @@ PolyRenderer::PolyRenderer(std::vector<Vec2> verts) {
         shape.setPoint(i, sf::Vector2f(it->x, it->y));
         i++;
     }
+}
+
+void PolyRenderer::setupShape(){
+    shape.setOutlineColor(sf::Color(rand()%255, rand()%255, rand()%255));
+    shape.setOutlineThickness(0.01);
+    shape.setFillColor(sf::Color(rand()%255, rand()%255, rand()%255, 100));
 }

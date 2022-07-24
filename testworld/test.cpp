@@ -192,9 +192,9 @@ int main(){
             objects.push_back(GameObject::createRect(world, BodyData(1), Vec2(2,5), 0.05f, 2));
 
             objects[0].body->velocity = Vec2(1.15*60, 0);
-            objects[0].body->continuous = true;
+            objects[0].body->setContinuous(true);
             objects[1].body->velocity = Vec2(1.15*60, 0);
-            objects[1].body->continuous = true;
+            objects[1].body->setContinuous(true);
         }));
     }
 

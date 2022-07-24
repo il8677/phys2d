@@ -9,7 +9,7 @@ namespace phys2d{
         A = A_;
         B = B_;
 
-        continuous = A->continuous || B->continuous;
+        continuous = A->isContinuous() || B->isContinuous();
     }
 
     void Contact::resolve(){

@@ -15,7 +15,7 @@ namespace phys2d{
             massinv = 0;
             inertiainv = 0;
         }
-        inertia = 2*mass_;
+        inertia = 0,2*mass_;
     }
 
     float BodyData::getMass(){

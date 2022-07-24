@@ -165,16 +165,14 @@ int main(){
             objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(5,3), 3, 0.1f, Body::BodyType::STATIC));
             objects[0].body->rotation = degToRad(20);
 
-            objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(7,7), 3, 0.1f, Body::BodyType::STATIC));
+            objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(9,7), 12, 0.1f, Body::BodyType::STATIC));
             objects[1].body->rotation = degToRad(360-20);
 
-            objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(9.5f,5), 0.1f, 4, Body::BodyType::STATIC));
-
-            objects.push_back(GameObject::createSquare(world, BodyData(3), Vec2(5,1), 0.3f));
-            objects.push_back(GameObject::createSquare(world, BodyData(3), Vec2(5,-1), 0.3f));
-            objects.push_back(GameObject::createSquare(world, BodyData(3), Vec2(5,-3), 0.3f));
-            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5,-5), 0.3f));
-            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5,-7), 0.35f));
+            objects.push_back(GameObject::createSquare(world, BodyData(5), Vec2(5,1), 0.75f));
+            objects.push_back(GameObject::createSquare(world, BodyData(5), Vec2(5,-30), 0.75f));
+            objects.push_back(GameObject::createSquare(world, BodyData(5), Vec2(5,-60), 0.75f));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5,-90), 0.3f));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5,-120), 0.5f));
         }));
 
         scenes["specific"].push_back(Scene("polygons Static Bounce", [&](){

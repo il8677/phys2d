@@ -55,3 +55,6 @@ Sorting done by center. Causing small objects to come before bigger objects even
 ## a4
 - Polygonal collisions
 - Fixed renderer bug where rotation was being set in radians (SFML takes degrees)
+
+## a4pre5
+- Continuous collisions

@@ -187,7 +187,7 @@ int main(){
         scenes["specific"].push_back(Scene("bullet", [&](){
             objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1,5), 0.1f));
             objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(1,4), 0.1f));
-            objects.push_back(GameObject::createRect(world, BodyData(1), Vec2(2,5), 0.05f, 2));
+            objects.push_back(GameObject::createRect(world, BodyData(1), Vec2(5,5), 0.05f, 2, Body::BodyType::STATIC));
 
             objects[0].body->velocity = Vec2(1.15*60, 0);
             objects[0].body->setContinuous(true);

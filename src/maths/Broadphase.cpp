@@ -9,7 +9,7 @@
 #include <vector>
 
 namespace phys2d{
-void insertionSort(std::vector<SPEntry>& bodies){
+    void insertionSort(std::vector<SPEntry>& bodies){
         if(!bodies.size()) return;
 
         for (auto it = bodies.begin() + 1; it != bodies.end(); ++it) {
@@ -96,6 +96,8 @@ void insertionSort(std::vector<SPEntry>& bodies){
     }
 
     void Broadphase::run(std::vector<Contact>& contactList){
+        continuousContacts.clear();
+
         insertionSort(bodiesX);
         insertionSort(bodiesY);
 
@@ -116,9 +118,12 @@ void insertionSort(std::vector<SPEntry>& bodies){
 
             for(auto it = current.begin(); it != current.end(); it++){
                 contactList.emplace_back(entry.body, it->body);
+                if(entry.body->isContinuous()) continuousContacts[entry.body].push_back(contactList.back());
+                if(it->body->isContinuous()) continuousContacts[it->body].push_back(contactList.back());
             }
 
             current.push_back(entry);
+
         }
         return;
         current.clear();

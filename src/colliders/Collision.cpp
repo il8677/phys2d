@@ -8,11 +8,6 @@
 #include <tuple>
 
 namespace phys2d{
-    void manageContinuous(Contact& contact){
-        if(contact.contactCount) return;
-
-        
-    }
 
     void dispatchContact(Contact& contact){
 
@@ -24,9 +19,6 @@ namespace phys2d{
         Body* B = contact.B;
 
         resolves[A->shape->type][B->shape->type](contact);
-
-        if(contact.continuous) manageContinuous(contact);
-
     }
 
     void circleCircle(Contact& contact){

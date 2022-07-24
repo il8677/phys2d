@@ -42,6 +42,10 @@ namespace phys2d{
         const std::list<Body>& d_getBodies() const;
 
         private:
+        void stepCont(float dt, Body& body);
+
+        void integrateBody(float dt, Body& body);
+
         void narrowphase();
 
         Vec2 gravity;

@@ -39,15 +39,58 @@ namespace phys2d{
         narrowphase();
 
         for(Body& body : bodies){
-            if(body.getType() != Body::BodyType::STATIC){
-                if(body.getType() != Body::BodyType::KINEMATIC){
-                    body.velocity += (body.data.getMassInv() * body.force + gravity) * dt;
-                    body.angularVel += body.torque * body.data.getInertiaInv() * dt;
-                }
-                    
-                body.position += body.velocity * dt;
-                body.rotation += body.angularVel * dt;
+            if(body.isContinuous()){
+                stepCont(dt, body);
+                continue;
             }
+
+            integrateBody(dt, body);
+        }
+    }
+    
+    void World::stepCont(float dt, Body& body){
+        float steps = body.velocity.magnitude() / body.shape->maxExtent;
+        float maxTime = dt / steps;
+        float timeExpended = 0;
+        
+        if(steps <= 1){
+            integrateBody(dt, body);
+            return;
+        }
+        
+        int i = 0;
+        // Iteratively integrate & collide
+        while(timeExpended < dt){
+            // Get time to step
+            float itdt = maxTime;
+            if(dt - timeExpended < maxTime) itdt = dt - timeExpended;
+
+            timeExpended += itdt;
+
+            integrateBody(itdt, body);
+            
+            for(Contact c : broadphase.continuousContacts[&body]){
+                dispatchContact(c);
+
+                if(c.contactCount){
+                    c.resolve();
+                }
+            }
+            i++;
+        }
+
+        return;
+    }
+
+    void World::integrateBody(float dt, Body& body){
+        if(body.getType() != Body::BodyType::STATIC){
+            if(body.getType() != Body::BodyType::KINEMATIC){
+                body.velocity += (body.data.getMassInv() * body.force + gravity) * dt;
+                body.angularVel += body.torque * body.data.getInertiaInv() * dt;
+            }
+                
+            body.position += body.velocity * dt;
+            body.rotation += body.angularVel * dt;
         }
     }
 

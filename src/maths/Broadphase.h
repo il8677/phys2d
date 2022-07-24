@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <unordered_map>
 
 namespace phys2d{
     struct Body;
@@ -37,6 +38,9 @@ namespace phys2d{
         void clear();
 
         void run(std::vector<Contact>& contactList);
+
+        std::unordered_map<Body*, std::vector<Contact>> continuousContacts;
+
         private:
 
         void insertInPlace(Body* body);

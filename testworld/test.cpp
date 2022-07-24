@@ -518,8 +518,8 @@ int main(){
             ImGui::Checkbox("Velocity Render", &doVelRender);
         }
 
+        ImGui::Text("Object count: %lu", objects.size());
         if(ImGui::CollapsingHeader("Objects")){
-            ImGui::Text("Object count: %lu", objects.size());
             for(const GameObject& go : objects){
                 ImGui::Text("m %f vx %f vy %f\n av %f px %f py %f", go.body->data.getMass(), go.body->velocity.x, go.body->velocity.y, go.body->angularVel, go.body->position.x, go.body->position.y);
             }

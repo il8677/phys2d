@@ -102,7 +102,7 @@ void particleWorld(int particlen, std::vector<GameObject>& objects){
     for(int x = 0; x < particlen; x++){
         for(int y = 0; y < particlen; y++){
             objects.emplace_back(GameObject::createCircle(world, BodyData(0.1f, 1), Vec2(startx + incx * x, starty + incy * y), incy/4));
-            objects.back().body->setContinuous(true);
+            //objects.back().body->setContinuous(true);
 
             objects.back().body->velocity = Vec2(randomFloat(-1, 1), randomFloat(-1, 1));
         }

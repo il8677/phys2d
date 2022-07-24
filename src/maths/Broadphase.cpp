@@ -32,15 +32,19 @@ void insertionSort(std::vector<SPEntry>& bodies){
     }
 
     float SPEntry::min() const {
-        return axPos() - body->shape->maxExtent;;
+        return axPos() - body->shape->maxExtent - (axVel() * body->isContinuous());
     }
 
     float SPEntry::max() const {
-        return axPos() + body->shape->maxExtent;
+        return axPos() + body->shape->maxExtent + (axVel() * body->isContinuous());
     }
 
     float SPEntry::axPos() const{
         return ((float*)(&body->position))[axis];
+    }
+
+    float SPEntry::axVel() const{
+        return ((float*)(&body->velocity))[axis];
     }
 
     bool SPEntry::isPast(const SPEntry& other) const {

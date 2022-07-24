@@ -118,4 +118,15 @@ namespace phys2d{
             data.restitution = 1;
         }
     }
+
+    void Body::setContinuous(bool continuous_){
+        continuous = continuous_;
+
+        if(continuous){
+        }
+    }
+
+    bool Body::isContinuous(){
+        return continuous;
+    }
 }

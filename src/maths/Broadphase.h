@@ -15,6 +15,7 @@ namespace phys2d{
         SPEntry(Body* body, int axis);
 
         float axPos() const;
+        float axVel() const;
 
         bool isPast(const SPEntry& other) const;
         bool isBehind(const SPEntry& other) const;

@@ -8,6 +8,8 @@ namespace phys2d{
     Contact::Contact(Body* A_, Body* B_) {
         A = A_;
         B = B_;
+
+        continuous = A->continuous || B->continuous;
     }
 
     void Contact::resolve(){

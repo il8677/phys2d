@@ -185,6 +185,17 @@ int main(){
 
             objects[2].body->velocity = Vec2(3,0);
         }));
+
+        scenes["specific"].push_back(Scene("bullet", [&](){
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1,5), 0.1f));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(1,4), 0.1f));
+            objects.push_back(GameObject::createRect(world, BodyData(1), Vec2(2,5), 0.05f, 2));
+
+            objects[0].body->velocity = Vec2(1.15*60, 0);
+            objects[0].body->continuous = true;
+            objects[1].body->velocity = Vec2(1.15*60, 0);
+            objects[1].body->continuous = true;
+        }));
     }
 
     { // Circles
@@ -397,7 +408,7 @@ int main(){
 
     bool doRender = true;
 
-    float tickDT = 1/20;
+    float tickDT = 1.f/60.f;
     
     sf::Clock clock;
     sf::Clock physClock;
@@ -499,7 +510,7 @@ int main(){
             ImGui::Checkbox("Phys Tick", &doPhysTick);
 
             if(ImGui::Button("Tick") && !doPhysTick) world.step(tickDT);
-            ImGui::SliderFloat("Tick DT", &tickDT, 1/20, 1);
+            ImGui::SliderFloat("Tick DT", &tickDT, 1/60.f, 1);
 
             if(ImGui::Checkbox("Break On Coll", &doBreak)){
                 if(doBreak){

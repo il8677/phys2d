@@ -20,6 +20,8 @@ namespace phys2d{
 
         friend bool operator==(const Contact& A, const Contact& B);
         friend bool operator<(const Contact& A, const Contact& B);
+
+        bool continuous;
         private:
         void updateVelocities();
         void fixError();

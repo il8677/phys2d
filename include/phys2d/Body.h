@@ -56,7 +56,11 @@ namespace phys2d{
         BodyType getType() const;
         void setType(BodyType type);
 
+        void setContinuous(bool continuous);
+        bool isContinuous();
+
         private:
+        bool continuous = false;
         BodyType type;
     };
 }

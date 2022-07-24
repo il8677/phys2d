@@ -12,7 +12,7 @@ namespace phys2d{
 
 
         const Type type;
-        const float maxExtent;
+        float maxExtent;
 
         protected:
         Shape(Type type, float maxExtent);

@@ -11,6 +11,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fsanitize=address")
 set(CMAKE_XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym")
 
 add_subdirectory(src)
+add_subdirectory(vendor/SFML)
 add_subdirectory(tests)
 add_subdirectory(testworld)
 add_subdirectory(game)

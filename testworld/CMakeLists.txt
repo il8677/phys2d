@@ -13,23 +13,21 @@ set(TEST_SOURCES
 )
 
 set(TEST_ADDITIONAL_SOURCES 
-    vendor/imgui-docking/imgui.cpp
-    vendor/imgui-docking/imgui_draw.cpp
-    vendor/imgui-docking/imgui_tables.cpp
-    vendor/imgui-docking/imgui_widgets.cpp
-    vendor/imgui-docking/imgui_demo.cpp
-    vendor/imgui-sfml/imgui-SFML.cpp
+    ../vendor/imgui-docking/imgui.cpp
+    ../vendor/imgui-docking/imgui_draw.cpp
+    ../vendor/imgui-docking/imgui_tables.cpp
+    ../vendor/imgui-docking/imgui_widgets.cpp
+    ../vendor/imgui-docking/imgui_demo.cpp
+    ../vendor/imgui-sfml/imgui-SFML.cpp
 )
-
-add_subdirectory(vendor/SFML)
 
 add_executable(phystest test.cpp ${TEST_SOURCES} ${TEST_ADDITIONAL_SOURCES})
 
 target_link_libraries(phystest PRIVATE phys_2d)
 target_link_libraries(phystest PUBLIC OpenGL sfml-graphics sfml-window sfml-system)
 
-target_include_directories(phystest PRIVATE vendor/SFML/include)
-target_include_directories(phystest PRIVATE vendor/imgui-sfml)
-target_include_directories(phystest PRIVATE vendor/imgui-docking)
+target_include_directories(phystest PRIVATE ../vendor/SFML/include)
+target_include_directories(phystest PRIVATE ../vendor/imgui-sfml)
+target_include_directories(phystest PRIVATE ../vendor/imgui-docking)
 
 message(${CMAKE_CXX_FLAGS_DEBUG})

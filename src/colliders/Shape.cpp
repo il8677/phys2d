@@ -11,7 +11,7 @@ namespace phys2d{
 
     ShapePoly::ShapePoly(std::initializer_list<Vec2> points_) : 
         Shape(Shape::Type::POLY, std::max(points_).magnitude()), 
-        points(std::move(getPoints(points_))),
+        points(points_),
         normals(std::move(calculateNormals())) {
         
     }
@@ -47,7 +47,7 @@ namespace phys2d{
 
     std::vector<Vec2> ShapePoly::getPoints(std::initializer_list<Vec2> points_){
         std::vector<Vec2> points__;
-        points__.insert(points.end(), points_.begin(), points_.end());
+        points__.insert(points.begin(), points_.end(), points_.end());
 
         return points__;
     }

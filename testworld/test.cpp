@@ -122,8 +122,45 @@ int main(){
     // Scenes
     std::map<std::string, std::vector<Scene>> scenes;
 
+    { // Polygons
+
+        scenes["polygons"].push_back(Scene("polygons Collision 1",
+        [&](){
+            std::initializer_list<Vec2> triangle = {
+                Vec2(0,1), Vec2(-1,-1), Vec2(1,-1)
+            };
+            std::initializer_list<Vec2> pentagon = {
+                Vec2(0,1), Vec2(-1,0), Vec2(-0.6f, -1), Vec2(0.6f, -1), Vec2(1,0)
+            };
+            objects.push_back(GameObject::createPoly(world, BodyData(1), Vec2(1, 5), triangle));
+            objects.push_back(GameObject::createPoly(world, BodyData(1), Vec2(5, 5), pentagon));
+
+            objects[0].body->velocity = Vec2(1, 0);
+            objects[1].body->velocity = Vec2(-1, 0);
+        }));
+
+        scenes["polygons"].push_back(Scene("polygons Collision 2",
+            [&](){
+            std::initializer_list<Vec2> triangle = {
+                Vec2(0,1), Vec2(-1,-1), Vec2(1,-1)
+            };
+            std::initializer_list<Vec2> pentagon = {
+                Vec2(0,1), Vec2(-1,0), Vec2(-0.6f, -1), Vec2(0.6f, -1), Vec2(1,0)
+            };
+            objects.push_back(GameObject::createPoly(world, BodyData(2), Vec2(1, 5), triangle));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5, 5)));
+            objects.push_back(GameObject::createPoly(world, BodyData(0.1f), Vec2(7.1, 5), pentagon));
+            objects.push_back(GameObject::createPoly(world, BodyData(0.1f), Vec2(11, 5),triangle));
+            objects.push_back(GameObject::createCircle(world, BodyData(0.1f), Vec2(9.2, 5)));
+
+
+            objects[0].body->velocity = Vec2(1.5f, 0);
+            objects[1].body->velocity = Vec2(0, 0);
+        }));
+    }
+
     {
-        scenes["specific"].push_back(Scene("Friction", [&](){
+        scenes["specific"].push_back(Scene("polygons Friction", [&](){
             world.setGravity({0,3});
             objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(5,3), 3, 0.1f, Body::BodyType::STATIC));
             objects[0].body->rotation = degToRad(20);
@@ -140,7 +177,7 @@ int main(){
             objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(5,-7), 0.35f));
         }));
 
-        scenes["specific"].push_back(Scene("Static Bounce", [&](){
+        scenes["specific"].push_back(Scene("polygons Static Bounce", [&](){
             objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(9.5f,5), 0.2f, 4, Body::BodyType::STATIC));
             objects.push_back(GameObject::createRect(world, BodyData(0, 1), Vec2(1,5), 0.1f, 4, Body::BodyType::STATIC));
 
@@ -358,6 +395,8 @@ int main(){
     bool doContactRender = false;
     bool doVelRender = false;
 
+    bool doRender = true;
+
     float tickDT = 1/20;
     
     sf::Clock clock;
@@ -415,8 +454,10 @@ int main(){
         }
 
         // Logic update
-        for(GameObject& go : objects){
-            go.tick(elapsed.asSeconds(), window);
+        if(doRender){
+            for(GameObject& go : objects){
+                go.tick(elapsed.asSeconds(), window);
+            }
         }
 
         ImGui::SFML::Update(window, elapsed);
@@ -445,6 +486,7 @@ int main(){
                 window.setFramerateLimit(0);
             
         }
+        ImGui::Checkbox("Rendering", &doRender);
         ImGui::Text("dt %dms", elapsed.asMilliseconds());
         ImGui::Text("Ct %u", world.d_getContacts().size());
         ImGui::End();

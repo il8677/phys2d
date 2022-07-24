@@ -1,6 +1,7 @@
 #pragma once
-#include "maths/vec2.h"
 #include "Body.h"
+#include "maths/vec2.h"
+#include "../../src/maths/Broadphase.h"
 
 #include <list>
 #include <memory>
@@ -41,17 +42,14 @@ namespace phys2d{
         const std::list<Body>& d_getBodies() const;
 
         private:
-        void broadphase();
         void narrowphase();
 
         Vec2 gravity;
 
         std::list<Body> bodies; // OPTIMIZATION: better data structure?
 
-        std::vector<SPEntry> bodiesX;
-        std::vector<SPEntry> bodiesY;
-
-
         std::vector<Contact> contacts; 
+
+        Broadphase broadphase;
     };
 }

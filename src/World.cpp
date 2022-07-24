@@ -3,9 +3,6 @@
 
 #include "common/Contact.h"
 #include "colliders/Collision.h"
-#include "maths/algs.h"
-
-#include <unordered_set>
 
 namespace phys2d{
     World::World(Vec2 gravity) : 
@@ -18,8 +15,7 @@ namespace phys2d{
     Body* World::createBody(Shape* shape, BodyData data, Body::BodyType type){
         Body* b = &bodies.emplace_back(shape, data, type);
 
-        insertInPlace(bodiesX, SPEntry(b,0));
-        insertInPlace(bodiesY, SPEntry(b,1));
+        broadphase.addBody(b);
 
         return b;
     }
@@ -31,8 +27,7 @@ namespace phys2d{
     void World::reset(){
         bodies.clear();
 
-        bodiesX.clear();
-        bodiesY.clear();
+        broadphase.clear();
 
         contacts.clear();
     }
@@ -40,7 +35,7 @@ namespace phys2d{
     void World::step(float dt){
         contacts.clear();
 
-        broadphase();
+        broadphase.run(contacts);
         narrowphase();
 
         for(Body& body : bodies){
@@ -66,54 +61,6 @@ namespace phys2d{
 
     const std::list<Body>& World::d_getBodies() const{
         return bodies;
-    }
-
-    void World::broadphase(){
-        insertionSort(bodiesX);
-        insertionSort(bodiesY);
-
-        std::vector<SPEntry> current;
-        current.reserve(bodiesX.size());
-
-        std::unordered_set<Contact> possibleX;
-        std::unordered_set<Contact> possibleY;
-
-        possibleX.reserve(bodies.size()/2);
-        possibleY.reserve(bodies.size()/2);
-
-        for(SPEntry& entry : bodiesX){
-            current.erase(std::remove_if(
-                current.begin(), current.end(), [&](const SPEntry& e){
-                    return e.isBehind(entry);
-                }), current.end());
-
-            for(auto it = current.begin(); it != current.end(); it++){
-                contacts.emplace_back(entry.body, it->body);
-            }
-
-            current.push_back(entry);
-        }
-        return;
-        current.clear();
-
-        for(SPEntry& entry : bodiesY){
-            current.erase(std::remove_if(
-                current.begin(), current.end(), [&](const SPEntry& e){
-                    return e.isBehind(entry);
-                }), current.end());
-            for(auto it = current.begin(); it != current.end(); it++){
-                possibleY.emplace(entry.body, it->body);
-            }
-
-            current.push_back(entry);
-        }
-
-        /*
-        for(auto A = bodies.begin(); A != bodies.end(); A++){
-            for(auto B = std::next(A); B != bodies.end(); B++){
-                contacts.emplace_back(&*A, &*B);
-            }
-        }*/
     }
 
     void World::narrowphase(){

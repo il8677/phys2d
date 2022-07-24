@@ -3,6 +3,7 @@
 
 namespace phys2d{
     struct Body;
+    struct Contact;
 
     struct SPEntry{
         Body* body = nullptr;
@@ -27,8 +28,22 @@ namespace phys2d{
         friend bool operator!= (const SPEntry& A, const SPEntry& B);
     };
 
-    void insertInPlace(std::vector<SPEntry>& bodies, SPEntry toInsert);
-    void insertionSort(std::vector<SPEntry>& bodies);
+    class Broadphase{
+        public:
+        void addBody(Body* body);
+        void removeBody(Body* body);
+
+        void clear();
+
+        void run(std::vector<Contact>& contactList);
+        private:
+
+        void insertInPlace(Body* body);
+
+        std::vector<SPEntry> bodiesX;
+        std::vector<SPEntry> bodiesY;
+        
+    };
 }
 
 using namespace phys2d;

@@ -35,7 +35,7 @@ TEST_CASE("Vector math"){
 #include <phys2d/World.h>
 #include <phys2d/colliders/Shape.h>
 #include <phys2d/Body.h>
-#include "../src/maths/algs.h"
+#include "../src/maths/Broadphase.h"
 
 TEST_CASE("SP"){
     World w;

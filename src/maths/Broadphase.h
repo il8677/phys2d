@@ -37,9 +37,10 @@ namespace phys2d{
 
         void clear();
 
-        void run(std::vector<Contact>& contactList);
+        void run();
 
         std::unordered_map<Body*, std::vector<Contact>> continuousContacts;
+        std::vector<Contact> contacts; 
 
         private:
 
@@ -47,7 +48,7 @@ namespace phys2d{
 
         std::vector<SPEntry> bodiesX;
         std::vector<SPEntry> bodiesY;
-        
+
     };
 }
 

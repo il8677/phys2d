@@ -95,7 +95,8 @@ namespace phys2d{
             SPEntry(body,1));
     }
 
-    void Broadphase::run(std::vector<Contact>& contactList){
+    void Broadphase::run(){
+        contacts.clear();
         continuousContacts.clear();
 
         insertionSort(bodiesX);
@@ -117,9 +118,9 @@ namespace phys2d{
                 }), current.end());
 
             for(auto it = current.begin(); it != current.end(); it++){
-                contactList.emplace_back(entry.body, it->body);
-                if(entry.body->isContinuous()) continuousContacts[entry.body].push_back(contactList.back());
-                if(it->body->isContinuous()) continuousContacts[it->body].push_back(contactList.back());
+                contacts.emplace_back(entry.body, it->body);
+                if(entry.body->isContinuous()) continuousContacts[entry.body].push_back(contacts.back());
+                if(it->body->isContinuous()) continuousContacts[it->body].push_back(contacts.back());
             }
 
             current.push_back(entry);

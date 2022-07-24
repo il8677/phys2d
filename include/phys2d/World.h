@@ -52,8 +52,6 @@ namespace phys2d{
 
         std::list<Body> bodies; // OPTIMIZATION: better data structure?
 
-        std::vector<Contact> contacts; 
-
         Broadphase broadphase;
     };
 }

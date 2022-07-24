@@ -102,6 +102,7 @@ void particleWorld(int particlen, std::vector<GameObject>& objects){
     for(int x = 0; x < particlen; x++){
         for(int y = 0; y < particlen; y++){
             objects.emplace_back(GameObject::createCircle(world, BodyData(0.1f, 1), Vec2(startx + incx * x, starty + incy * y), incy/4));
+            objects.back().body->setContinuous(true);
 
             objects.back().body->velocity = Vec2(randomFloat(-1, 1), randomFloat(-1, 1));
         }
@@ -182,6 +183,14 @@ int main(){
             objects.push_back(GameObject::createCircle(world, BodyData(1,1), Vec2(7,1.5f), 0.35f));
 
             objects[2].body->velocity = Vec2(3,0);
+        }));
+        scenes["specific"].push_back(Scene("bullet (non cont)", [&](){
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1,5), 0.1f));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(1,4), 0.1f));
+            objects.push_back(GameObject::createRect(world, BodyData(1), Vec2(5,5), 0.05f, 2, Body::BodyType::STATIC));
+
+            objects[0].body->velocity = Vec2(1.15*60, 0);
+            objects[1].body->velocity = Vec2(1.15*60, 0);
         }));
 
         scenes["specific"].push_back(Scene("bullet", [&](){

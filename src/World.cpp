@@ -28,14 +28,10 @@ namespace phys2d{
         bodies.clear();
 
         broadphase.clear();
-
-        contacts.clear();
     }
 
     void World::step(float dt){
-        contacts.clear();
-
-        broadphase.run(contacts);
+        broadphase.run();
         narrowphase();
 
         for(Body& body : bodies){
@@ -99,7 +95,7 @@ namespace phys2d{
     }
 
     const std::vector<Contact>& World::d_getContacts() const {
-        return contacts;
+        return broadphase.contacts;
     }
 
     const std::list<Body>& World::d_getBodies() const{
@@ -107,7 +103,7 @@ namespace phys2d{
     }
 
     void World::narrowphase(){
-        for(Contact& c : contacts){
+        for(Contact& c : broadphase.contacts){
             dispatchContact(c);
 
             if(c.contactCount){

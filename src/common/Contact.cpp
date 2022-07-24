@@ -54,10 +54,10 @@ namespace phys2d{
             float jt = -rv.dot(t) / invMSum / (float)contactCount;
 
             Vec2 tanJ;
-            if(std::abs(jt) < impulse * 0.15f)
+            if(std::abs(jt) < impulse * 0.1f)
                 tanJ = -t * jt;
             else
-                tanJ = t * jt * 0.15f;
+                tanJ = t * jt * 0.1f;
 
             A->velocity -= A->data.getMassInv() * tanJ;
             A->angularVel -= A->data.getInertiaInv() * ra.cross(tanJ);

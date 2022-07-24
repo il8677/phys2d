@@ -30,3 +30,11 @@ namespace phys2d{
     void insertInPlace(std::vector<SPEntry>& bodies, SPEntry toInsert);
     void insertionSort(std::vector<SPEntry>& bodies);
 }
+
+using namespace phys2d;
+template<>
+struct std::hash<SPEntry>{
+    std::size_t operator()(SPEntry const& c) const noexcept{
+        return std::hash<Body*>()(c.body);
+    }
+};

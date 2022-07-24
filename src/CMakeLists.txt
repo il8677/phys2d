@@ -1,3 +1,5 @@
+set(CMAKE_CXX_STANDARD 20)
+
 set(PHYS_SOURCES
     maths/vec2.cpp
     maths/mat2.cpp

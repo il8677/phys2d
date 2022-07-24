@@ -28,8 +28,6 @@ namespace phys2d{
 
         Vec2 getMaxPoint(Vec2 dir) const;
 
-
-
         private:
         std::vector<Vec2> getPoints(std::initializer_list<Vec2> points_);
         std::vector<Vec2> getPoints(float halfextX, float halfextY);

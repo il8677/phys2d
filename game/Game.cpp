@@ -10,7 +10,7 @@
 
 
 using namespace phys2d;
-std::initializer_list<Vec2> triangle = {{0,1},{-1,-1},{1,1}};
+std::initializer_list<Vec2> triangle = {{0.5f,0.5f}, {-2,-2}, {-2,2}};
 
 Game::Game() : 
     window(sf::VideoMode(viewX, viewY), "My window"),

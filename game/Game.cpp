@@ -16,6 +16,7 @@ Game::Game() :
 
     objects.emplace_back(std::make_unique<Player>(world, phys2d::Vec2(50,50)));
 
+    // Outer walls
     objects.emplace_back(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 0.5f, aspectY*5, Body::BodyType::STATIC));
     objects.emplace_back(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*10, aspectY*5), 0.5f, aspectY*5, Body::BodyType::STATIC));
     objects.emplace_back(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, 0), aspectX*5, 0.5f, Body::BodyType::STATIC));

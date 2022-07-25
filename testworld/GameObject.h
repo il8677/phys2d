@@ -20,7 +20,12 @@ class GameObject{
 
     Body* body;
 
+    void destroy();
+    bool isDestroyed();
+
     private:
+    bool doDestroy = false;
+
     GameObject(Body* body, Vec2 pos, std::unique_ptr<Renderer> renderer_);
 
     std::unique_ptr<Renderer> renderer;

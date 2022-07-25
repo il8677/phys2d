@@ -204,6 +204,30 @@ int main(){
             objects[1].body->setContinuous(true);
         }));
 
+        scenes["specific"].push_back(Scene("small", [&](){
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1,5), 0.05f));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(1,4), 0.05f));
+            objects.push_back(GameObject::createRect(world, BodyData(1), Vec2(5,5), 0.01f, 2, Body::BodyType::STATIC));
+
+            objects[0].body->velocity = Vec2(1.15*60, 0);
+            objects[0].body->setContinuous(true);
+            objects[1].body->velocity = Vec2(1.15*60, 0);
+            objects[1].body->setContinuous(true);
+        }));
+
+        scenes["specific"].emplace_back("deletion", [&](){
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1,5), 0.05f));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(1,4), 0.05f));
+            objects.push_back(GameObject::createRect(world, BodyData(1), Vec2(5,5), 0.01f, 2, Body::BodyType::STATIC));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1,5), 0.05f));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(1,4), 0.05f));
+            objects.push_back(GameObject::createRect(world, BodyData(1), Vec2(5,5), 0.01f, 2, Body::BodyType::STATIC));
+
+            objects[1].destroy();
+
+            objects[4].destroy();
+        });
+
         scenes["specific"].push_back(Scene("layers", [&](){
             for(int i = 0; i < 8; i++){
                 // setup projectile
@@ -498,7 +522,14 @@ int main(){
 
         // Logic update
         if(doRender){
-            for(GameObject& go : objects){
+            for(auto it = objects.begin(); it != objects.end(); it++){
+                GameObject& go = *it;
+
+                if(go.isDestroyed()) {
+                    it = objects.erase(it);
+                    continue;
+                }
+
                 go.tick(elapsed.asSeconds(), window);
             }
         }

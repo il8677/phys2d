@@ -15,7 +15,7 @@ namespace phys2d{
             massinv = 0;
             inertiainv = 0;
         }
-        inertia = 0,2*mass_;
+        inertia = 2*mass_;
     }
 
     float BodyData::getMass(){
@@ -48,6 +48,10 @@ namespace phys2d{
         force = other.force;
 
         setType(other.type);
+
+        isTrigger = other.isTrigger;
+        triggerCallback = other.triggerCallback;
+        doDestroy = other.doDestroy;
     }
 
     Body& Body::operator=(const Body& other){
@@ -63,6 +67,10 @@ namespace phys2d{
 
         setType(other.type);
 
+        doDestroy = other.doDestroy;
+        triggerCallback = other.triggerCallback;
+        isTrigger = other.isTrigger;
+
         return *this;
     }
 
@@ -77,6 +85,10 @@ namespace phys2d{
         force = std::move(other.force);
 
         setType(other.type);
+
+        isTrigger = other.isTrigger;
+        doDestroy = other.doDestroy;
+        triggerCallback = std::move(other.triggerCallback);
     }
 
     Body& Body::operator=(Body&& other){
@@ -98,7 +110,9 @@ namespace phys2d{
         setType(other.type);
 
         data = std::move(other.data);
-
+        isTrigger = other.isTrigger;
+        doDestroy = other.doDestroy;
+        triggerCallback = std::move(other.triggerCallback);
         return *this;
     }
 

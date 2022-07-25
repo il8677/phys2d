@@ -13,6 +13,14 @@ namespace phys2d{
     }
 
     void Contact::resolve(){
+        if(A->isTrigger && A->triggerCallback)
+            A->triggerCallback(A, B);
+        
+        if(B->isTrigger && A->triggerCallback) 
+            B->triggerCallback(B, A);
+
+        if(A->isTrigger || B->isTrigger) return;
+
         updateVelocities();
         fixError();
     }

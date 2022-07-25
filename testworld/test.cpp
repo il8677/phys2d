@@ -217,6 +217,17 @@ int main(){
             }
 
         }));
+
+        scenes["specific"].push_back(Scene("trigger", [&](){
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1,5), 0.1f));
+            objects.back().body->velocity = {1,0};
+            objects.back().body->isTrigger = true;
+            objects.back().body->triggerCallback = [&](Body* obj, Body* other){
+                objects.push_back(GameObject::createSquare(world, BodyData(1), obj->position + Vec2(0,1), 0.5f));
+            };
+
+            objects.push_back(GameObject::createRect(world, BodyData(1), Vec2(4, 5), 0.1f, 4, Body::BodyType::STATIC));
+        }));
     }
 
     { // Circles

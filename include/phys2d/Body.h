@@ -4,6 +4,7 @@
 #include "colliders/Shape.h"
 
 #include <memory>
+#include <functional>
 
 namespace phys2d{
     struct Vec2;
@@ -44,6 +45,8 @@ namespace phys2d{
 
         // layers
         unsigned char layer=1;
+        bool isTrigger = false;
+        std::function<void(Body* obj, Body* other)> triggerCallback;
 
         // physical values
         Vec2 force;

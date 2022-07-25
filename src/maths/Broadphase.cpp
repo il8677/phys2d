@@ -13,8 +13,10 @@ namespace phys2d{
         if(!bodies.size()) return;
 
         for (auto it = bodies.begin(); it != bodies.end(); ++it){
-            if(it->body->doDestroy)
+            if(it->body->doDestroy){
                 it = bodies.erase(it);
+                it--;
+            }
         }
 
         for (auto it = bodies.begin() + 1; it != bodies.end(); ++it) {

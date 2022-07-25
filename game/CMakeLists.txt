@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.13)
-project(physworld)
+project(physgame)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/)
 
 #add_compile_definitions(IMGUI_SFML_VIEWPORTS_ENABLE)
 
 set(GAME_SOURCES
-    GameObject.cpp
-    Renderer.cpp
+    GameObjects/GameObject.cpp
+    GameObjects/Renderer.cpp
+    GameObjects/Player.cpp
+
+    Input.cpp
+    Game.cpp
 )
 
 set(GAME_ADDITIONAL_SOURCES 
@@ -19,13 +23,13 @@ set(GAME_ADDITIONAL_SOURCES
     ../vendor/imgui-sfml/imgui-SFML.cpp
 )
 
-add_executable(physworld main.cpp ${GAME_SOURCES} ${GAME_ADDITIONAL_SOURCES})
+add_executable(physgame main.cpp ${GAME_SOURCES} ${GAME_ADDITIONAL_SOURCES})
 
-target_link_libraries(physworld PRIVATE phys_2d)
-target_link_libraries(physworld PUBLIC OpenGL sfml-graphics sfml-window sfml-system)
+target_link_libraries(physgame PRIVATE phys_2d)
+target_link_libraries(physgame PUBLIC OpenGL sfml-graphics sfml-window sfml-system)
 
-target_include_directories(physworld PRIVATE ../vendor/SFML/include)
-target_include_directories(physworld PRIVATE ../vendor/imgui-sfml)
-target_include_directories(physworld PRIVATE ../vendor/imgui-docking)
+target_include_directories(physgame PRIVATE ../vendor/SFML/include)
+target_include_directories(physgame PRIVATE ../vendor/imgui-sfml)
+target_include_directories(physgame PRIVATE ../vendor/imgui-docking)
 
 message(${CMAKE_CXX_FLAGS_DEBUG})

@@ -1,3 +1,5 @@
+#pragma once
+
 #include <phys2d/maths/vec2.h>
 #include <phys2d/maths/Rotation.h>
 #include <SFML/Graphics.hpp>
@@ -18,11 +20,13 @@ class CircleRenderer : public Renderer {
     public:
     void render(RenderInfo ri, sf::RenderWindow& window) override;
 
-    CircleRenderer(float r);
+    CircleRenderer(float r, uint32_t color);
 
     private:
     static sf::CircleShape circle;
     static bool init;
+
+    sf::Color color;
     float r;
 };
 

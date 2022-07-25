@@ -9,6 +9,7 @@ void CircleRenderer::render(RenderInfo ri, sf::RenderWindow& window){
     circle.setOrigin(r, r);
     circle.setRotation(ri.rot * 180 / 3.14159265);
     circle.setPosition(ri.p.x, ri.p.y);
+    circle.setFillColor(color);
 /*    sf::Vertex line[2] = {
         sf::Vertex(sf::Vector2f(ri.p.x, ri.p.y)),
         sf::Vertex(sf::Vector2f(ri.p.x + r*std::sin(ri.p.x), ri.p.y + r * std::cos(ri.p.x)))
@@ -19,10 +20,9 @@ void CircleRenderer::render(RenderInfo ri, sf::RenderWindow& window){
     window.draw(circle);
 }
 
-CircleRenderer::CircleRenderer(float r_) : r(r_){
+CircleRenderer::CircleRenderer(float r_, uint32_t color_) : r(r_), color(color_){
     if(init){
         init = false;
-        circle.setFillColor(sf::Color(150, 50, 250));
     }
 }
 

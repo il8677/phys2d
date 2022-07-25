@@ -8,7 +8,7 @@ class Bullet : public Component {
     public:
 
     void start() override;
-    virtual void update(float dt) override=0;
+    virtual void update(float dt) override;
     void setTravelVector(phys2d::Vec2 travelVector);
     
     int getID() override;
@@ -16,8 +16,9 @@ class Bullet : public Component {
     float getFireRate();
     
     protected:
-    Bullet(GameObject& obj, float fireRate);
+    Bullet(GameObject& obj, float fireRate, float bulletSpeed);
     phys2d::Vec2 travelVector;
 
     float fireRate;
+    float speed = 100;
 };

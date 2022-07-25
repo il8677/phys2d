@@ -7,7 +7,7 @@ void BodyComponent::destroy(){
 }
 
 BodyComponent::BodyComponent(GameObject& obj, phys2d::Body* body_) : body(body_), Component(obj) {
-
+    body->userData = (void*)&obj;
 }
 
 void BodyComponent::update(float dt){

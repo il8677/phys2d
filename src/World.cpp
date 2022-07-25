@@ -34,7 +34,13 @@ namespace phys2d{
         broadphase.run();
         narrowphase();
 
-        for(Body& body : bodies){
+        for(auto it = bodies.begin(); it != bodies.end(); it++){
+            Body& body = *it;
+            if(body.doDestroy){
+                it = bodies.erase(it);
+                continue;
+            }
+
             if(body.isContinuous()){
                 stepCont(dt, body);
                 continue;

@@ -11,7 +11,7 @@
 namespace phys2d{
     void insertionSort(std::vector<SPEntry>& bodies){
         if(!bodies.size()) return;
-
+        std::remove_if(bodies.begin(), bodies.end(), [](const SPEntry& entry){return entry.body->doDestroy;});
         for (auto it = bodies.begin() + 1; it != bodies.end(); ++it) {
             auto key = it;
 

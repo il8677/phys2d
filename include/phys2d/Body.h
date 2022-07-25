@@ -48,6 +48,8 @@ namespace phys2d{
         bool isTrigger = false;
         std::function<void(Body* obj, Body* other)> triggerCallback;
 
+        bool doDestroy=false;
+
         // physical values
         Vec2 force;
         Vec2 velocity;

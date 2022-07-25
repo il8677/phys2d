@@ -8,7 +8,7 @@ Bullet::Bullet(GameObject& obj, float fireRate_) : Component(obj){
 }
 
 void Bullet::start(){
-    gameObject.getComponent<BodyComponent>()->body->setContinuous(true);
+    //gameObject.getComponent<BodyComponent>()->body->setContinuous(true);
     gameObject.getComponent<BodyComponent>()->body->isTrigger = true;
     gameObject.getComponent<BodyComponent>()->body->triggerCallback = [&](Body* obj, Body* other){
         gameObject.destroy();

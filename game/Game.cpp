@@ -10,12 +10,12 @@
 
 
 using namespace phys2d;
-std::initializer_list<Vec2> triangle = {{0.5f,0.5f}, {-2,-2}, {-2,2}};
+std::initializer_list<Vec2> square = {{1,1}, {1,-1}, {-1, -1},{-1,1}};
 
 Game::Game() : 
     window(sf::VideoMode(viewX, viewY), "My window"),
     world({0,0}), mainView(sf::FloatRect(0,0, aspectX*10, aspectY*10)),
-    pistolBullet(Body(new ShapePoly(), BodyData(0.1f)), std::make_unique<PolyRenderer>(triangle, 0xFFC914FF)) {
+    pistolBullet(Body(new ShapePoly(), BodyData(0.1f)), std::make_unique<PolyRenderer>(square, 0xFFC914FF)) {
         
     //TODO: better solution
     Input::maxX = viewX;
@@ -37,10 +37,10 @@ Game::Game() :
 
 
     // Outer walls
-    GameObject::addObject(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 0.5f, aspectY*5, Body::BodyType::STATIC));
-    GameObject::addObject(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*10, aspectY*5), 0.5f, aspectY*5, Body::BodyType::STATIC));
-    GameObject::addObject(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, 0), aspectX*5, 0.5f, Body::BodyType::STATIC));
-    GameObject::addObject(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, aspectY*10), aspectX*5, 0.5f, Body::BodyType::STATIC));
+    GameObject::addObject(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 1, aspectY*5, Body::BodyType::STATIC));
+    GameObject::addObject(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*10, aspectY*5), 1, aspectY*5, Body::BodyType::STATIC));
+    GameObject::addObject(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, 0), aspectX*5, 1, Body::BodyType::STATIC));
+    GameObject::addObject(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, aspectY*10), aspectX*5, 1, Body::BodyType::STATIC));
 
     // ImGui
     ImGui::SFML::Init(window);

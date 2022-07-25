@@ -187,21 +187,41 @@ int main(){
         scenes["specific"].push_back(Scene("bullet (non cont)", [&](){
             objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1,5), 0.1f));
             objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(1,4), 0.1f));
+            objects.push_back(GameObject::createPoly(world, BodyData(1), Vec2(1,3), {{0,0},{-0.1f,-0.1f},{-0.1f,0.1f}}));
             objects.push_back(GameObject::createRect(world, BodyData(1), Vec2(5,5), 0.05f, 2, Body::BodyType::STATIC));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(9,5), 0.1f));
+            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(9,4), 0.1f));
+            objects.push_back(GameObject::createPoly(world, BodyData(1), Vec2(9,3), {{0,0},{-0.1f,-0.1f},{-0.1f,0.1f}}));
 
             objects[0].body->velocity = Vec2(1.15*60, 0);
             objects[1].body->velocity = Vec2(1.15*60, 0);
+            objects[2].body->velocity = Vec2(1.15*60, 0);
+            objects[4].body->velocity = Vec2(-1.15*60, 0);
+            objects[5].body->velocity = Vec2(-1.15*60, 0);
+            objects[6].body->velocity = Vec2(-1.15*60, 0);
         }));
 
         scenes["specific"].push_back(Scene("bullet", [&](){
-            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1,5), 0.1f));
-            objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(1,4), 0.1f));
+            //objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1,5), 0.1f));
+            //objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(1,4), 0.1f));
+            //objects.push_back(GameObject::createPoly(world, BodyData(1), Vec2(1,3), {{0,0},{-0.1f,-0.1f},{-0.1f,0.1f}}));
+            objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(9,5), 0.1f));
+            //objects.push_back(GameObject::createSquare(world, BodyData(1), Vec2(9,4), 0.1f));
+            //objects.push_back(GameObject::createPoly(world, BodyData(1), Vec2(9,3), {{0,0},{-0.1f,-0.1f},{-0.1f,0.1f}}));
             objects.push_back(GameObject::createRect(world, BodyData(1), Vec2(5,5), 0.05f, 2, Body::BodyType::STATIC));
 
-            objects[0].body->velocity = Vec2(1.15*60, 0);
+            objects[0].body->velocity = Vec2(-1.15*60, 0);
             objects[0].body->setContinuous(true);
-            objects[1].body->velocity = Vec2(1.15*60, 0);
+            /*objects[1].body->velocity = Vec2(-1.15*60, 0);
             objects[1].body->setContinuous(true);
+            objects[2].body->velocity = Vec2(-1.15*60, 0);
+            objects[2].body->setContinuous(true);
+            objects[3].body->velocity = Vec2(-1.15*60, 0);
+            objects[3].body->setContinuous(true);
+            objects[4].body->velocity = Vec2(-1.15*60, 0);
+            objects[4].body->setContinuous(true);
+            objects[5].body->velocity = Vec2(-1.15*60, 0); 
+            objects[5].body->setContinuous(true);*/
         }));
 
         scenes["specific"].push_back(Scene("small", [&](){

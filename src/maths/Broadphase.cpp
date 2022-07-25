@@ -39,11 +39,11 @@ namespace phys2d{
     }
 
     float SPEntry::min() const {
-        return axPos() - body->shape->maxExtent - (axVel() * body->isContinuous());
+        return axPos() - body->shape->maxExtent - std::abs((axVel() * body->isContinuous()));
     }
 
     float SPEntry::max() const {
-        return axPos() + body->shape->maxExtent + (axVel() * body->isContinuous());
+        return axPos() + body->shape->maxExtent + std::abs((axVel() * body->isContinuous()));
     }
 
     float SPEntry::axPos() const{

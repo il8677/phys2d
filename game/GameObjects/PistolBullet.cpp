@@ -4,7 +4,7 @@
 #include "BodyComponent.h"
 
 
-PistolBullet::PistolBullet(GameObject& obj) : Bullet(obj){
+PistolBullet::PistolBullet(GameObject& obj) : Bullet(obj, 1){
 
 }
 

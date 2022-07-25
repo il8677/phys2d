@@ -30,10 +30,16 @@ void Gun::update(float dt) {
     body->position = playerBody->position - mouseVec * 3;
     body->rotation = mouseVec.getAngle()+3.1415/2;
 
-    if(Input::getMouseL()){
+    fireState += dt;
+
+    if(Input::getMouseL() && fireState > fireRate){
         GameObject& b = bullet->create(playerBody->position - mouseVec * 4);
         Bullet* bcomp = b.getComponent<Bullet>();
-        bcomp->setTravelVector(mouseVec);
+        bcomp->setTravelVector(-mouseVec);
+
+        fireRate = bcomp->getFireRate();
+
+        fireState = 0;
     }
 }
 

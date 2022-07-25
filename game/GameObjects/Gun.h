@@ -17,4 +17,7 @@ class Gun : public Component{
     private:
     Prefab* bullet;
     GameObject& player;
+
+    float fireState = 0;
+    float fireRate = 1;
 };

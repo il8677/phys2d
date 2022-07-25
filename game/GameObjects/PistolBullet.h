@@ -9,5 +9,5 @@ class PistolBullet : public Bullet {
     void update(float dt) override;
 
     private:
-    const float speed = 2;
+    const float speed = 100;
 };

@@ -11,7 +11,11 @@ class Bullet : public Component {
     
     int getID() override;
 
+    float getFireRate();
+    
     protected:
-    Bullet(GameObject& obj);
+    Bullet(GameObject& obj, float fireRate);
     phys2d::Vec2 travelVector;
+
+    float fireRate;
 };

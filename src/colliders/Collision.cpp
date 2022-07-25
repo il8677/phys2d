@@ -9,6 +9,10 @@
 
 namespace phys2d{
 
+    void circleCircle(Contact& contact);
+    void circlePoly(Contact& contact);
+    void polyPoly(Contact& contact);
+
     void dispatchContact(Contact& contact){
 
         static std::function<void(Contact&)> resolves[2][2] = {

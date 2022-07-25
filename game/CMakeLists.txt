@@ -9,6 +9,8 @@ set(GAME_SOURCES
     GameObjects/GameObject.cpp
     GameObjects/Renderer.cpp
     GameObjects/Player.cpp
+    GameObjects/Component.cpp
+    GameObjects/BodyComponent.cpp
 
     Input.cpp
     Game.cpp

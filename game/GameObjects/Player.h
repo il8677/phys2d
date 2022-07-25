@@ -1,10 +1,11 @@
-#include "GameObject.h"
+#include "Component.h"
 
-class Player : public GameObject{
+class Player : public Component{
 public:
-    Player(World& world, Vec2 pos);
+    Player(GameObject& obj);
 
-    void tick(float dt, sf::RenderWindow& window) override;
+    void update(float dt) override;
+    int getID() override;
 
     private:
     const float moveSpeed = 25.f;

@@ -14,7 +14,8 @@ Game::Game() :
     window.setFramerateLimit(60);
     window.setView(mainView);
 
-    objects.emplace_back(std::make_unique<Player>(world, phys2d::Vec2(50,50)));
+    objects.emplace_back(GameObject::createCircle(world, 0x76B041FF, BodyData(1), Vec2(50,50), 2.f, Body::BodyType::KINEMATIC));
+    objects.back().addComponent<Player>();
 
     // Outer walls
     objects.emplace_back(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 0.5f, aspectY*5, Body::BodyType::STATIC));
@@ -61,7 +62,7 @@ void Game::handlePhysics(){
 void Game::handleLogic(){
     sf::Time elapsed = clock.restart();
 
-    for(std::unique_ptr<GameObject>& go : objects){
-        go->tick(elapsed.asSeconds(), window);
+    for(GameObject& go : objects){
+        go.tick(elapsed.asSeconds(), window);
     }
 }

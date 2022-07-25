@@ -1,6 +1,8 @@
 #include "Player.h"
 
 #include "../Input.h"
+#include "BodyComponent.h"
+#include "GameObject.h"
 
 #include <phys2d/World.h>
 #include <phys2d/colliders/Shape.h>
@@ -9,15 +11,13 @@
 
 using namespace phys2d;
 
-Player::Player(World& world, Vec2 pos) : 
-    GameObject(
-        world.createBody(new ShapeCircle(1), BodyData(1), Body::BodyType::KINEMATIC), 
-        pos, 
-        std::make_unique<CircleRenderer>(1, 0x76B041FF)){
+Player::Player(GameObject& obj) : Component(obj) {
     
 }
 
-void Player::tick(float dt, sf::RenderWindow& window){
+void Player::update(float dt){
+    Body* body = gameObject.getComponent<BodyComponent>()->body;
+
     body->velocity = {0,0};
     if(Input::getKeyState(sf::Keyboard::Key::A)){
         body->velocity.x = -moveSpeed;
@@ -31,5 +31,8 @@ void Player::tick(float dt, sf::RenderWindow& window){
     if(Input::getKeyState(sf::Keyboard::Key::S)){
         body->velocity.y = moveSpeed;
     }
-    GameObject::tick(dt, window);
+}
+
+int Player::getID(){
+    return Component::getID<Player>();
 }

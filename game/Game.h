@@ -36,5 +36,5 @@ class Game{
 
     sf::View mainView;
 
-    std::list<std::unique_ptr<GameObject>> objects;
+    std::list<GameObject> objects;
 };

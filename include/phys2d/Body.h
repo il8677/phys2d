@@ -42,14 +42,17 @@ namespace phys2d{
 
         Shape* shape = nullptr;
 
+        // layers
+        unsigned char layer=1;
+
+        // physical values
         Vec2 force;
         Vec2 velocity;
         Vec2 position;
 
-        Rotation rotation;
-
         Rotation angularVel;
         Rotation torque;
+        Rotation rotation;
 
         BodyData data;
 

@@ -118,6 +118,7 @@ namespace phys2d{
                 }), current.end());
 
             for(auto it = current.begin(); it != current.end(); it++){
+                if(!(it->body->layer & entry.body->layer)) continue;
                 contacts.emplace_back(entry.body, it->body);
                 if(entry.body->isContinuous()) continuousContacts[entry.body].push_back(contacts.back());
                 if(it->body->isContinuous()) continuousContacts[it->body].push_back(contacts.back());

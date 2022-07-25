@@ -203,6 +203,20 @@ int main(){
             objects[1].body->velocity = Vec2(1.15*60, 0);
             objects[1].body->setContinuous(true);
         }));
+
+        scenes["specific"].push_back(Scene("layers", [&](){
+            for(int i = 0; i < 8; i++){
+                // setup projectile
+                objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1,i+1), 0.1f));
+                objects.back().body->velocity = {1,0};
+                objects.back().body->layer = 1 << i;
+
+                // setup walls
+                objects.push_back(GameObject::createRect(world, BodyData(1), Vec2(i+2, 5), 0.1f, 4, Body::BodyType::STATIC));
+                objects.back().body->layer = 1 << i;
+            }
+
+        }));
     }
 
     { // Circles

@@ -9,6 +9,9 @@ class Input{
     static float getMouseX();
     static float getMouseY();
 
+    static bool getMouseL();
+    static bool getMouseR();
+
     private:
 
     static void setKeyState(sf::Keyboard::Key code, bool state);
@@ -16,6 +19,7 @@ class Input{
 
     static struct{
         int x, y;
+        bool buttonL, buttonR;
     }mouse;
 
     static float viewportX, viewportY;

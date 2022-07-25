@@ -79,6 +79,14 @@ namespace phys2d{
         return normals_;
     }
 
+    Shape* ShapePoly::clone(){
+        return new ShapePoly(*this);
+    }
+
+    Shape* ShapeCircle::clone(){
+        return new ShapeCircle(*this);
+    }
+
     ShapeCircle::ShapeCircle(float radius_) :
         Shape(Shape::Type::CIRCLE, radius_), radius(radius_) {
         

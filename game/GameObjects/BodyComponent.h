@@ -2,6 +2,7 @@
 #include "Component.h"
 
 #include <phys2d/Body.h>
+#include <phys2d/World.h>
 
 class BodyComponent : public Component{
     public:
@@ -11,4 +12,6 @@ class BodyComponent : public Component{
     int getID() override;
 
     phys2d::Body* body;
+
+    static phys2d::World* world;
 };

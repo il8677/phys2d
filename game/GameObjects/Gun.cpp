@@ -4,6 +4,9 @@
 #include "GameObject.h"
 #include "BodyComponent.h"
 
+#include "Bullet.h"
+#include "PistolBullet.h"
+
 #include <phys2d/Body.h>
 #include <phys2d/maths/vec2.h>
 
@@ -26,6 +29,16 @@ void Gun::update(float dt) {
 
     body->position = playerBody->position - mouseVec * 3;
     body->rotation = mouseVec.getAngle()+3.1415/2;
+
+    if(Input::getMouseL()){
+        GameObject& b = bullet->create(playerBody->position - mouseVec * 4);
+        Bullet* bcomp = b.getComponent<Bullet>();
+        bcomp->setTravelVector(mouseVec);
+    }
+}
+
+void Gun::setBulletPrefab(Prefab* comp){
+    bullet = comp;
 }
 
 int Gun::getID(){

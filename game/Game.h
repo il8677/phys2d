@@ -1,6 +1,8 @@
 #pragma once
 
 #include "GameObjects/GameObject.h"
+#include "GameObjects/Prefab.h"
+#include "GameObjects/PistolBullet.h"
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
@@ -40,5 +42,7 @@ class Game{
 
     sf::View mainView;
 
-    std::list<GameObject> objects;
+    sf::Time elapsed;
+    
+    PrefabComponents<PistolBullet> pistolBullet;
 };

@@ -8,4 +8,8 @@ void Component::setup(){
     
 }
 
+void Component::start(){
+    
+}
+
 int Component::componentCounter = 0;

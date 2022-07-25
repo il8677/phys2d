@@ -23,6 +23,7 @@ namespace phys2d{
         ~World();
 
         Body* createBody(Shape* shape, BodyData data, Body::BodyType type = Body::BodyType::DYNAMIC);
+        Body* createBody(Body* b);
         void destroyBody(Body* body);
 
         void step(float dt);

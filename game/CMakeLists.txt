@@ -12,6 +12,8 @@ set(GAME_SOURCES
     GameObjects/Gun.cpp
     GameObjects/Component.cpp
     GameObjects/BodyComponent.cpp
+    GameObjects/PistolBullet.cpp
+    GameObjects/Bullet.cpp
 
     Input.cpp
     Game.cpp

@@ -5,13 +5,17 @@
 #include "GameObjects/Gun.h"
 
 #include <phys2d/maths/vec2.h>
+#include <phys2d/Body.h>
+#include <phys2d/colliders/Shape.h>
 
 
 using namespace phys2d;
+std::initializer_list<Vec2> triangle = {{0,1},{-1,-1},{1,1}};
 
 Game::Game() : 
     window(sf::VideoMode(viewX, viewY), "My window"),
-    world({0,0}), mainView(sf::FloatRect(0,0, aspectX*10, aspectY*10)) {
+    world({0,0}), mainView(sf::FloatRect(0,0, aspectX*10, aspectY*10)),
+    pistolBullet(Body(new ShapePoly(), BodyData(0.1f)), std::make_unique<PolyRenderer>(triangle, 0xFFC914FF)) {
         
     //TODO: better solution
     Input::maxX = viewX;
@@ -19,20 +23,24 @@ Game::Game() :
     Input::viewportX = aspectX*10;
     Input::viewportY = aspectY*10;
 
+    BodyComponent::world = &world;
+
     window.setFramerateLimit(60);
     window.setView(mainView);
 
-    GameObject& player = objects.emplace_back(GameObject::createCircle(world, 0x79B342FF, BodyData(1), Vec2(50,50), 2.f, Body::BodyType::KINEMATIC));
+    GameObject& player = GameObject::addObject(GameObject::createCircle(world, 0x79B342FF, BodyData(1), Vec2(50,50), 2.f, Body::BodyType::KINEMATIC));
     player.addComponent<Player>();
 
-    GameObject& playerGun = objects.emplace_back(GameObject::createRect(world, 0x649537FF, BodyData(1), Vec2(0,0), 0.5f, 0.75f));
+    GameObject& playerGun = GameObject::addObject(GameObject::createRect(world, 0x649537FF, BodyData(1), Vec2(0,0), 0.5f, 0.75f));
     playerGun.addComponent<Gun>(player);
+    playerGun.getComponent<Gun>()->setBulletPrefab(&pistolBullet);
+
 
     // Outer walls
-    objects.emplace_back(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 0.5f, aspectY*5, Body::BodyType::STATIC));
-    objects.emplace_back(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*10, aspectY*5), 0.5f, aspectY*5, Body::BodyType::STATIC));
-    objects.emplace_back(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, 0), aspectX*5, 0.5f, Body::BodyType::STATIC));
-    objects.emplace_back(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, aspectY*10), aspectX*5, 0.5f, Body::BodyType::STATIC));
+    GameObject::addObject(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 0.5f, aspectY*5, Body::BodyType::STATIC));
+    GameObject::addObject(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*10, aspectY*5), 0.5f, aspectY*5, Body::BodyType::STATIC));
+    GameObject::addObject(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, 0), aspectX*5, 0.5f, Body::BodyType::STATIC));
+    GameObject::addObject(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, aspectY*10), aspectX*5, 0.5f, Body::BodyType::STATIC));
 
     // ImGui
     ImGui::SFML::Init(window);
@@ -42,7 +50,7 @@ Game::Game() :
 }
 
 void Game::mainloop(){
-    for(GameObject& obj : objects) obj.setup();
+    for(GameObject& obj : GameObject::objects) obj.setup();
 
     while (window.isOpen())
     {
@@ -72,6 +80,18 @@ void Game::handleEvents(){
         } else if (event.type == sf::Event::MouseMoved){
             Input::mouse.x = event.mouseMove.x;
             Input::mouse.y = event.mouseMove.y;
+        } else if (event.type == sf::Event::MouseButtonPressed){
+            if(event.mouseButton.button == sf::Mouse::Right) {
+                Input::mouse.buttonR = true;
+            } else if(event.mouseButton.button == sf::Mouse::Left) {
+                Input::mouse.buttonL = true;
+            }
+        } else if (event.type == sf::Event::MouseButtonReleased) {
+            if(event.mouseButton.button == sf::Mouse::Right) {
+                Input::mouse.buttonR = false;
+            } else if(event.mouseButton.button == sf::Mouse::Left) {
+                Input::mouse.buttonL = false;
+            }
         }
     }
 }
@@ -84,9 +104,9 @@ void Game::handlePhysics(){
 }
 
 void Game::handleLogic(){
-    sf::Time elapsed = clock.restart();
+    elapsed = clock.restart();
 
-    for(GameObject& go : objects){
+    for(GameObject& go : GameObject::objects){
         go.tick(elapsed.asSeconds(), window);
     }
 
@@ -96,7 +116,9 @@ void Game::handleLogic(){
 void Game::handleImGui(){
 
     ImGui::Begin("Debug");
-    ImGui::Text("Mouse (%.2f, %.2f)", Input::getMouseX(), Input::getMouseY());
+    ImGui::Text("Mouse: (%.2f, %.2f)", Input::getMouseX(), Input::getMouseY());
+    ImGui::Text("Objects: %u", GameObject::objects.size());
+    ImGui::Text("dt: %ums", elapsed.asMilliseconds());
     ImGui::End();
 
     ImGui::EndFrame();

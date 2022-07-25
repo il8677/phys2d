@@ -30,7 +30,6 @@ GameObject GameObject::createSquare(World& world, BodyData data, Vec2 pos, float
     return createRect(world, data, pos, hext, hext, type);
 }
 
-
 GameObject::GameObject(Body* body_, Vec2 pos, std::unique_ptr<Renderer> renderer_) : 
     renderer(std::move(renderer_)){
     body = body_;

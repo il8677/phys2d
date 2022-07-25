@@ -12,6 +12,8 @@
 
 using namespace phys2d;
 
+class Game;
+
 class GameObject{
     public:
     static GameObject createCircle(World& world, uint32_t color, BodyData data, Vec2 pos, float r, Body::BodyType type);
@@ -21,6 +23,8 @@ class GameObject{
     void tick(float dt, sf::RenderWindow& window);
 
     GameObject( std::unique_ptr<Renderer> renderer_);
+
+    static GameObject& addObject(GameObject&& go);
 
     template <class T, typename... Args>
     T* addComponent(Args&&... args){
@@ -48,4 +52,8 @@ class GameObject{
     std::vector<std::unique_ptr<Component>> components;
     private:
     std::unique_ptr<Renderer> renderer;
+
+    static std::list<GameObject> objects;
+
+    friend class Game;
 };

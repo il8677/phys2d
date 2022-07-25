@@ -8,5 +8,5 @@ public:
     int getID() override;
 
     private:
-    const float moveSpeed = 25.f;
+    const float moveSpeed = 30.f;
 };

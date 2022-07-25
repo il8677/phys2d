@@ -1,5 +1,8 @@
 #pragma once
 #include "Component.h"
+#include "Prefab.h"
+
+#include <memory>
 
 class Gun : public Component{
     public:
@@ -7,8 +10,11 @@ class Gun : public Component{
 
     void setup() override;
     void update(float dt) override;
+
+    void setBulletPrefab(Prefab* comp);
+
     int getID() override;
     private:
-
+    Prefab* bullet;
     GameObject& player;
 };

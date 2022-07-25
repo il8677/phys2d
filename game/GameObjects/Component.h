@@ -7,6 +7,7 @@ class Component{
     Component(GameObject& gameObject);
 
     virtual void setup();
+    virtual void start();
     virtual void update(float dt)=0;
 
     GameObject& gameObject;

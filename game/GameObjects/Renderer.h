@@ -14,6 +14,7 @@ struct RenderInfo{
 class Renderer{
     public:
     virtual void render(RenderInfo ri, sf::RenderWindow& window)=0;
+    virtual Renderer* clone()=0;
     protected:
     sf::Color color;
 };
@@ -21,6 +22,7 @@ class Renderer{
 class CircleRenderer : public Renderer {
     public:
     void render(RenderInfo ri, sf::RenderWindow& window) override;
+    Renderer* clone() override;
 
     CircleRenderer(float r, uint32_t color);
 
@@ -34,6 +36,7 @@ class CircleRenderer : public Renderer {
 class PolyRenderer : public Renderer{
     public:
     void render(RenderInfo ri, sf::RenderWindow& window) override;
+    Renderer* clone() override;
 
     PolyRenderer(std::initializer_list<Vec2> points, uint32_t color);
     PolyRenderer(std::vector<Vec2> points, uint32_t color);

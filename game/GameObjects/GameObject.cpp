@@ -13,9 +13,17 @@ GameObject::GameObject(std::unique_ptr<Renderer> renderer_) :
     renderer(std::move(renderer_)){
 }
 
+GameObject& GameObject::addObject(GameObject&& go){
+   return objects.emplace_back(std::move(go));
+}
+
 void GameObject::setup(){
-    for(std::unique_ptr<Component>& component : components){
-        component->setup();
+    for(int i = 0; i < components.size(); i++){
+        components[i]->setup();
+    }
+
+    for(int i = 0; i < components.size(); i++){
+        components[i]->start();
     }
 }
 
@@ -64,3 +72,5 @@ float GameObject::getRotation(){
 
     return 0;
 }
+
+std::list<GameObject> GameObject::objects;

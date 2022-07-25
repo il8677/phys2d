@@ -8,6 +8,14 @@ float Input::getMouseY(){
     return mouse.y/maxY * viewportY;
 }
 
+bool Input::getMouseL(){
+    return mouse.buttonL;
+}
+
+bool Input::getMouseR(){
+    return mouse.buttonR;
+}
+
 void Input::setKeyState(sf::Keyboard::Key code, bool state){
     pressed[code] = state;
 }

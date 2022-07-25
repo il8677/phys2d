@@ -40,7 +40,7 @@ namespace phys2d{
     }
 
     Body::Body(const Body& other) : data(other.data){
-        shape = new Shape(*other.shape);
+        shape = other.shape->clone();
         velocity = other.velocity;
         position = other.position;
         rotation = other.rotation;
@@ -56,7 +56,7 @@ namespace phys2d{
 
     Body& Body::operator=(const Body& other){
         delete shape;
-        shape = new Shape(*other.shape);
+        shape = other.shape->clone();
         velocity = other.velocity;
         position = other.position;
         rotation = other.rotation;

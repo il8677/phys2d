@@ -27,6 +27,10 @@ CircleRenderer::CircleRenderer(float r_, uint32_t color_) : r(r_){
     }
 }
 
+Renderer* CircleRenderer::clone(){
+    return new CircleRenderer(*this);
+}
+
 bool CircleRenderer::init = true;
 sf::CircleShape CircleRenderer::circle;
 
@@ -72,4 +76,8 @@ void PolyRenderer::setupShape(){
     shape.setOutlineColor(sf::Color(rand()%255, rand()%255, rand()%255));
     shape.setOutlineThickness(0.01);
     shape.setFillColor(sf::Color(rand()%255, rand()%255, rand()%255, 200));
+}
+
+Renderer* PolyRenderer::clone(){
+    return new PolyRenderer(*this);
 }

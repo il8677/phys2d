@@ -14,6 +14,8 @@ namespace phys2d{
         const Type type;
         float maxExtent;
 
+        virtual Shape* clone()=0;
+
         protected:
         Shape(Type type, float maxExtent);
     };
@@ -28,6 +30,8 @@ namespace phys2d{
 
         Vec2 getMaxPoint(Vec2 dir) const;
 
+        Shape* clone() override;
+
         private:
         std::vector<Vec2> getPoints(std::initializer_list<Vec2> points_);
         std::vector<Vec2> getPoints(float halfextX, float halfextY);
@@ -37,6 +41,8 @@ namespace phys2d{
 
     struct ShapeCircle : Shape {
         ShapeCircle(float radius);
+
+        Shape* clone() override;
 
         const float radius;
     };

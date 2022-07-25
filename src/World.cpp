@@ -20,6 +20,14 @@ namespace phys2d{
         return b;
     }
 
+    Body* World::createBody(Body* body){
+        Body* b = &bodies.emplace_back(*body);
+
+        broadphase.addBody(b);
+
+        return b;
+    }
+
     void World::setGravity(Vec2 g){
         gravity = g;
     }

@@ -5,6 +5,8 @@
 
 #include <phys2d/maths/vec2.h>
 
+using namespace phys2d;
+
 Game::Game() : 
     window(sf::VideoMode(viewX, viewY), "My window"),
     world({0,0}), mainView(sf::FloatRect(0,0, aspectX*10, aspectY*10)) {
@@ -13,6 +15,11 @@ Game::Game() :
     window.setView(mainView);
 
     objects.emplace_back(std::make_unique<Player>(world, phys2d::Vec2(50,50)));
+
+    objects.emplace_back(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 0.5f, aspectY*5, Body::BodyType::STATIC));
+    objects.emplace_back(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*10, aspectY*5), 0.5f, aspectY*5, Body::BodyType::STATIC));
+    objects.emplace_back(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, 0), aspectX*5, 0.5f, Body::BodyType::STATIC));
+    objects.emplace_back(GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, aspectY*10), aspectX*5, 0.5f, Body::BodyType::STATIC));
 }
 
 void Game::mainloop(){

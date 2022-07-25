@@ -9,6 +9,7 @@ class BodyComponent : public Component{
     BodyComponent(GameObject& obj, phys2d::Body* body);
 
     void update(float dt) override;
+    void destroy() override;
     int getID() override;
 
     phys2d::Body* body;

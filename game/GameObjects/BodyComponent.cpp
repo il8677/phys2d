@@ -2,6 +2,10 @@
 
 #include <phys2d/World.h>
 
+void BodyComponent::destroy(){
+    body->doDestroy = true;
+}
+
 BodyComponent::BodyComponent(GameObject& obj, phys2d::Body* body_) : body(body_), Component(obj) {
 
 }

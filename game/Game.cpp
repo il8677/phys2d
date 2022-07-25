@@ -106,7 +106,13 @@ void Game::handlePhysics(){
 void Game::handleLogic(){
     elapsed = clock.restart();
 
-    for(GameObject& go : GameObject::objects){
+    for(auto it = GameObject::objects.begin(); it != GameObject::objects.end(); it++){
+        GameObject& go = *it;
+        if(go.doDestroy){
+            for(auto& c : go.components) c->destroy();
+            it = GameObject::objects.erase(it);
+            continue;
+        }
         go.tick(elapsed.asSeconds(), window);
     }
 

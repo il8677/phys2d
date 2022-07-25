@@ -28,9 +28,11 @@ class GameObject{
 
     template <class T, typename... Args>
     T* addComponent(Args&&... args){
-        return static_cast<T*>(
-            components.emplace_back(
-                std::make_unique<T>(*this, std::forward<Args>(args)...)).get());
+        auto c = components.emplace_back(std::make_unique<T>(*this, std::forward<Args>(args)...)).get();
+        c->setup();
+        c->start();
+        return static_cast<T*>(c);
+            
     }
 
     template <class T>
@@ -48,9 +50,13 @@ class GameObject{
     Vec2 getVelocity();
     float getRotation();
 
+    void destroy();
+
     protected:
     std::vector<std::unique_ptr<Component>> components;
     private:
+    bool doDestroy = false;
+
     std::unique_ptr<Renderer> renderer;
 
     static std::list<GameObject> objects;

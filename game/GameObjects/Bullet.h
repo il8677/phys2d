@@ -6,6 +6,8 @@
 
 class Bullet : public Component {
     public:
+
+    void start() override;
     virtual void update(float dt) override=0;
     void setTravelVector(phys2d::Vec2 travelVector);
     

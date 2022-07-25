@@ -28,6 +28,7 @@ void GameObject::setup(){
 }
 
 void GameObject::tick(float dt, sf::RenderWindow& window){
+
     renderer->render({getPosition(), getRotation()}, window);
 
     for(std::unique_ptr<Component>& component : components){
@@ -69,8 +70,12 @@ float GameObject::getRotation(){
     if(bc){
         return bc->body->rotation;
     }
-
+    
     return 0;
+}
+
+void GameObject::destroy(){
+    doDestroy = true;
 }
 
 std::list<GameObject> GameObject::objects;

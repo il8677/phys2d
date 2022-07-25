@@ -4,11 +4,13 @@ class GameObject;
 
 class Component{
     public:
+    virtual ~Component();
     Component(GameObject& gameObject);
 
     virtual void setup();
     virtual void start();
     virtual void update(float dt)=0;
+    virtual void destroy();
 
     GameObject& gameObject;
 

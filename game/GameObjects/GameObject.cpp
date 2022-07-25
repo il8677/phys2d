@@ -13,6 +13,12 @@ GameObject::GameObject(std::unique_ptr<Renderer> renderer_) :
     renderer(std::move(renderer_)){
 }
 
+void GameObject::setup(){
+    for(std::unique_ptr<Component>& component : components){
+        component->setup();
+    }
+}
+
 void GameObject::tick(float dt, sf::RenderWindow& window){
     renderer->render({getPosition(), getRotation()}, window);
 

@@ -6,11 +6,20 @@ class Game;
 class Input{
     public:
     static bool getKeyState(sf::Keyboard::Key code);
+    static float getMouseX();
+    static float getMouseY();
 
     private:
 
     static void setKeyState(sf::Keyboard::Key code, bool state);
     static bool pressed[sf::Keyboard::Key::KeyCount];
+
+    static struct{
+        int x, y;
+    }mouse;
+
+    static float viewportX, viewportY;
+    static float maxX, maxY;
 
     friend class Game;
 };

@@ -17,7 +17,8 @@ class GameObject{
     static GameObject createCircle(World& world, uint32_t color, BodyData data, Vec2 pos, float r, Body::BodyType type);
     static GameObject createRect(World& world, uint32_t color, BodyData data, Vec2 pos, float hextx, float hexty, Body::BodyType type = Body::BodyType::DYNAMIC);
 
-    virtual void tick(float dt, sf::RenderWindow& window);
+    void setup();
+    void tick(float dt, sf::RenderWindow& window);
 
     GameObject( std::unique_ptr<Renderer> renderer_);
 

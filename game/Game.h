@@ -6,6 +6,9 @@
 #include <SFML/Graphics.hpp>
 #include <phys2d/World.h>
 
+#include <imgui.h>
+#include <imgui-SFML.h>
+
 #include <memory>
 #include <list>
 
@@ -19,6 +22,7 @@ class Game{
     void handleEvents();
     void handlePhysics();
     void handleLogic();
+    void handleImGui();
 
 
 

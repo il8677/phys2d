@@ -16,7 +16,7 @@ namespace phys2d{
         if(A->triggerCallback)
             A->triggerCallback(B);
         
-        if(A->triggerCallback) 
+        if(B->triggerCallback) 
             B->triggerCallback(A);
 
         if(A->isTrigger || B->isTrigger) return;

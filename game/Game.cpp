@@ -3,6 +3,8 @@
 
 #include "GameObjects/Player.h"
 #include "GameObjects/Gun.h"
+#include "GameObjects/Spawner.h"
+#include "GameObjects/Renderer.h"
 
 #include <phys2d/maths/vec2.h>
 #include <phys2d/Body.h>
@@ -10,8 +12,8 @@
 
 
 using namespace phys2d;
-std::initializer_list<Vec2> square = {{1,1}, {1,-1}, {-1, -1},{-1,1}};
-std::initializer_list<Vec2> square4 = {{4,4}, {4,-4}, {-4, -4},{-4,4}};
+std::initializer_list<Vec2> square = {{-1,-1}, {1,-1}, {1, 1},{-1,1}};
+std::initializer_list<Vec2> square4 = {{-4,-4}, {4,-4}, {4, 4},{-4,4}};
 
 Game::Game() : 
     window(sf::VideoMode(viewX, viewY), "My window"),
@@ -38,6 +40,9 @@ Game::Game() :
     GameObject& playerGun = GameObject::createRect(world, 0x649537FF, BodyData(1), Vec2(0,0), 0.5f, 0.75f);
     playerGun.addComponent<Gun>(player);
     playerGun.getComponent<Gun>()->setBulletPrefab(&pistolBullet);
+
+    GameObject& spawner = GameObject::addObject(GameObject(std::make_unique<NullRenderer>()));
+    spawner.addComponent<Spawner>(player)->setEnemyPrefab(&enemy);
 
     // Outer walls
     GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 1, aspectY*5, Body::BodyType::STATIC);

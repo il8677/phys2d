@@ -19,6 +19,11 @@ class Renderer{
     sf::Color color;
 };
 
+class NullRenderer : public Renderer{
+    void render(RenderInfo ri, sf::RenderWindow& window) override;
+    Renderer* clone() override;
+};
+
 class CircleRenderer : public Renderer {
     public:
     void render(RenderInfo ri, sf::RenderWindow& window) override;

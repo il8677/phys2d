@@ -6,12 +6,16 @@
 
 class Spawner : public Component{
     public:
-    Gun(GameObject& obj, GameObject& playerObj);
+    Spawner(GameObject& obj, GameObject& playerObj);
 
     void update(float dt) override;
 
     int getID() override;
+
+    void setEnemyPrefab(Prefab* e);
     private:
+    GameObject& player;
+
     Prefab* enemy;
     float spawnState = 0;
     float spawnRate = 5;

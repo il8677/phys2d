@@ -4,6 +4,14 @@
 
 #include <random>
 
+void NullRenderer::render(RenderInfo ri, sf::RenderWindow& window){
+
+}
+
+Renderer* NullRenderer::clone(){
+    return new NullRenderer(*this);
+}
+
 void CircleRenderer::render(RenderInfo ri, sf::RenderWindow& window){
     circle.setRadius(r);
     circle.setOrigin(r, r);

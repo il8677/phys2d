@@ -15,6 +15,7 @@ set(GAME_SOURCES
     GameObjects/PistolBullet.cpp
     GameObjects/Bullet.cpp
     GameObjects/Health.cpp
+    GameObjects/Spawner.cpp
 
     Input.cpp
     Game.cpp

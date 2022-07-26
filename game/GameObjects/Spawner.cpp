@@ -1,6 +1,10 @@
 #include "Spawner.h"
 
-Spawner::update(float dt){
+Spawner::Spawner(GameObject& obj, GameObject& playerObj) : Component(obj), player(playerObj) {
+    
+}
+
+void Spawner::update(float dt){
     spawnState += dt;
     if(spawnState > spawnRate){
         spawnState = 0;
@@ -9,6 +13,10 @@ Spawner::update(float dt){
     }
 }
 
-void Spawner::getID() override{
+void Spawner::setEnemyPrefab(Prefab* e){
+    enemy = e;
+}
+
+int Spawner::getID() {
     return Component::getID<Spawner>();
 }

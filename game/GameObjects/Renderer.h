@@ -15,6 +15,10 @@ class Renderer{
     public:
     virtual void render(RenderInfo ri, sf::RenderWindow& window)=0;
     virtual Renderer* clone()=0;
+
+    void setColor(uint32_t c);
+    uint32_t getColor();
+    
     protected:
     sf::Color color;
 };

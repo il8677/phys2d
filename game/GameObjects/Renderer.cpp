@@ -4,6 +4,15 @@
 
 #include <random>
 
+void Renderer::setColor(uint32_t c){
+    color = sf::Color(c);
+}
+
+uint32_t Renderer::getColor(){
+    return color.toInteger();
+}
+
+
 void NullRenderer::render(RenderInfo ri, sf::RenderWindow& window){
 
 }

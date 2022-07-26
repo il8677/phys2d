@@ -10,7 +10,8 @@ class Suicider : public EnemyController{
     Component* clone(GameObject* newObj) const override;
 
     void update(float dt) override;
+    void start() override;
 
     private:
-    float speed = 1;
+    float speed = 1.3f;
 };

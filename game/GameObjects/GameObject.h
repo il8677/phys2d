@@ -58,6 +58,8 @@ class GameObject{
 
     void destroy();
 
+    const std::unique_ptr<Renderer>& getRenderer() const;
+
     protected:
     std::vector<std::unique_ptr<Component>> components;
     private:

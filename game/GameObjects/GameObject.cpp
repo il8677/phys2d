@@ -110,4 +110,8 @@ void GameObject::destroy(){
     doDestroy = true;
 }
 
+const std::unique_ptr<Renderer>& GameObject::getRenderer() const{
+    return renderer;
+}
+
 std::list<GameObject> GameObject::objects;

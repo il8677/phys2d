@@ -16,11 +16,17 @@ void Health::damage(float amount){
         if(deathCallback) deathCallback();
         else gameObject->destroy();
     }
+
+    uint32_t currentColor = gameObject->getRenderer()->getColor();
+    gameObject->getRenderer()->setColor(currentColor & 0xFFFFFF00 | (int)(0xFF*health/(float)maxHealth));
 }
 
 void Health::heal(float amount){
     health += amount;
     if(health > maxHealth) health = maxHealth;
+
+    uint32_t currentColor = gameObject->getRenderer()->getColor();
+    gameObject->getRenderer()->setColor(currentColor & 0xFFFFFF00 | (int)(0xFF*health/(float)maxHealth));
 }
 
 void Health::update(float dt) {

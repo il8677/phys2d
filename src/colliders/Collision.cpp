@@ -14,7 +14,6 @@ namespace phys2d{
     void polyPoly(Contact& contact);
 
     void dispatchContact(Contact& contact){
-
         static std::function<void(Contact&)> resolves[2][2] = {
             {circleCircle, circlePoly},
             {circlePoly, polyPoly}};
@@ -67,12 +66,6 @@ namespace phys2d{
 
         ShapeCircle* A = (ShapeCircle*)bA->shape;
         ShapePoly* B = (ShapePoly*)bB->shape;
-
-        // Early out
-        Vec2 dist = bA->position - bB->position;
-        float extentSum = A->radius + B->maxExtent;
-        extentSum *= extentSum;
-        if(dist.magnitudeSq() > extentSum) return;
 
         Mat2 aOrient(bA->rotation);
         Mat2 bOrient(bB->rotation);
@@ -223,13 +216,6 @@ namespace phys2d{
 
         ShapePoly* A = (ShapePoly*)bA->shape;
         ShapePoly* B = (ShapePoly*)bB->shape;
-
-        // Early out
-        Vec2 dist = bA->position - bB->position;
-        float extentSum = A->maxExtent + B->maxExtent;
-        extentSum *= extentSum;
-        if(dist.magnitudeSq() > extentSum) return;
-
 
         auto [indexa, pena] = getMaxPen(bA, bB);
         auto [indexb, penb] = getMaxPen(bB, bA);

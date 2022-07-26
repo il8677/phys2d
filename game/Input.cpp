@@ -24,6 +24,13 @@ bool Input::getKeyState(sf::Keyboard::Key code){
     return pressed[code];
 }
 
+float Input::getViewportX(){
+    return viewportX;
+}
+float Input::getViewportY(){
+    return viewportY;
+}
+
 bool Input::pressed[];
 float Input::viewportX, Input::viewportY;
 float Input::maxX, Input::maxY;

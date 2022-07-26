@@ -12,8 +12,10 @@ class Input{
     static bool getMouseL();
     static bool getMouseR();
 
-    private:
+    static float getViewportX();
+    static float getViewportY();
 
+    private:
     static void setKeyState(sf::Keyboard::Key code, bool state);
     static bool pressed[sf::Keyboard::Key::KeyCount];
 

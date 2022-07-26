@@ -24,5 +24,5 @@ void Suicider::update(float dt){
 
     Vec2 dir =  targetBody->position - thisBody->position;
 
-    thisBody->velocity = dir * speed;
+    thisBody->velocity += dir * speed;
 }

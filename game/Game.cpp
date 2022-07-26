@@ -12,14 +12,14 @@
 
 
 using namespace phys2d;
-std::initializer_list<Vec2> square = {{-1,-1}, {1,-1}, {1, 1},{-1,1}};
-std::initializer_list<Vec2> square4 = {{-4,-4}, {4,-4}, {4, 4},{-4,4}};
+std::initializer_list<Vec2> bulletModel = {{-1,-1}, {0,0}, {-1,1}};
+std::initializer_list<Vec2> enemySquare = {{-3,-3}, {3,-3}, {3, 3},{-3,3}};
 
 Game::Game() : 
     window(sf::VideoMode(viewX, viewY), "My window"),
     world({0,0}), mainView(sf::FloatRect(0,0, aspectX*10, aspectY*10)),
-    pistolBullet(Body(new ShapePoly(square), BodyData(0.1f)), std::make_unique<PolyRenderer>(square, 0xFFC914FF)),
-    enemy(Body(new ShapePoly(square4), BodyData(1)), std::make_unique<PolyRenderer>(square4, 0xE4572EFF)) {
+    pistolBullet(Body(new ShapePoly(bulletModel), BodyData(0.1f)), std::make_unique<PolyRenderer>(bulletModel, 0xFFC914FF)),
+    enemy(Body(new ShapePoly(enemySquare), BodyData(1)), std::make_unique<PolyRenderer>(enemySquare, 0xE4572EFF)) {
         
     //TODO: better solution
     Input::maxX = viewX;

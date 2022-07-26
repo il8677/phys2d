@@ -4,13 +4,11 @@
 
 #include <memory>
 
-class Spawner : public Component{
+class Spawner : public ComponentParent<Spawner>{
     public:
-    Spawner(GameObject& obj, GameObject& playerObj);
+    Spawner(GameObject* obj, GameObject& playerObj);
 
     void update(float dt) override;
-
-    int getID() override;
 
     void setEnemyPrefab(Prefab* e);
     private:

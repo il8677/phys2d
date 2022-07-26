@@ -2,8 +2,7 @@
 
 #include "GameObject.h"
 
-Health::Health(GameObject& obj) : Component(obj){
-    deathCallback = [&](){obj.destroy();};
+Health::Health(GameObject* obj) : ComponentParent(obj){
 }
 
 void Health::setMaxHealth(float amount){
@@ -14,7 +13,8 @@ void Health::setMaxHealth(float amount){
 void Health::damage(float amount){
     health -= amount;
     if(health <= 0){
-        deathCallback();
+        if(deathCallback) deathCallback();
+        else gameObject->destroy();
     }
 }
 
@@ -25,10 +25,6 @@ void Health::heal(float amount){
 
 void Health::update(float dt) {
 
-}
-
-int Health::getID(){
-    return Component::getID<Health>();
 }
 
 void Health::setDeathCB(std::function<void()> dc){

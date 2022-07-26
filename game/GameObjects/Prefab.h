@@ -11,28 +11,24 @@
 #include <memory>
 
 class Prefab{
+    GameObject templateObject;
+    Body body;
 public:
-    virtual GameObject& create(phys2d::Vec2 pos)=0;
-};
-
-template<typename... Components>
-class PrefabComponents : public Prefab {
-    public:
-    PrefabComponents(phys2d::Body templateBody_, std::unique_ptr<Renderer> renderer_) : templateBody(templateBody_), renderer(std::move(renderer_)) {
+    Prefab(GameObject&& t, Body b) : templateObject(t), body(b){
 
     }
 
-    GameObject& create(phys2d::Vec2 pos) override {
-        GameObject& obj = GameObject::addObject(GameObject(std::unique_ptr<Renderer>(renderer->clone())));
+    Prefab() : templateObject(std::make_unique<NullRenderer>()){
+        
+    }
 
-        obj.addComponent<BodyComponent>(BodyComponent::world->createBody(&templateBody));
+    virtual GameObject& create(phys2d::Vec2 pos){
+        GameObject prepObj = GameObject(templateObject);
+        prepObj.addComponent<BodyComponent>(BodyComponent::world->createBody(&body));
+
+        GameObject& obj = GameObject::addObject(std::move(prepObj));
         obj.getComponent<BodyComponent>()->body->position = pos;
-        obj.addComponent<Components ...>();
 
         return obj;
     }
-
-    private:
-    phys2d::Body templateBody;
-    std::unique_ptr<Renderer> renderer;
 };

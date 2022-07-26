@@ -24,8 +24,40 @@ GameObject::GameObject(std::unique_ptr<Renderer> renderer_) :
     renderer(std::move(renderer_)){
 }
 
+GameObject::GameObject(const GameObject& other){
+    renderer = std::unique_ptr<Renderer>(other.renderer->clone());
+
+    for(const std::unique_ptr<Component>& component : other.components){
+        components.emplace_back(component->clone(this));
+    }
+}
+
+GameObject::GameObject(GameObject&& other){
+    renderer = std::move(other.renderer);
+
+    for(std::unique_ptr<Component>& component : other.components){
+        auto& c = components.emplace_back(std::move(component));
+        c->setGameObject(this);
+    }
+}
+
+GameObject& GameObject::operator=(const GameObject& other){
+    renderer = std::unique_ptr<Renderer>(other.renderer->clone());
+
+    components.clear();
+    for(const std::unique_ptr<Component>& component : other.components){
+        components.emplace_back(component->clone(this));
+    }
+
+    return *this;
+}
+
 GameObject& GameObject::addObject(GameObject&& go){
-   return objects.emplace_back(std::move(go));
+
+    GameObject& obj = objects.emplace_back(std::move(go));
+    obj.setup();
+    obj.isActive = true;
+    return obj;
 }
 
 void GameObject::setup(){

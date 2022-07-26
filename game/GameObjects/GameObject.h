@@ -23,14 +23,20 @@ class GameObject{
     void tick(float dt, sf::RenderWindow& window);
 
     GameObject( std::unique_ptr<Renderer> renderer_);
+    GameObject(const GameObject& other);
+    GameObject(GameObject&& other);
+
+    GameObject& operator=(const GameObject& other);
 
     static GameObject& addObject(GameObject&& go);
 
     template <class T, typename... Args>
     T* addComponent(Args&&... args){
-        auto c = components.emplace_back(std::make_unique<T>(*this, std::forward<Args>(args)...)).get();
-        c->setup();
-        c->start();
+        auto c = components.emplace_back(std::make_unique<T>(this, std::forward<Args>(args)...)).get();
+        if(isActive){
+            c->setup();
+            c->start();
+        }
         return static_cast<T*>(c);
             
     }
@@ -56,6 +62,7 @@ class GameObject{
     std::vector<std::unique_ptr<Component>> components;
     private:
     bool doDestroy = false;
+    bool isActive = false;
 
     std::unique_ptr<Renderer> renderer;
 

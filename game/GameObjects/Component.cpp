@@ -4,7 +4,7 @@ Component::~Component(){
     
 }
 
-Component::Component(GameObject& gameObject_) : gameObject(gameObject_){
+Component::Component(GameObject* gameObject_) : gameObject(gameObject_){
 
 }
 
@@ -18,6 +18,14 @@ void Component::start(){
 
 void Component::destroy(){
 
+}
+
+void Component::setGameObject(GameObject* obj){
+    gameObject = obj;
+}
+
+GameObject* Component::getGo(){
+    return gameObject;
 }
 
 int Component::componentCounter = 0;

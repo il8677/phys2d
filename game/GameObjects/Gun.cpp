@@ -10,18 +10,18 @@
 #include <phys2d/Body.h>
 #include <phys2d/maths/vec2.h>
 
-Gun::Gun(GameObject& obj, GameObject& playerObj) :
-    Component(obj), player(playerObj){
+Gun::Gun(GameObject* obj, GameObject& playerObj) :
+    ComponentParent(obj), player(playerObj){
 
 }
 
 void Gun::setup() {
-    phys2d::Body* body = gameObject.getComponent<BodyComponent>()->body;
+    phys2d::Body* body = gameObject->getComponent<BodyComponent>()->body;
     body->layer = 0;
 }
 
 void Gun::update(float dt) {
-    phys2d::Body* body = gameObject.getComponent<BodyComponent>()->body;
+    phys2d::Body* body = gameObject->getComponent<BodyComponent>()->body;
     phys2d::Body* playerBody = player.getComponent<BodyComponent>()->body;
 
     const phys2d::Vec2 mousePos(Input::getMouseX(), Input::getMouseY());
@@ -45,8 +45,4 @@ void Gun::update(float dt) {
 
 void Gun::setBulletPrefab(Prefab* comp){
     bullet = comp;
-}
-
-int Gun::getID(){
-    return Component::getID<Gun>();
 }

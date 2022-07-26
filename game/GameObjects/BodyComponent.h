@@ -4,13 +4,16 @@
 #include <phys2d/Body.h>
 #include <phys2d/World.h>
 
-class BodyComponent : public Component{
+class BodyComponent : public ComponentParent<BodyComponent>{
     public:
-    BodyComponent(GameObject& obj, phys2d::Body* body);
+    BodyComponent(GameObject* obj, phys2d::Body* body);
+
+    void setGameObject(GameObject* obj) override;
 
     void update(float dt) override;
     void destroy() override;
-    int getID() override;
+
+    Component* clone(GameObject* newObj) const override;
 
     phys2d::Body* body;
 

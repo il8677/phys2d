@@ -11,12 +11,12 @@
 
 using namespace phys2d;
 
-Player::Player(GameObject& obj) : Component(obj) {
+Player::Player(GameObject* obj) : ComponentParent(obj) {
     
 }
 
 void Player::update(float dt){
-    Body* body = gameObject.getComponent<BodyComponent>()->body;
+    Body* body = gameObject->getComponent<BodyComponent>()->body;
 
     body->velocity = {0,0};
     if(Input::getKeyState(sf::Keyboard::Key::A)){
@@ -31,8 +31,4 @@ void Player::update(float dt){
     if(Input::getKeyState(sf::Keyboard::Key::S)){
         body->velocity.y = moveSpeed;
     }
-}
-
-int Player::getID(){
-    return Component::getID<Player>();
 }

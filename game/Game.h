@@ -3,6 +3,7 @@
 #include "GameObjects/GameObject.h"
 #include "GameObjects/Prefab.h"
 #include "GameObjects/PistolBullet.h"
+#include "GameObjects/Suicider.h"
 #include "GameObjects/Health.h"
 
 #include <SFML/Window.hpp>
@@ -45,6 +46,6 @@ class Game{
 
     sf::Time elapsed;
     
-    PrefabComponents<PistolBullet> pistolBullet;
-    PrefabComponents<Health> enemy;
+    Prefab pistolBullet;
+    Prefab suicider;
 };

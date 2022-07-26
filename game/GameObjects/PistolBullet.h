@@ -3,7 +3,7 @@
 
 class PistolBullet : public Bullet {
     public:
-    PistolBullet(GameObject& obj);
+    PistolBullet(GameObject* obj);
 
     void setup() override;
     void update(float dt) override;

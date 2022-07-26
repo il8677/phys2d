@@ -34,6 +34,10 @@ namespace phys2d{
         return inertiainv;
     }
 
+    Body::Body() : data(1){
+
+    }
+
     Body::Body(Shape* shape_, BodyData data_, BodyType type_) : 
         shape(shape_), data(data_) {
         setType(type_);

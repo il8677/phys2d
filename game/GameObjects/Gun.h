@@ -4,16 +4,15 @@
 
 #include <memory>
 
-class Gun : public Component{
+class Gun : public ComponentParent<Gun>{
     public:
-    Gun(GameObject& obj, GameObject& playerObj);
+    Gun(GameObject* obj, GameObject& playerObj);
 
     void setup() override;
     void update(float dt) override;
 
     void setBulletPrefab(Prefab* comp);
 
-    int getID() override;
     private:
     Prefab* bullet;
     GameObject& player;

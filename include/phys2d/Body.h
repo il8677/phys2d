@@ -34,6 +34,8 @@ namespace phys2d{
 
         Body(Shape* shape, BodyData data, BodyType type=DYNAMIC);
         Body(const Body& other);
+        Body();
+
         Body& operator=(const Body& other);
 
         Body(Body&& other);

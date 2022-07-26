@@ -16,6 +16,8 @@ set(GAME_SOURCES
     GameObjects/Bullet.cpp
     GameObjects/Health.cpp
     GameObjects/Spawner.cpp
+    GameObjects/EnemyController.cpp
+    GameObjects/Suicider.cpp
 
     Input.cpp
     Game.cpp

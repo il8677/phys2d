@@ -3,16 +3,15 @@
 
 #include <functional>
 
-class Health : public Component{
+class Health : public ComponentParent<Health>{
     public:
-    Health(GameObject& obj);
+    Health(GameObject* obj);
 
     void setMaxHealth(float amount);
     void damage(float amount);
     void heal(float amount);
 
     void update(float dt) override;
-    int getID() override;
 
     void setDeathCB(std::function<void()> dc);
 

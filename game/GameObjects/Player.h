@@ -1,11 +1,10 @@
 #include "Component.h"
 
-class Player : public Component{
+class Player : public ComponentParent<Player>{
 public:
-    Player(GameObject& obj);
+    Player(GameObject* obj);
 
     void update(float dt) override;
-    int getID() override;
 
     private:
     const float moveSpeed = 30.f;

@@ -13,13 +13,11 @@
 
 using namespace phys2d;
 std::initializer_list<Vec2> bulletModel = {{-1,-1}, {0,0}, {-1,1}};
-std::initializer_list<Vec2> enemySquare = {{-3,-3}, {3,-3}, {3, 3},{-3,3}};
+std::initializer_list<Vec2> suiciderModel = {{-3,-3}, {3,-3}, {3, 3},{-3,3}};
 
 Game::Game() : 
     window(sf::VideoMode(viewX, viewY), "My window"),
-    world({0,0}), mainView(sf::FloatRect(0,0, aspectX*10, aspectY*10)),
-    pistolBullet(Body(new ShapePoly(bulletModel), BodyData(0.1f)), std::make_unique<PolyRenderer>(bulletModel, 0xFFC914FF)),
-    enemy(Body(new ShapePoly(enemySquare), BodyData(1)), std::make_unique<PolyRenderer>(enemySquare, 0xE4572EFF)) {
+    world({0,0}), mainView(sf::FloatRect(0,0, aspectX*10, aspectY*10)) {
         
     //TODO: better solution
     Input::maxX = viewX;
@@ -28,6 +26,18 @@ Game::Game() :
     Input::viewportY = aspectY*10;
 
     BodyComponent::world = &world;
+    
+    // Setup prefabs
+    {
+        GameObject suiciderObj(std::make_unique<PolyRenderer>(suiciderModel, 0xE4572EFF));
+        suiciderObj.addComponent<Suicider>();
+        suiciderObj.addComponent<Health>();
+        suicider = Prefab(std::move(suiciderObj), Body(new ShapePoly(suiciderModel), BodyData(1), Body::BodyType::KINEMATIC));
+
+        GameObject bulletObj(std::make_unique<PolyRenderer>(bulletModel, 0xFFC914FF));
+        bulletObj.addComponent<PistolBullet>();
+        pistolBullet = Prefab(std::move(bulletObj), Body(new ShapePoly(bulletModel), BodyData(0.1)));
+    }
 
     window.setFramerateLimit(60);
     window.setView(mainView);
@@ -42,7 +52,7 @@ Game::Game() :
     playerGun.getComponent<Gun>()->setBulletPrefab(&pistolBullet);
 
     GameObject& spawner = GameObject::addObject(GameObject(std::make_unique<NullRenderer>()));
-    spawner.addComponent<Spawner>(player)->setEnemyPrefab(&enemy);
+    spawner.addComponent<Spawner>(player)->setEnemyPrefab(&suicider);
 
     // Outer walls
     GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 1, aspectY*5, Body::BodyType::STATIC);

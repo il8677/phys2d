@@ -3,6 +3,7 @@
 #include "GameObjects/GameObject.h"
 #include "GameObjects/Prefab.h"
 #include "GameObjects/PistolBullet.h"
+#include "GameObjects/Health.h"
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
@@ -26,7 +27,7 @@ class Game{
     void handleLogic();
     void handleImGui();
 
-
+    void gameOver();
 
     const int aspectX = 16;
     const int aspectY = 10;
@@ -45,4 +46,5 @@ class Game{
     sf::Time elapsed;
     
     PrefabComponents<PistolBullet> pistolBullet;
+    PrefabComponents<Health> enemy;
 };

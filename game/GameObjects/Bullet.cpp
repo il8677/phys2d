@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "BodyComponent.h"
+#include "Health.h"
 
 Bullet::Bullet(GameObject& obj, float fireRate_, float bulletSpeed) : Component(obj){
     fireRate = fireRate_;
@@ -12,6 +13,11 @@ void Bullet::start(){
     //gameObject.getComponent<BodyComponent>()->body->setContinuous(true);
     gameObject.getComponent<BodyComponent>()->body->isTrigger = true;
     gameObject.getComponent<BodyComponent>()->body->triggerCallback = [&](Body* other){
+        Health* health = ((GameObject*)other->userData)->getComponent<Health>();
+
+        if(health){
+            health->damage(5);
+        }
         gameObject.destroy();
     };
 }

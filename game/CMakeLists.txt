@@ -14,6 +14,7 @@ set(GAME_SOURCES
     GameObjects/BodyComponent.cpp
     GameObjects/PistolBullet.cpp
     GameObjects/Bullet.cpp
+    GameObjects/Health.cpp
 
     Input.cpp
     Game.cpp

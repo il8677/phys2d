@@ -1,11 +1,22 @@
 #include "GameObject.h"
 #include "BodyComponent.h"
 
-GameObject GameObject::createCircle(World& world, uint32_t color, BodyData data, Vec2 pos, float r, Body::BodyType type){
+GameObject& GameObject::createCircle(World& world, uint32_t color, BodyData data, Vec2 pos, float r, Body::BodyType type){
     Body* b = world.createBody(new ShapeCircle(r), data, type);
     b->position = pos;
-    GameObject go(std::make_unique<CircleRenderer>(r, color));
+    GameObject& go = GameObject::addObject(GameObject(std::make_unique<CircleRenderer>(r, color)));
     go.addComponent<BodyComponent>(b);
+    return go;
+}
+
+GameObject& GameObject::createRect(World& world, uint32_t color, BodyData data, Vec2 pos, float hextx, float hexty, Body::BodyType type){
+    Body* b = world.createBody(new ShapePoly(hextx, hexty), data, type);
+    b->position = pos;
+    ShapePoly* sp = (ShapePoly*)b->shape;
+
+    GameObject& go = GameObject::addObject(GameObject(std::make_unique<PolyRenderer>(sp->points, color)));
+    go.addComponent<BodyComponent>(b);
+
     return go;
 }
 
@@ -34,17 +45,6 @@ void GameObject::tick(float dt, sf::RenderWindow& window){
     for(std::unique_ptr<Component>& component : components){
         component->update(dt);
     }
-}
-
-GameObject GameObject::createRect(World& world, uint32_t color, BodyData data, Vec2 pos, float hextx, float hexty, Body::BodyType type){
-    Body* b = world.createBody(new ShapePoly(hextx, hexty), data, type);
-    b->position = pos;
-    ShapePoly* sp = (ShapePoly*)b->shape;
-
-    GameObject go(std::make_unique<PolyRenderer>(sp->points, color));
-    go.addComponent<BodyComponent>(b);
-
-    return go;
 }
 
 Vec2 GameObject::getPosition(){

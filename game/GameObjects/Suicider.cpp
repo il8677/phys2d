@@ -26,7 +26,7 @@ void Suicider::start(){
         GameObject* otherObj = (GameObject*)other->userData;
         if(otherObj->getComponent<Player>()){
             if(Health* h = target->getComponent<Health>()){
-                h->damage(2);
+                h->damage(3);
             }
 
             gameObject->destroy();

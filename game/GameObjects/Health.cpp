@@ -2,7 +2,8 @@
 
 #include "GameObject.h"
 
-Health::Health(GameObject* obj) : ComponentParent(obj){
+Health::Health(GameObject* obj, float maxHealth) : ComponentParent(obj){
+    setMaxHealth(maxHealth);
 }
 
 void Health::setMaxHealth(float amount){

@@ -5,7 +5,7 @@
 
 class Health : public ComponentParent<Health>{
     public:
-    Health(GameObject* obj);
+    Health(GameObject* obj, float maxHealth=10);
 
     void setMaxHealth(float amount);
     void damage(float amount);

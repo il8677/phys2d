@@ -14,9 +14,11 @@ class Bullet : public ComponentParent<Bullet> {
     virtual float getFireRate();
     
     protected:
-    Bullet(GameObject* obj, float fireRate, float bulletSpeed);
+    Bullet(GameObject* obj, float fireRate, float bulletSpeed, float damage);
     phys2d::Vec2 travelVector;
 
     float fireRate;
     float speed = 100;
+
+    float damage;
 };

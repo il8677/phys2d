@@ -34,11 +34,12 @@ Game::Game() :
         GameObject suiciderObj(std::make_unique<PolyRenderer>(suiciderModel, 0xE4572EFF));
         suiciderObj.addComponent<Suicider>();
         suiciderObj.addComponent<Health>();
+
         suicider = Prefab(std::move(suiciderObj), Body(new ShapePoly(suiciderModel), BodyData(1), Body::BodyType::KINEMATIC));
 
         GameObject shooterObj(std::make_unique<PolyRenderer>(shooterModel, 0x62929EFF));
         shooterObj.addComponent<Shooter>()->setBulletPrefab(&pistolBullet);
-        shooterObj.addComponent<Health>();
+        shooterObj.addComponent<Health>(5);
         shooter = Prefab(std::move(shooterObj), Body(new ShapePoly(shooterModel), BodyData(1), Body::BodyType::KINEMATIC));
 
         GameObject bulletObj(std::make_unique<PolyRenderer>(bulletModel, 0xFFC914FF));

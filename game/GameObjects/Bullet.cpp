@@ -4,9 +4,10 @@
 #include "BodyComponent.h"
 #include "Health.h"
 
-Bullet::Bullet(GameObject* obj, float fireRate_, float bulletSpeed) : ComponentParent(obj){
+Bullet::Bullet(GameObject* obj, float fireRate_, float bulletSpeed, float damage_) : ComponentParent(obj){
     fireRate = fireRate_;
     speed = bulletSpeed;
+    damage = damage_;
 }
 
 void Bullet::start(){
@@ -17,7 +18,7 @@ void Bullet::start(){
         Health* health = ((GameObject*)other->userData)->getComponent<Health>();
 
         if(health){
-            health->damage(5);
+            health->damage(damage);
         }
         gameObject->destroy();
     };

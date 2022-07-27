@@ -41,4 +41,5 @@ void Suicider::update(float dt){
     Vec2 dir =  targetBody->position - thisBody->position;
 
     thisBody->velocity += dir * speed * dt;
+    if(thisBody->velocity.magnitudeSq() > 4000) thisBody->velocity *= 0.8f;
 }

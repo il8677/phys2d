@@ -104,6 +104,7 @@ Game::Game() :
 void Game::setupGame(){
     restartGame = false;
     GameObject::objects.clear();
+    world.clear();
 
     GameObject& player = GameObject::createCircle(world, 0x79B342FF, BodyData(1), Vec2(50,50), 2.f, Body::BodyType::KINEMATIC);
     player.addComponent<Health>();

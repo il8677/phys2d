@@ -26,6 +26,8 @@ namespace phys2d{
         Body* createBody(Body* b);
         void destroyBody(Body* body);
 
+        void clear();
+
         void step(float dt);
 
         void setGravity(Vec2 gravity);

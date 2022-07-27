@@ -28,6 +28,11 @@ namespace phys2d{
         return b;
     }
 
+    void World::clear(){
+        bodies.clear();
+        broadphase.clear();
+    }
+
     void World::setGravity(Vec2 g){
         gravity = g;
     }

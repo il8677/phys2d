@@ -50,9 +50,10 @@ Game::Game() :
     GameObject& playerGun = GameObject::createRect(world, 0x649537FF, BodyData(1), Vec2(0,0), 0.5f, 0.75f);
     playerGun.addComponent<Gun>(player);
     playerGun.getComponent<Gun>()->setBulletPrefab(&pistolBullet);
+    playerGun.getComponent<BodyComponent>()->body->layer = 0;
 
     GameObject& spawner = GameObject::addObject(GameObject(std::make_unique<NullRenderer>()));
-    spawner.addComponent<Spawner>(player)->setEnemyPrefab(&suicider);
+    spawner.addComponent<Spawner>(&player)->setEnemyPrefab(&suicider);
 
     // Outer walls
     GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 1, aspectY*5, Body::BodyType::STATIC);

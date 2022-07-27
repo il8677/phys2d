@@ -5,7 +5,7 @@
 
 #include <random>
 
-Spawner::Spawner(GameObject* obj, GameObject& playerObj) : ComponentParent(obj), player(playerObj) {
+Spawner::Spawner(GameObject* obj, GameObject* playerObj) : ComponentParent(obj), player(playerObj) {
     
 }
 
@@ -21,7 +21,7 @@ void Spawner::update(float dt){
         GameObject& newEnemy = enemy->create(loc);
         EnemyController* controller = newEnemy.getComponent<EnemyController>();
 
-        controller->setTarget(&player);
+        controller->setTarget(player);
     }
 }
 

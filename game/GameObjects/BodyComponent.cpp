@@ -7,7 +7,8 @@ Component* BodyComponent::clone(GameObject* newObj) const {
     
     // Create a new body for the new component
     n->body = world->createBody(body);
-    n->body->userData = (void*)newObj;
+    
+    n->setGameObject(newObj);
 
     return n;
 }
@@ -22,11 +23,13 @@ void BodyComponent::destroy(){
 }
 
 BodyComponent::BodyComponent(GameObject* obj, phys2d::Body* body_) : body(body_), ComponentParent(obj) {
-    body->userData = (void*)&obj;
+    body->userData = (void*)obj;
 }
 
 void BodyComponent::update(float dt){
-
+    if(body->userData != gameObject){
+        body->userData = gameObject;
+    }
 }
 
 phys2d::World* BodyComponent::world;

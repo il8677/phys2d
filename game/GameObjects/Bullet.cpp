@@ -12,7 +12,7 @@ Bullet::Bullet(GameObject* obj, float fireRate_, float bulletSpeed) : ComponentP
 void Bullet::start(){
     //gameObject.getComponent<BodyComponent>()->body->setContinuous(true);
     gameObject->getComponent<BodyComponent>()->body->isTrigger = true;
-    gameObject->getComponent<BodyComponent>()->body->triggerCallback = [&](Body* other){
+    gameObject->getComponent<BodyComponent>()->body->triggerCallback = [&](Body* obj, Body* other){
         Health* health = ((GameObject*)other->userData)->getComponent<Health>();
 
         if(health){

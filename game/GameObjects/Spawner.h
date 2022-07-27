@@ -6,13 +6,13 @@
 
 class Spawner : public ComponentParent<Spawner>{
     public:
-    Spawner(GameObject* obj, GameObject& playerObj);
+    Spawner(GameObject* obj, GameObject* playerObj);
 
     void update(float dt) override;
 
     void setEnemyPrefab(Prefab* e);
     private:
-    GameObject& player;
+    GameObject* player;
 
     Prefab* enemy;
     float spawnState = 0;

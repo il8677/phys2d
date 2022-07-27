@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "Health.h"
+#include "Player.h"
 
 #include <phys2d/Body.h>
 #include <phys2d/maths/vec2.h>
@@ -21,8 +22,9 @@ Component* Suicider::clone(GameObject* newObj) const {
 
 void Suicider::start(){
     Body* b = gameObject->getComponent<BodyComponent>()->body;
-    b->triggerCallback = [&](Body* other){
-        if(other->userData == &target){
+    b->triggerCallback = [&](Body* obj, Body* other){
+        GameObject* otherObj = (GameObject*)other->userData;
+        if(otherObj->getComponent<Player>()){
             if(Health* h = target->getComponent<Health>()){
                 h->damage(2);
             }

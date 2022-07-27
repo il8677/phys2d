@@ -25,7 +25,7 @@ class Component{
     GameObject* getGo();
 
     protected:
-    GameObject* gameObject;
+    GameObject* gameObject=0;
 
     private:
     static int componentCounter;

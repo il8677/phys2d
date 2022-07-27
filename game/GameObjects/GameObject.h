@@ -32,12 +32,12 @@ class GameObject{
 
     template <class T, typename... Args>
     T* addComponent(Args&&... args){
-        auto c = components.emplace_back(std::make_unique<T>(this, std::forward<Args>(args)...)).get();
+        std::unique_ptr<Component>& c = components.emplace_back(std::make_unique<T>(this, std::forward<Args>(args)...));
         if(isActive){
             c->setup();
             c->start();
         }
-        return static_cast<T*>(c);
+        return static_cast<T*>(c.get());
             
     }
 
@@ -61,7 +61,7 @@ class GameObject{
     const std::unique_ptr<Renderer>& getRenderer() const;
 
     protected:
-    std::vector<std::unique_ptr<Component>> components;
+    std::list<std::unique_ptr<Component>> components;
     private:
     bool doDestroy = false;
     bool isActive = false;

@@ -4,8 +4,8 @@ Component::~Component(){
     
 }
 
-Component::Component(GameObject* gameObject_) : gameObject(gameObject_){
-
+Component::Component(GameObject* gameObject_) {
+    this->setGameObject(gameObject_);
 }
 
 void Component::setup(){

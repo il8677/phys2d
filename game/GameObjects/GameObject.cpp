@@ -61,12 +61,12 @@ GameObject& GameObject::addObject(GameObject&& go){
 }
 
 void GameObject::setup(){
-    for(int i = 0; i < components.size(); i++){
-        components[i]->setup();
+    for(std::unique_ptr<Component>& c : components){
+        c->setup();
     }
 
-    for(int i = 0; i < components.size(); i++){
-        components[i]->start();
+    for(std::unique_ptr<Component>& c: components){
+        c->start();
     }
 }
 

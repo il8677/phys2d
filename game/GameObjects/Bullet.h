@@ -11,7 +11,7 @@ class Bullet : public ComponentParent<Bullet> {
     virtual void update(float dt) override;
     void setTravelVector(phys2d::Vec2 travelVector);
     
-    float getFireRate();
+    virtual float getFireRate();
     
     protected:
     Bullet(GameObject* obj, float fireRate, float bulletSpeed);

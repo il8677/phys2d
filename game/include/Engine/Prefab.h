@@ -22,12 +22,13 @@ public:
         
     }
 
-    virtual GameObject& create(phys2d::Vec2 pos){
+    virtual GameObject& create(phys2d::Vec2 pos, float rotation=0.0f){
         GameObject prepObj = GameObject(templateObject);
         prepObj.addComponent<BodyComponent>(BodyComponent::world->createBody(&body));
+        prepObj.getComponent<BodyComponent>()->body->position = pos;
+        prepObj.getComponent<BodyComponent>()->body->rotation = rotation;
 
         GameObject& obj = GameObject::addObject(std::move(prepObj));
-        obj.getComponent<BodyComponent>()->body->position = pos;
 
         return obj;
     }

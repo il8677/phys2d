@@ -50,12 +50,15 @@ class Game{
     
     Prefab pistolBullet;
     Prefab smgBullet;
+    Prefab rocketBullet;
+
     Prefab suicider;
     Prefab shooter;
     Prefab elite;
 
     Prefab pistolLoot;
     Prefab smgLoot;
+    Prefab rocketLoot;
 
     bool restartGame;
 };

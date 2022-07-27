@@ -30,6 +30,8 @@ void Bullet::start(){
 
     body->layer = 1<<1;
     body->collideWith = 1 | (1 << 3);
+
+    setTravelVector(Vec2(sin(body->rotation), cos(body->rotation)));
 }
 
 void Bullet::setTravelVector(phys2d::Vec2 travelVector_){

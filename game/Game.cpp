@@ -10,6 +10,7 @@
 #include "GameObjects/Enemies/Elite.h"
 #include "GameObjects/Bullets/PistolBullet.h"
 #include "GameObjects/Bullets/SMGBullet.h"
+#include "GameObjects/Bullets/RocketBullet.h"
 #include "GameObjects/Enemies/Shooter.h"
 
 #include <Engine/Renderer.h>
@@ -47,6 +48,7 @@ Game::Game() :
         GameObject suiciderObj(std::make_unique<PolyRenderer>(suiciderModel, 0xE4572EFF));
         suiciderObj.addComponent<Suicider>();
         suiciderObj.addComponent<Health>();
+        suiciderObj.addComponent<LootDropper>(&rocketLoot, 0.1f);
 
         suicider = Prefab(std::move(suiciderObj), Body(new ShapePoly(suiciderModel), BodyData(1), Body::BodyType::KINEMATIC));
 
@@ -70,6 +72,10 @@ Game::Game() :
         smgBulletObj.addComponent<SMGBullet>();
         smgBullet = Prefab(std::move(smgBulletObj), Body(new ShapePoly(smgBulletModel), BodyData(0.1f)));
 
+        GameObject rocketObj(std::make_unique<CircleRenderer>(1.5f, 0xFFC914FF));
+        rocketObj.addComponent<RocketBullet>(&pistolBullet);
+        rocketBullet = Prefab(std::move(rocketObj), Body(new ShapeCircle(1.5f), BodyData(1)));
+
         GameObject pistolLootObj(std::make_unique<PolyRenderer>(lootBoxModel, 0x88423AFF));
         pistolLootObj.addComponent<Loot>(&pistolBullet);
         pistolLoot = Prefab(std::move(pistolLootObj), Body(new ShapePoly(lootBoxModel), BodyData(1)));
@@ -77,6 +83,10 @@ Game::Game() :
         GameObject smgLootObj(std::make_unique<PolyRenderer>(lootBoxModel, 0xB82FACFF));
         smgLootObj.addComponent<Loot>(&smgBullet);
         smgLoot = Prefab(std::move(smgLootObj), Body(new ShapePoly(lootBoxModel), BodyData(1)));
+
+        GameObject rocketLootObj(std::make_unique<PolyRenderer>(lootBoxModel, 0x7823FFF));
+        rocketLootObj.addComponent<Loot>(&rocketBullet);
+        rocketLoot = Prefab(std::move(rocketLootObj), Body(new ShapePoly(lootBoxModel), BodyData(1)));
     }
 
     window.setFramerateLimit(60);

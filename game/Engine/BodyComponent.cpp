@@ -2,7 +2,7 @@
 
 #include <phys2d/World.h>
 
-Component* BodyComponent::clone(GameObject* newObj) const {
+Component* BodyComponent::clone(GameObject* newObj) {
     BodyComponent* n = (BodyComponent*)ComponentParent<BodyComponent>::clone(newObj);
     
     // Create a new body for the new component

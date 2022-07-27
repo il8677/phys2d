@@ -15,6 +15,7 @@ set(GAME_SOURCES
     GameObjects/Player/Gun.cpp
     
     GameObjects/Bullets/PistolBullet.cpp
+    GameObjects/Bullets/SMGBullet.cpp
     GameObjects/Bullets/Bullet.cpp
     
     GameObjects/Helper/Spawner.cpp

@@ -20,6 +20,10 @@ void Component::destroy(){
 
 }
 
+void Component::onClone(Component* clone) {
+    
+}
+
 void Component::setGameObject(GameObject* obj){
     gameObject = obj;
 }

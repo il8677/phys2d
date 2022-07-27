@@ -7,7 +7,7 @@
 class Suicider : public EnemyController{
     public:
     Suicider(GameObject* obj);
-    Component* clone(GameObject* newObj) const override;
+    Component* clone(GameObject* newObj) override;
 
     void update(float dt) override;
     void start() override;

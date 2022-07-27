@@ -5,10 +5,14 @@
 
 #include "../Helper/Health.h"
 
-Bullet::Bullet(GameObject* obj, float fireRate_, float bulletSpeed, float damage_) : ComponentParent(obj){
+Bullet::Bullet(GameObject* obj, float fireRate_, float bulletSpeed, float damage_) : Component(obj){
     fireRate = fireRate_;
     speed = bulletSpeed;
     damage = damage_;
+}
+
+int Bullet::getID() {
+    return Component::getID<Bullet>();
 }
 
 void Bullet::start(){

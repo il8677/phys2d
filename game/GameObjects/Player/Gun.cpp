@@ -9,6 +9,8 @@
 #include <phys2d/Body.h>
 #include <phys2d/maths/vec2.h>
 
+#include <iostream>
+
 Gun::Gun(GameObject* obj, GameObject& playerObj) :
     ComponentParent(obj), player(playerObj){
 

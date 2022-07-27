@@ -1,12 +1,8 @@
 #pragma once
 #include "Bullet.h"
 
-class PistolBullet : public Bullet {
+class PistolBullet : public BulletParent<PistolBullet> {
     public:
     PistolBullet(GameObject* obj);
-
-    void setup() override;
-    void update(float dt) override;
-
-    private:
+    
 };

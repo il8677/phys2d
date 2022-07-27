@@ -11,9 +11,10 @@ class Component{
     virtual void start();
     virtual void update(float dt)=0;
     virtual void destroy();
+    virtual void onClone(Component* clone);
 
     virtual int getID()=0;
-    virtual Component* clone(GameObject* newObj) const=0;
+    virtual Component* clone(GameObject* newObj)=0;
     
     template<typename T>
     static int getID(){
@@ -48,9 +49,10 @@ class ComponentParent : public Component{
         return Component::getID<Derived>();
     }
 
-    virtual Component* clone(GameObject* newObj) const override{
+    virtual Component* clone(GameObject* newObj) override{
         Component* c = new Derived(*((Derived*)this));
         c->setGameObject(newObj);
+        onClone(c);
         return c;
     }
     

@@ -8,7 +8,7 @@
 class Shooter : public EnemyController{
     public:
     Shooter(GameObject* obj);
-    Component* clone(GameObject* newObj) const override;
+    Component* clone(GameObject* newObj) override;
 
     void setup() override;
     void update(float dt) override;

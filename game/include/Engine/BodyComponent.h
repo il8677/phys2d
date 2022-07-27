@@ -13,7 +13,7 @@ class BodyComponent : public ComponentParent<BodyComponent>{
     void update(float dt) override;
     void destroy() override;
 
-    Component* clone(GameObject* newObj) const override;
+    Component* clone(GameObject* newObj) override;
 
     phys2d::Body* body;
 

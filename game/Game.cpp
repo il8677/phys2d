@@ -1,9 +1,12 @@
-#include "Game.h"
 #include "Input.h"
+#include "Game.h"
 
 #include "GameObjects/Player/Player.h"
 #include "GameObjects/Player/Gun.h"
 #include "GameObjects/Helper/Spawner.h"
+#include "GameObjects/Enemies/Shooter.h"
+#include "GameObjects/Bullets/PistolBullet.h"
+#include "GameObjects/Bullets/SMGBullet.h"
 #include "GameObjects/Enemies/Shooter.h"
 
 #include <Engine/Renderer.h>
@@ -15,7 +18,7 @@
 
 using namespace phys2d;
 std::initializer_list<Vec2> bulletModel = {{-1,-1}, {0,0}, {-1,1}};
-std::initializer_list<Vec2> smgBulletModel = {{-0.75f,-1}, {1,0}, {-0.75f,1}};
+std::initializer_list<Vec2> smgBulletModel = {{-0.75f,-1}, {2,0}, {-0.75f,1}};
 std::initializer_list<Vec2> suiciderModel = {{-3,-3}, {3,-3}, {3, 3},{-3,3}};
 std::initializer_list<Vec2> shooterModel = {{0,2}, {-2,0}, {-1.2f, -2}, {1.2f, -2}, {2,0}};
 
@@ -47,6 +50,10 @@ Game::Game() :
         GameObject bulletObj(std::make_unique<PolyRenderer>(bulletModel, 0xFFC914FF));
         bulletObj.addComponent<PistolBullet>();
         pistolBullet = Prefab(std::move(bulletObj), Body(new ShapePoly(bulletModel), BodyData(0.1)));
+        
+        GameObject smgBulletObj(std::make_unique<PolyRenderer>(smgBulletModel, 0xFFC914FF));
+        smgBulletObj.addComponent<SMGBullet>();
+        smgBullet = Prefab(std::move(smgBulletObj), Body(new ShapePoly(smgBulletModel), BodyData(0.1f)));
     }
 
     window.setFramerateLimit(60);

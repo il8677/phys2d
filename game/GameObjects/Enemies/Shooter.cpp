@@ -17,7 +17,7 @@ Shooter::Shooter(GameObject* obj) :
 
 }
 
-Component* Shooter::clone(GameObject* newObj) const {
+Component* Shooter::clone(GameObject* newObj) {
     Component* n = new Shooter(*this);
     n->setGameObject(newObj);
     

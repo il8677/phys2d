@@ -14,7 +14,7 @@ Suicider::Suicider(GameObject* obj) : EnemyController(obj){
 
 }
 
-Component* Suicider::clone(GameObject* newObj) const {
+Component* Suicider::clone(GameObject* newObj) {
     Component* n = new Suicider(*this);
     n->setGameObject(newObj);
     

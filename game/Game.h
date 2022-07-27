@@ -49,6 +49,7 @@ class Game{
     sf::Time elapsed;
     
     Prefab pistolBullet;
+    Prefab smgBullet;
     Prefab suicider;
     Prefab shooter;
 

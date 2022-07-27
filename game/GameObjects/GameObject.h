@@ -25,6 +25,7 @@ class GameObject{
     GameObject( std::unique_ptr<Renderer> renderer_);
     GameObject(const GameObject& other);
     GameObject(GameObject&& other);
+    ~GameObject();
 
     GameObject& operator=(const GameObject& other);
 

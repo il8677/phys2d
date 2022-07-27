@@ -42,6 +42,19 @@ Game::Game() :
     window.setFramerateLimit(60);
     window.setView(mainView);
 
+    setupGame();
+
+    // ImGui
+    ImGui::SFML::Init(window);
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;    
+
+}
+
+void Game::setupGame(){
+    restartGame = false;
+    GameObject::objects.clear();
+
     GameObject& player = GameObject::createCircle(world, 0x79B342FF, BodyData(1), Vec2(50,50), 2.f, Body::BodyType::KINEMATIC);
     player.addComponent<Player>();
     player.addComponent<Health>();
@@ -60,19 +73,13 @@ Game::Game() :
     GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*10, aspectY*5), 1, aspectY*5, Body::BodyType::STATIC);
     GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, 0), aspectX*5, 1, Body::BodyType::STATIC);
     GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(aspectX*5, aspectY*10), aspectX*5, 1, Body::BodyType::STATIC);
-
-    // ImGui
-    ImGui::SFML::Init(window);
-    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;    
-
 }
 
 void Game::mainloop(){
-    for(GameObject& obj : GameObject::objects) obj.setup();
-
     while (window.isOpen())
     {
+        if(restartGame) setupGame();
+
         handleEvents();
 
         handlePhysics();
@@ -128,7 +135,6 @@ void Game::handleLogic(){
     for(auto it = GameObject::objects.begin(); it != GameObject::objects.end(); it++){
         GameObject& go = *it;
         if(go.doDestroy){
-            for(auto& c : go.components) c->destroy();
             it = GameObject::objects.erase(it);
             continue;
         }
@@ -158,5 +164,5 @@ void Game::handleImGui(){
 }
 
 void Game::gameOver(){
-
+    restartGame = true;
 }

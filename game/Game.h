@@ -23,6 +23,8 @@ class Game{
     void mainloop();
 
     private:
+    void setupGame();
+
     void handleEvents();
     void handlePhysics();
     void handleLogic();
@@ -48,4 +50,6 @@ class Game{
     
     Prefab pistolBullet;
     Prefab suicider;
+
+    bool restartGame;
 };

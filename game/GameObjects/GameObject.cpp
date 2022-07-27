@@ -41,6 +41,13 @@ GameObject::GameObject(GameObject&& other){
     }
 }
 
+GameObject::~GameObject(){
+    for(auto& c : components) {
+        if(c)
+            c->destroy();
+    }
+}
+
 GameObject& GameObject::operator=(const GameObject& other){
     renderer = std::unique_ptr<Renderer>(other.renderer->clone());
 

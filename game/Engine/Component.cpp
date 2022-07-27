@@ -16,6 +16,10 @@ void Component::start(){
     
 }
 
+void Component::update(float dt){
+    
+}
+
 void Component::destroy(){
 
 }

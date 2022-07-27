@@ -1,5 +1,7 @@
 #include "Player.h"
 
+#include "Gun.h"
+
 #include "../Input.h"
 #include <Engine/BodyComponent.h>
 #include <Engine/GameObject.h>
@@ -11,8 +13,8 @@
 
 using namespace phys2d;
 
-Player::Player(GameObject* obj) : ComponentParent(obj) {
-    
+Player::Player(GameObject* obj, Gun* gun_) : ComponentParent(obj) {
+    gun = gun_;
 }
 
 void Player::update(float dt){
@@ -31,4 +33,8 @@ void Player::update(float dt){
     if(Input::getKeyState(sf::Keyboard::Key::S)){
         body->velocity.y = moveSpeed;
     }
+}
+
+void Player::setBulletPrefab(Prefab* prefab){
+    gun->setBulletPrefab(prefab);
 }

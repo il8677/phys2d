@@ -1,5 +1,14 @@
-#include "Component.h"
+#include <Engine/Component.h>
+
+#include <Engine/Prefab.h>
 
 class LootDropper : public ComponentParent<LootDropper>{
-    LootDropper(GameObject* obj);
+    public:
+    LootDropper(GameObject* obj, Prefab* lootPrefab, float probability);
+
+    void destroy() override;
+
+    private:
+    Prefab* prefab;
+    float prob;
 };

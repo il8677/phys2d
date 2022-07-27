@@ -4,6 +4,8 @@
 #include "GameObjects/Player/Player.h"
 #include "GameObjects/Player/Gun.h"
 #include "GameObjects/Helper/Spawner.h"
+#include "GameObjects/Helper/Loot.h"
+#include "GameObjects/Helper/LootDropper.h"
 #include "GameObjects/Enemies/Shooter.h"
 #include "GameObjects/Enemies/Elite.h"
 #include "GameObjects/Bullets/PistolBullet.h"
@@ -26,6 +28,7 @@ std::initializer_list<Vec2> smgBulletModel = {{-0.75f,-1}, {2,0}, {-0.75f,1}};
 std::initializer_list<Vec2> suiciderModel = {{-3,-3}, {3,-3}, {3, 3},{-3,3}};
 std::initializer_list<Vec2> shooterModel = {{0,2}, {-2,0}, {-1.2f, -2}, {1.2f, -2}, {2,0}};
 std::initializer_list<Vec2> eliteModel = {{-ELITEA, -ELITEB}, {ELITEA, -ELITEB}, {ELITESIZE, 0},  {ELITEA, ELITEB},  {-ELITEA, ELITEB}, {-ELITESIZE, 0} };
+std::initializer_list<Vec2> lootBoxModel = {{-1,-1}, {1,-1}, {1,1}, {-1,1}};
 
 Game::Game() : 
     window(sf::VideoMode(viewX, viewY), "My window"),
@@ -50,11 +53,13 @@ Game::Game() :
         GameObject shooterObj(std::make_unique<PolyRenderer>(shooterModel, 0x62929EFF));
         shooterObj.addComponent<Shooter>()->setBulletPrefab(&pistolBullet);
         shooterObj.addComponent<Health>(5);
+        shooterObj.addComponent<LootDropper>(&pistolLoot, 0.1f);
         shooter = Prefab(std::move(shooterObj), Body(new ShapePoly(shooterModel), BodyData(1), Body::BodyType::KINEMATIC));
 
         GameObject eliteObj(std::make_unique<PolyRenderer>(eliteModel, 0x365259FF));
         eliteObj.addComponent<Elite>()->setBulletPrefab(&smgBullet);
         eliteObj.addComponent<Health>(9);
+        eliteObj.addComponent<LootDropper>(&smgLoot, 0.3f);
         elite = Prefab(std::move(eliteObj), Body(new ShapePoly(eliteModel), BodyData(0.5f), Body::BodyType::KINEMATIC));
 
         GameObject bulletObj(std::make_unique<PolyRenderer>(bulletModel, 0xFFC914FF));
@@ -64,6 +69,14 @@ Game::Game() :
         GameObject smgBulletObj(std::make_unique<PolyRenderer>(smgBulletModel, 0xFFC914FF));
         smgBulletObj.addComponent<SMGBullet>();
         smgBullet = Prefab(std::move(smgBulletObj), Body(new ShapePoly(smgBulletModel), BodyData(0.1f)));
+
+        GameObject pistolLootObj(std::make_unique<PolyRenderer>(lootBoxModel, 0x88423AFF));
+        pistolLootObj.addComponent<Loot>(&pistolBullet);
+        pistolLoot = Prefab(std::move(pistolLootObj), Body(new ShapePoly(lootBoxModel), BodyData(1)));
+
+        GameObject smgLootObj(std::make_unique<PolyRenderer>(lootBoxModel, 0xB82FACFF));
+        smgLootObj.addComponent<Loot>(&smgBullet);
+        smgLoot = Prefab(std::move(smgLootObj), Body(new ShapePoly(lootBoxModel), BodyData(1)));
     }
 
     window.setFramerateLimit(60);
@@ -83,14 +96,15 @@ void Game::setupGame(){
     GameObject::objects.clear();
 
     GameObject& player = GameObject::createCircle(world, 0x79B342FF, BodyData(1), Vec2(50,50), 2.f, Body::BodyType::KINEMATIC);
-    player.addComponent<Player>();
     player.addComponent<Health>();
     player.getComponent<Health>()->setDeathCB([&](){gameOver();});
 
     GameObject& playerGun = GameObject::createRect(world, 0x649537FF, BodyData(1), Vec2(0,0), 0.5f, 0.75f);
-    playerGun.addComponent<Gun>(player);
+    Gun* playerGunComp = playerGun.addComponent<Gun>(player);
     playerGun.getComponent<Gun>()->setBulletPrefab(&pistolBullet);
     playerGun.getComponent<BodyComponent>()->body->layer = 0;
+
+    player.addComponent<Player>(playerGunComp);
 
     GameObject& spawner = GameObject::addObject(GameObject(std::make_unique<NullRenderer>()));
     Spawner* s = spawner.addComponent<Spawner>(&player);
@@ -165,6 +179,7 @@ void Game::handleLogic(){
     for(auto it = GameObject::objects.begin(); it != GameObject::objects.end(); it++){
         GameObject& go = *it;
         if(go.doDestroy){
+            it->onDestroy();
             it = GameObject::objects.erase(it);
             continue;
         }

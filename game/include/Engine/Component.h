@@ -9,7 +9,7 @@ class Component{
 
     virtual void setup();
     virtual void start();
-    virtual void update(float dt)=0;
+    virtual void update(float dt);
     virtual void destroy();
     virtual void onClone(Component* clone);
 
@@ -41,9 +41,6 @@ class ComponentParent : public Component{
     ComponentParent(GameObject* obj) : Component(obj){
 
     }
-
-    virtual void update(float dt) override =0;
-
 
     virtual int getID() override{
         return Component::getID<Derived>();

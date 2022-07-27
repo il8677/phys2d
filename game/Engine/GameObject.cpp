@@ -42,10 +42,6 @@ GameObject::GameObject(GameObject&& other){
 }
 
 GameObject::~GameObject(){
-    for(auto& c : components) {
-        if(c)
-            c->destroy();
-    }
 }
 
 GameObject& GameObject::operator=(const GameObject& other){
@@ -115,6 +111,11 @@ float GameObject::getRotation(){
 
 void GameObject::destroy(){
     doDestroy = true;
+}
+
+void GameObject::onDestroy(){
+    for(std::unique_ptr<Component>& c : components)
+        c->destroy();
 }
 
 const std::unique_ptr<Renderer>& GameObject::getRenderer() const{

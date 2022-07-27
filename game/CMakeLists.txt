@@ -20,6 +20,8 @@ set(GAME_SOURCES
     
     GameObjects/Helper/Spawner.cpp
     GameObjects/Helper/Health.cpp
+    GameObjects/Helper/Loot.cpp
+    GameObjects/Helper/LootDropper.cpp
 
     GameObjects/Enemies/EnemyController.cpp
     GameObjects/Enemies/Suicider.cpp

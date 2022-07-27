@@ -54,5 +54,8 @@ class Game{
     Prefab shooter;
     Prefab elite;
 
+    Prefab pistolLoot;
+    Prefab smgLoot;
+
     bool restartGame;
 };

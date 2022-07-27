@@ -7,8 +7,9 @@
 class Random{
     public:
 
-    static float randFloat(float min, float max);
+    static bool probability(float probTrue);
     static int randInt(int min, int max);
+    static float randFloat(float min, float max);
     static phys2d::Vec2 randVec(phys2d::Vec2 min, phys2d::Vec2 max);
     static phys2d::Vec2 randVecInViewport();
 

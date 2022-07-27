@@ -21,6 +21,8 @@ class GameObject{
 
     void setup();
     void tick(float dt, sf::RenderWindow& window);
+    void onDestroy();
+    void destroy();
 
     GameObject( std::unique_ptr<Renderer> renderer_);
     GameObject(const GameObject& other);
@@ -56,8 +58,6 @@ class GameObject{
     Vec2 getPosition();
     Vec2 getVelocity();
     float getRotation();
-
-    void destroy();
 
     const std::unique_ptr<Renderer>& getRenderer() const;
 

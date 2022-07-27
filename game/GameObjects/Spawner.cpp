@@ -13,18 +13,21 @@ void Spawner::update(float dt){
     spawnState += dt;
     if(spawnState > spawnRate){
         spawnState = 0;
+        spawns++;
 
         Vec2 loc = {
             static_cast<float>(10+rand()%(int)(Input::getViewportX()-20)),
             static_cast<float>(10+rand()%(int)(Input::getViewportY()-20))};
 
-        GameObject& newEnemy = enemy->create(loc);
+        int nextEnemyIndex = (rand()%(spawns/10)) % enemies.size();
+
+        GameObject& newEnemy = enemies[nextEnemyIndex]->create(loc);
         EnemyController* controller = newEnemy.getComponent<EnemyController>();
 
         controller->setTarget(player);
     }
 }
 
-void Spawner::setEnemyPrefab(Prefab* e){
-    enemy = e;
+void Spawner::addEnemyPrefab(Prefab* e){
+    enemies.push_back(e);
 }

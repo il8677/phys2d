@@ -66,7 +66,7 @@ void Game::setupGame(){
     playerGun.getComponent<BodyComponent>()->body->layer = 0;
 
     GameObject& spawner = GameObject::addObject(GameObject(std::make_unique<NullRenderer>()));
-    spawner.addComponent<Spawner>(&player)->setEnemyPrefab(&suicider);
+    spawner.addComponent<Spawner>(&player)->addEnemyPrefab(&suicider);
 
     // Outer walls
     GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 1, aspectY*5, Body::BodyType::STATIC);

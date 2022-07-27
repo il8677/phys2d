@@ -3,6 +3,7 @@
 #include "Prefab.h"
 
 #include <memory>
+#include <vector>
 
 class Spawner : public ComponentParent<Spawner>{
     public:
@@ -10,11 +11,14 @@ class Spawner : public ComponentParent<Spawner>{
 
     void update(float dt) override;
 
-    void setEnemyPrefab(Prefab* e);
+    void addEnemyPrefab(Prefab* e);
     private:
     GameObject* player;
 
-    Prefab* enemy;
+    std::vector<Prefab*> enemies;
+
+    int spawns=0;
+
     float spawnState = 0;
     float spawnRate = 5;
 };

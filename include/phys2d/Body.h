@@ -50,7 +50,7 @@ namespace phys2d{
         bool isTrigger = false;
         std::function<void(Body* other)> triggerCallback;
 
-        void* userData;
+        void* userData=nullptr;
 
         bool doDestroy=false;
 

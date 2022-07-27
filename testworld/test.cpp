@@ -268,7 +268,7 @@ int main(){
             objects.push_back(GameObject::createCircle(world, BodyData(1), Vec2(1,5), 0.1f));
             objects.back().body->velocity = {1,0};
             objects.back().body->isTrigger = true;
-            objects.back().body->triggerCallback = [&](Body* other){
+            objects.back().body->triggerCallback = [&](Body* obj, Body* other){
                 objects.push_back(GameObject::createSquare(world, BodyData(1), other->position + Vec2(0,1), 0.5f));
             };
 

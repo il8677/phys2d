@@ -28,6 +28,8 @@ void Suicider::start(){
             if(Health* h = target->getComponent<Health>()){
                 h->damage(2);
             }
+
+            gameObject->destroy();
         }
     };
 }

@@ -4,7 +4,7 @@
 
 #include <phys2d/maths/vec2.h>
 
-RocketBullet::RocketBullet(GameObject* obj, Prefab* projectiles) :  BulletParent(obj, 2, 25, 2){
+RocketBullet::RocketBullet(GameObject* obj, Prefab* projectiles) :  BulletParent(obj, 2.5f, 25, 0){
     projectile = projectiles;
 }
 

@@ -50,6 +50,7 @@ class Game{
     
     Prefab pistolBullet;
     Prefab suicider;
+    Prefab shooter;
 
     bool restartGame;
 };

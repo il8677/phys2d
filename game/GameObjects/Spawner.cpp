@@ -19,7 +19,7 @@ void Spawner::update(float dt){
             static_cast<float>(10+rand()%(int)(Input::getViewportX()-20)),
             static_cast<float>(10+rand()%(int)(Input::getViewportY()-20))};
 
-        int nextEnemyIndex = (rand()%(spawns/10)) % enemies.size();
+        int nextEnemyIndex = (rand()%(spawns/4)) % enemies.size();
 
         GameObject& newEnemy = enemies[nextEnemyIndex]->create(loc);
         EnemyController* controller = newEnemy.getComponent<EnemyController>();

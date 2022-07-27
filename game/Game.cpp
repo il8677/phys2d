@@ -5,6 +5,7 @@
 #include "GameObjects/Gun.h"
 #include "GameObjects/Spawner.h"
 #include "GameObjects/Renderer.h"
+#include "GameObjects/Shooter.h"
 
 #include <phys2d/maths/vec2.h>
 #include <phys2d/Body.h>
@@ -14,6 +15,7 @@
 using namespace phys2d;
 std::initializer_list<Vec2> bulletModel = {{-1,-1}, {0,0}, {-1,1}};
 std::initializer_list<Vec2> suiciderModel = {{-3,-3}, {3,-3}, {3, 3},{-3,3}};
+std::initializer_list<Vec2> shooterModel = {{0,2}, {-2,0}, {-1.2f, -2}, {1.2f, -2}, {2,0}};
 
 Game::Game() : 
     window(sf::VideoMode(viewX, viewY), "My window"),
@@ -33,6 +35,11 @@ Game::Game() :
         suiciderObj.addComponent<Suicider>();
         suiciderObj.addComponent<Health>();
         suicider = Prefab(std::move(suiciderObj), Body(new ShapePoly(suiciderModel), BodyData(1), Body::BodyType::KINEMATIC));
+
+        GameObject shooterObj(std::make_unique<PolyRenderer>(shooterModel, 0x62929EFF));
+        shooterObj.addComponent<Shooter>()->setBulletPrefab(&pistolBullet);
+        shooterObj.addComponent<Health>();
+        shooter = Prefab(std::move(shooterObj), Body(new ShapePoly(shooterModel), BodyData(1), Body::BodyType::KINEMATIC));
 
         GameObject bulletObj(std::make_unique<PolyRenderer>(bulletModel, 0xFFC914FF));
         bulletObj.addComponent<PistolBullet>();
@@ -66,7 +73,9 @@ void Game::setupGame(){
     playerGun.getComponent<BodyComponent>()->body->layer = 0;
 
     GameObject& spawner = GameObject::addObject(GameObject(std::make_unique<NullRenderer>()));
-    spawner.addComponent<Spawner>(&player)->addEnemyPrefab(&suicider);
+    Spawner* s = spawner.addComponent<Spawner>(&player);
+    s->addEnemyPrefab(&suicider);
+    s->addEnemyPrefab(&shooter);
 
     // Outer walls
     GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 1, aspectY*5, Body::BodyType::STATIC);

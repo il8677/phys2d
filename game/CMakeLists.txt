@@ -18,6 +18,7 @@ set(GAME_SOURCES
     GameObjects/Spawner.cpp
     GameObjects/EnemyController.cpp
     GameObjects/Suicider.cpp
+    GameObjects/Shooter.cpp
 
     Input.cpp
     Game.cpp

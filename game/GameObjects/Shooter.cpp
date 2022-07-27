@@ -10,7 +10,7 @@
 #include <phys2d/Body.h>
 #include <phys2d/maths/vec2.h>
 
-#include <random>
+#include "../util/Random.h"
 
 Shooter::Shooter(GameObject* obj) :
     EnemyController(obj){
@@ -37,7 +37,7 @@ void Shooter::update(float dt) {
     if(fireState > fireRate){
         phys2d::Body* playerBody = target->getComponent<BodyComponent>()->body;
 
-        const phys2d::Vec2 targetVec = (playerBody->position - body->position + Vec2(1.5f, 1.5f) * ((rand()%10)-5)).normalized();
+        const phys2d::Vec2 targetVec = (playerBody->position - body->position + Random::randVec(Vec2(-5,-5), Vec2(5,5))).normalized();
 
         GameObject& b = bullet->create(body->position + targetVec * 4);
         Bullet* bcomp = b.getComponent<Bullet>();

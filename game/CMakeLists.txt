@@ -19,6 +19,8 @@ set(GAME_SOURCES
     GameObjects/EnemyController.cpp
     GameObjects/Suicider.cpp
     GameObjects/Shooter.cpp
+    
+    util/Random.cpp
 
     Input.cpp
     Game.cpp

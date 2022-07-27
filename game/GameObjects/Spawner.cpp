@@ -3,7 +3,7 @@
 #include "Suicider.h"
 #include "../Input.h"
 
-#include <random>
+#include "../util/Random.h"
 
 Spawner::Spawner(GameObject* obj, GameObject* playerObj) : ComponentParent(obj), player(playerObj) {
     
@@ -15,11 +15,9 @@ void Spawner::update(float dt){
         spawnState = 0;
         spawns++;
 
-        Vec2 loc = {
-            static_cast<float>(10+rand()%(int)(Input::getViewportX()-20)),
-            static_cast<float>(10+rand()%(int)(Input::getViewportY()-20))};
+        Vec2 loc = Random::randVec(Vec2(10, 10), Vec2(Input::getViewportX()-20, Input::getViewportY()-20));
 
-        int nextEnemyIndex = (rand()%(spawns/4)) % enemies.size();
+        int nextEnemyIndex = Random::randInt(0, spawns/4) % enemies.size();
 
         GameObject& newEnemy = enemies[nextEnemyIndex]->create(loc);
         EnemyController* controller = newEnemy.getComponent<EnemyController>();

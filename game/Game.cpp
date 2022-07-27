@@ -72,9 +72,9 @@ Game::Game() :
     setupGame();
 
     // ImGui
-    ImGui::SFML::Init(window);
-    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;    
+    //ImGui::SFML::Init(window);
+    //ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    //ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;    
 
 }
 
@@ -116,7 +116,7 @@ void Game::mainloop(){
 
         window.clear(sf::Color(0x2E282AFF));
         handleLogic();
-        handleImGui();
+        //handleImGui();
 
         window.display();
     }
@@ -126,7 +126,7 @@ void Game::handleEvents(){
     sf::Event event;
     while (window.pollEvent(event))
     {            
-        ImGui::SFML::ProcessEvent(window, event);
+        //ImGui::SFML::ProcessEvent(window, event);
         if (event.type == sf::Event::Closed)
             window.close();
         else if (event.type == sf::Event::KeyPressed){
@@ -171,7 +171,7 @@ void Game::handleLogic(){
         go.tick(elapsed.asSeconds(), window);
     }
 
-    ImGui::SFML::Update(window, elapsed);
+    //ImGui::SFML::Update(window, elapsed);
 }
 
 void Game::handleImGui(){

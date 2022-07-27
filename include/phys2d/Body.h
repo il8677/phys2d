@@ -46,7 +46,9 @@ namespace phys2d{
         Shape* shape = nullptr;
 
         // layers
-        unsigned char layer=1;
+        unsigned char layer=255;
+        unsigned char collideWith=255;
+
         bool isTrigger = false;
         std::function<void(Body* obj, Body* other)> triggerCallback;
 

@@ -29,17 +29,27 @@ void Shooter::setup() {
 }
 
 void Shooter::update(float dt) {
-    phys2d::Body* body = gameObject->getComponent<BodyComponent>()->body;
-    fireState += dt;
-
     timer += dt;
+
+    shoot(dt);
+    movement(dt);
+}
+
+void Shooter::setBulletPrefab(Prefab* comp){
+    bullet = comp;
+}
+
+void Shooter::shoot(float dt){
+    phys2d::Body* body = gameObject->getComponent<BodyComponent>()->body;
+
+    fireState += dt;
 
     if(fireState > fireRate){
         phys2d::Body* playerBody = target->getComponent<BodyComponent>()->body;
 
         const phys2d::Vec2 targetVec = (playerBody->position - body->position + Random::randVec(Vec2(-5,-5), Vec2(5,5))).normalized();
 
-        GameObject& b = bullet->create(body->position + targetVec * 4);
+        GameObject& b = bullet->create(body->position + targetVec * 5);
         Bullet* bcomp = b.getComponent<Bullet>();
         bcomp->setTravelVector(targetVec);
 
@@ -47,10 +57,10 @@ void Shooter::update(float dt) {
 
         fireState = 0;
     }
-
-    body->velocity = sin(timer/3) * Vec2(10, 0) + cos(timer/3) * Vec2(0, 10);
 }
 
-void Shooter::setBulletPrefab(Prefab* comp){
-    bullet = comp;
+void Shooter::movement(float dt){
+    phys2d::Body* body = gameObject->getComponent<BodyComponent>()->body;
+
+    body->velocity = sin(timer/3) * Vec2(10, 0) + cos(timer/3) * Vec2(0, 10);
 }

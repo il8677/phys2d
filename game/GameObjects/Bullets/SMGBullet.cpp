@@ -2,7 +2,7 @@
 
 #include <Engine/GameObject.h>
 
-SMGBullet::SMGBullet(GameObject* obj, int count_) : count(count_), BulletParent(obj, getFireRate(), 35, 4){
+SMGBullet::SMGBullet(GameObject* obj, int count_) : count(count_), BulletParent(obj, getFireRate(), 45, 4){
 
 }
 

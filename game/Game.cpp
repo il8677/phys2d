@@ -5,6 +5,7 @@
 #include "GameObjects/Player/Gun.h"
 #include "GameObjects/Helper/Spawner.h"
 #include "GameObjects/Enemies/Shooter.h"
+#include "GameObjects/Enemies/Elite.h"
 #include "GameObjects/Bullets/PistolBullet.h"
 #include "GameObjects/Bullets/SMGBullet.h"
 #include "GameObjects/Enemies/Shooter.h"
@@ -15,12 +16,16 @@
 #include <phys2d/Body.h>
 #include <phys2d/colliders/Shape.h>
 
+#define ELITESIZE 3.5f
+#define ELITEA (ELITESIZE * 0.5f)
+#define ELITEB (ELITESIZE * 0.866025f) 
 
 using namespace phys2d;
 std::initializer_list<Vec2> bulletModel = {{-1,-1}, {0,0}, {-1,1}};
 std::initializer_list<Vec2> smgBulletModel = {{-0.75f,-1}, {2,0}, {-0.75f,1}};
 std::initializer_list<Vec2> suiciderModel = {{-3,-3}, {3,-3}, {3, 3},{-3,3}};
 std::initializer_list<Vec2> shooterModel = {{0,2}, {-2,0}, {-1.2f, -2}, {1.2f, -2}, {2,0}};
+std::initializer_list<Vec2> eliteModel = {{-ELITEA, -ELITEB}, {ELITEA, -ELITEB}, {ELITESIZE, 0},  {ELITEA, ELITEB},  {-ELITEA, ELITEB}, {-ELITESIZE, 0} };
 
 Game::Game() : 
     window(sf::VideoMode(viewX, viewY), "My window"),
@@ -46,6 +51,11 @@ Game::Game() :
         shooterObj.addComponent<Shooter>()->setBulletPrefab(&pistolBullet);
         shooterObj.addComponent<Health>(5);
         shooter = Prefab(std::move(shooterObj), Body(new ShapePoly(shooterModel), BodyData(1), Body::BodyType::KINEMATIC));
+
+        GameObject eliteObj(std::make_unique<PolyRenderer>(eliteModel, 0x365259FF));
+        eliteObj.addComponent<Elite>()->setBulletPrefab(&smgBullet);
+        eliteObj.addComponent<Health>(9);
+        elite = Prefab(std::move(eliteObj), Body(new ShapePoly(eliteModel), BodyData(0.5f), Body::BodyType::KINEMATIC));
 
         GameObject bulletObj(std::make_unique<PolyRenderer>(bulletModel, 0xFFC914FF));
         bulletObj.addComponent<PistolBullet>();
@@ -86,6 +96,7 @@ void Game::setupGame(){
     Spawner* s = spawner.addComponent<Spawner>(&player);
     s->addEnemyPrefab(&suicider);
     s->addEnemyPrefab(&shooter);
+    s->addEnemyPrefab(&elite);
 
     // Outer walls
     GameObject::createRect(world, 0x046865FF, BodyData(0,0), Vec2(0, aspectY*5), 1, aspectY*5, Body::BodyType::STATIC);

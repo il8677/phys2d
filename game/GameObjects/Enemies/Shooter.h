@@ -8,14 +8,18 @@
 class Shooter : public EnemyController{
     public:
     Shooter(GameObject* obj);
-    Component* clone(GameObject* newObj) override;
+    virtual Component* clone(GameObject* newObj) override;
 
     void setup() override;
     void update(float dt) override;
 
     void setBulletPrefab(Prefab* comp);
 
-    private:
+
+    protected:
+    virtual void shoot(float dt);
+    virtual void movement(float dt);
+
     Prefab* bullet;
 
     float fireState = 0;

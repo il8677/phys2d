@@ -52,6 +52,7 @@ class Game{
     Prefab smgBullet;
     Prefab suicider;
     Prefab shooter;
+    Prefab elite;
 
     bool restartGame;
 };

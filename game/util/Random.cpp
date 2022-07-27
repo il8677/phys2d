@@ -1,5 +1,7 @@
 #include "Random.h"
 
+#include "../Input.h"
+
 using namespace phys2d;
 
 float Random::randFloat(float min, float max){
@@ -16,6 +18,10 @@ int Random::randInt(int min, int max){
 
 Vec2 Random::randVec(Vec2 min, Vec2 max){
     return Vec2(randFloat(min.x, max.x), randFloat(min.y, max.y));
+}
+
+Vec2 Random::randVecInViewport(){
+    return Random::randVec(Vec2(10, 10), Vec2(Input::getViewportX()-20, Input::getViewportY()-20));
 }
 
 std::mt19937_64 Random::generator;

@@ -14,10 +14,10 @@ namespace phys2d{
 
     void Contact::resolve(){
         if(A->triggerCallback)
-            A->triggerCallback(B);
+            A->triggerCallback(A, B);
         
         if(B->triggerCallback) 
-            B->triggerCallback(A);
+            B->triggerCallback(B, A);
 
         if(A->isTrigger || B->isTrigger) return;
 

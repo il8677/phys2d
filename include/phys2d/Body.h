@@ -48,7 +48,7 @@ namespace phys2d{
         // layers
         unsigned char layer=1;
         bool isTrigger = false;
-        std::function<void(Body* other)> triggerCallback;
+        std::function<void(Body* obj, Body* other)> triggerCallback;
 
         void* userData=nullptr;
 

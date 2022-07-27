@@ -1,9 +1,9 @@
 #include "Spawner.h"
 
-#include "Suicider.h"
 #include "../Input.h"
 
 #include "../util/Random.h"
+#include "../Enemies/EnemyController.h"
 
 Spawner::Spawner(GameObject* obj, GameObject* playerObj) : ComponentParent(obj), player(playerObj) {
     

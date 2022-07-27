@@ -1,6 +1,7 @@
-#include "Component.h"
 #include "EnemyController.h"
-#include "GameObject.h"
+
+#include <Engine/Component.h>
+#include <Engine/GameObject.h>
 
 using namespace phys2d;
 

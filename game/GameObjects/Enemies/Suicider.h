@@ -1,6 +1,6 @@
 #pragma once
 #include "EnemyController.h"
-#include "Prefab.h"
+#include <Engine/Prefab.h>
 
 #include <memory>
 

@@ -1,4 +1,4 @@
-#include "Component.h"
+#include <Engine/Component.h>
 
 Component::~Component(){
     

@@ -1,8 +1,8 @@
 #include "Player.h"
 
 #include "../Input.h"
-#include "BodyComponent.h"
-#include "GameObject.h"
+#include <Engine/BodyComponent.h>
+#include <Engine/GameObject.h>
 
 #include <phys2d/World.h>
 #include <phys2d/colliders/Shape.h>

@@ -6,19 +6,23 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/)
 #add_compile_definitions(IMGUI_SFML_VIEWPORTS_ENABLE)
 
 set(GAME_SOURCES
-    GameObjects/GameObject.cpp
-    GameObjects/Renderer.cpp
-    GameObjects/Player.cpp
-    GameObjects/Gun.cpp
-    GameObjects/Component.cpp
-    GameObjects/BodyComponent.cpp
-    GameObjects/PistolBullet.cpp
-    GameObjects/Bullet.cpp
-    GameObjects/Health.cpp
-    GameObjects/Spawner.cpp
-    GameObjects/EnemyController.cpp
-    GameObjects/Suicider.cpp
-    GameObjects/Shooter.cpp
+    Engine/GameObject.cpp
+    Engine/Renderer.cpp
+    Engine/Component.cpp
+    Engine/BodyComponent.cpp
+    
+    GameObjects/Player/Player.cpp
+    GameObjects/Player/Gun.cpp
+    
+    GameObjects/Bullets/PistolBullet.cpp
+    GameObjects/Bullets/Bullet.cpp
+    
+    GameObjects/Helper/Spawner.cpp
+    GameObjects/Helper/Health.cpp
+
+    GameObjects/Enemies/EnemyController.cpp
+    GameObjects/Enemies/Suicider.cpp
+    GameObjects/Enemies/Shooter.cpp
     
     util/Random.cpp
 
@@ -43,5 +47,6 @@ target_link_libraries(physgame PUBLIC OpenGL sfml-graphics sfml-window sfml-syst
 target_include_directories(physgame PRIVATE ../vendor/SFML/include)
 target_include_directories(physgame PRIVATE ../vendor/imgui-sfml)
 target_include_directories(physgame PRIVATE ../vendor/imgui-docking)
+target_include_directories(physgame PRIVATE include)
 
 message(${CMAKE_CXX_FLAGS_DEBUG})

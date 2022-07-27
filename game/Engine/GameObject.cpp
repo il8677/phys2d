@@ -1,5 +1,5 @@
-#include "GameObject.h"
-#include "BodyComponent.h"
+#include <Engine/GameObject.h>
+#include <Engine/BodyComponent.h>
 
 GameObject& GameObject::createCircle(World& world, uint32_t color, BodyData data, Vec2 pos, float r, Body::BodyType type){
     Body* b = world.createBody(new ShapeCircle(r), data, type);

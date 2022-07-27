@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Component.h"
+#include <Engine/Component.h>
 
 #include <phys2d/maths/vec2.h>
 

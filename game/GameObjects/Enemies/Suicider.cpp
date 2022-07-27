@@ -1,8 +1,9 @@
 #include "Suicider.h"
 
-#include "GameObject.h"
-#include "Health.h"
-#include "Player.h"
+#include <Engine/GameObject.h>
+
+#include "../Helper/Health.h"
+#include "../Player/Player.h"
 
 #include <phys2d/Body.h>
 #include <phys2d/maths/vec2.h>

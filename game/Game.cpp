@@ -1,11 +1,12 @@
 #include "Game.h"
 #include "Input.h"
 
-#include "GameObjects/Player.h"
-#include "GameObjects/Gun.h"
-#include "GameObjects/Spawner.h"
-#include "GameObjects/Renderer.h"
-#include "GameObjects/Shooter.h"
+#include "GameObjects/Player/Player.h"
+#include "GameObjects/Player/Gun.h"
+#include "GameObjects/Helper/Spawner.h"
+#include "GameObjects/Enemies/Shooter.h"
+
+#include <Engine/Renderer.h>
 
 #include <phys2d/maths/vec2.h>
 #include <phys2d/Body.h>
@@ -14,6 +15,7 @@
 
 using namespace phys2d;
 std::initializer_list<Vec2> bulletModel = {{-1,-1}, {0,0}, {-1,1}};
+std::initializer_list<Vec2> smgBulletModel = {{-0.75f,-1}, {1,0}, {-0.75f,1}};
 std::initializer_list<Vec2> suiciderModel = {{-3,-3}, {3,-3}, {3, 3},{-3,3}};
 std::initializer_list<Vec2> shooterModel = {{0,2}, {-2,0}, {-1.2f, -2}, {1.2f, -2}, {2,0}};
 

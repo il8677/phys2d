@@ -1,16 +1,16 @@
 #include "Shooter.h"
 
-#include "../Input.h"
-#include "GameObject.h"
-#include "BodyComponent.h"
+#include <Engine/GameObject.h>
+#include <Engine/BodyComponent.h>
 
-#include "Bullet.h"
-#include "PistolBullet.h"
+#include "../Input.h"
+#include "../util/Random.h"
+
+#include "../Bullets/Bullet.h"
 
 #include <phys2d/Body.h>
 #include <phys2d/maths/vec2.h>
 
-#include "../util/Random.h"
 
 Shooter::Shooter(GameObject* obj) :
     EnemyController(obj){

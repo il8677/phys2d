@@ -1,6 +1,6 @@
 #pragma once
-#include "Component.h"
-#include "Prefab.h"
+#include <Engine/Component.h>
+#include <Engine/Prefab.h>
 
 #include <memory>
 

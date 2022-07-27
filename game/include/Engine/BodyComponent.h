@@ -1,5 +1,5 @@
 #pragma once
-#include "Component.h"
+#include <Engine/Component.h>
 
 #include <phys2d/Body.h>
 #include <phys2d/World.h>

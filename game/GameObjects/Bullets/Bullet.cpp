@@ -1,8 +1,9 @@
 #include "Bullet.h"
 
-#include "GameObject.h"
-#include "BodyComponent.h"
-#include "Health.h"
+#include <Engine/GameObject.h>
+#include <Engine/BodyComponent.h>
+
+#include "../Helper/Health.h"
 
 Bullet::Bullet(GameObject* obj, float fireRate_, float bulletSpeed, float damage_) : ComponentParent(obj){
     fireRate = fireRate_;

@@ -1,12 +1,14 @@
 #pragma once
-#include "Component.h"
-#include "Prefab.h"
+#include "EnemyController.h"
+
+#include <Engine/Prefab.h>
 
 #include <memory>
 
-class Gun : public ComponentParent<Gun>{
+class Shooter : public EnemyController{
     public:
-    Gun(GameObject* obj, GameObject& playerObj);
+    Shooter(GameObject* obj);
+    Component* clone(GameObject* newObj) const override;
 
     void setup() override;
     void update(float dt) override;
@@ -15,8 +17,9 @@ class Gun : public ComponentParent<Gun>{
 
     private:
     Prefab* bullet;
-    GameObject& player;
 
     float fireState = 0;
     float fireRate = 1;
+
+    float timer = 0;
 };

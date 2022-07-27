@@ -1,4 +1,4 @@
-#include "Component.h"
+#include <Engine/Component.h>
 
 class Player : public ComponentParent<Player>{
 public:

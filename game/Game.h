@@ -1,10 +1,10 @@
 #pragma once
 
-#include "GameObjects/GameObject.h"
-#include "GameObjects/Prefab.h"
-#include "GameObjects/PistolBullet.h"
-#include "GameObjects/Suicider.h"
-#include "GameObjects/Health.h"
+#include "Engine/GameObject.h"
+#include "Engine/Prefab.h"
+#include "GameObjects/Bullets/PistolBullet.h"
+#include "GameObjects/Enemies/Suicider.h"
+#include "GameObjects/Helper/Health.h"
 
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>

@@ -13,6 +13,7 @@ class Bullet : public Component {
     virtual void update(float dt) override;
     
     void setTravelVector(phys2d::Vec2 travelVector);
+    void setColliderMask(unsigned char mask);
     
     virtual float getFireRate();
     protected:

@@ -7,9 +7,10 @@
 class EnemyController : public Component{
     public:
     EnemyController(GameObject* obj);
-    virtual Component* clone(GameObject* newObj) override=0;    
+    virtual Component* clone(GameObject* newObj) override=0;
     int getID() override;
-
+    
+    void setup() override;
     void update(float dt) override=0;
 
     void setTarget(GameObject* target);

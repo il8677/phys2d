@@ -10,11 +10,9 @@ class Shooter : public EnemyController{
     Shooter(GameObject* obj);
     virtual Component* clone(GameObject* newObj) override;
 
-    void setup() override;
     void update(float dt) override;
 
     void setBulletPrefab(Prefab* comp);
-
 
     protected:
     virtual void shoot(float dt);

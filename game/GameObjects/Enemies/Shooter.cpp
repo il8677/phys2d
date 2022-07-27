@@ -24,10 +24,6 @@ Component* Shooter::clone(GameObject* newObj) {
     return n;
 }
 
-void Shooter::setup() {
-
-}
-
 void Shooter::update(float dt) {
     timer += dt;
 
@@ -52,6 +48,7 @@ void Shooter::shoot(float dt){
         GameObject& b = bullet->create(body->position + targetVec * 5);
         Bullet* bcomp = b.getComponent<Bullet>();
         bcomp->setTravelVector(targetVec);
+        bcomp->setColliderMask(1);
 
         fireRate = bcomp->getFireRate();
 

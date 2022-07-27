@@ -22,6 +22,8 @@ Component* Suicider::clone(GameObject* newObj) {
 }
 
 void Suicider::start(){
+    EnemyController::start();
+
     Body* b = gameObject->getComponent<BodyComponent>()->body;
     b->triggerCallback = [&](Body* obj, Body* other){
         GameObject* otherObj = (GameObject*)other->userData;

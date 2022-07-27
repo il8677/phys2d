@@ -13,6 +13,10 @@ int EnemyController::getID(){
     return Component::getID<EnemyController>();
 }
 
+void EnemyController::setup(){
+    gameObject->getComponent<BodyComponent>()->body->layer = 1 << 3;
+}
+
 void EnemyController::setTarget(GameObject* target_){
     if(target_->getComponent<BodyComponent>()){
         target = target_; // Not safe if not player

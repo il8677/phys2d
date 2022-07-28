@@ -96,7 +96,7 @@ namespace phys2d{
     }
 
     Rotation Vec2::getAngle() const {
-        return Rotation(std::atan2(y, x));
+        return Rotation(std::atan2(x, y));
     }
 
     Vec2 operator*(const float lhs, const Vec2 rhs){

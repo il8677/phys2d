@@ -3,6 +3,6 @@
 
 class PistolBullet : public BulletParent<PistolBullet> {
     public:
-    PistolBullet(GameObject* obj);
+    PistolBullet(GameObject* obj, float damage=4);
     
 };

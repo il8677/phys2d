@@ -26,17 +26,16 @@ void Gun::update(float dt) {
     phys2d::Body* playerBody = player.getComponent<BodyComponent>()->body;
 
     const phys2d::Vec2 mousePos(Input::getMouseX(), Input::getMouseY());
-    const phys2d::Vec2 mouseVec = (playerBody->position - mousePos).normalized();
+    const phys2d::Vec2 mouseVec = (mousePos - playerBody->position).normalized();
 
-    body->position = playerBody->position - mouseVec * 3;
-    body->rotation = mouseVec.getAngle()+3.1415/2;
+    body->position = playerBody->position + mouseVec * 3;
+    body->rotation = mouseVec.getAngle();
 
     fireState += dt;
 
     if(Input::getMouseL() && fireState > fireRate){
-        GameObject& b = bullet->create(playerBody->position - mouseVec * 4);
+        GameObject& b = bullet->create(playerBody->position + mouseVec * 3.5, mouseVec.getAngle());
         Bullet* bcomp = b.getComponent<Bullet>();
-        bcomp->setTravelVector(-mouseVec);
 
         fireRate = bcomp->getFireRate();
 

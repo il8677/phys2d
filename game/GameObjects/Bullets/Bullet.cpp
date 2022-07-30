@@ -31,11 +31,12 @@ void Bullet::start(){
     body->layer = 1<<1;
     body->collideWith = 1 | (1 << 3);
 
-    setTravelVector(Vec2(sin(body->rotation), cos(body->rotation)));
+    setTravelVector(Vec2(body->rotation));
 }
 
 void Bullet::setTravelVector(phys2d::Vec2 travelVector_){
     travelVector = travelVector_;
+    //gameObject->getComponent<BodyComponent>()->body->rotation = travelVector.getAngle();
 }
 
 void Bullet::setColliderMask(unsigned char mask){
@@ -47,6 +48,5 @@ float Bullet::getFireRate(){
 }
 
 void Bullet::update(float dt){
-    gameObject->getComponent<BodyComponent>()->body->rotation = travelVector.getAngle();
     gameObject->getComponent<BodyComponent>()->body->velocity = travelVector * speed;
 }

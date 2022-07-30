@@ -51,6 +51,8 @@ class Game{
     Prefab pistolBullet;
     Prefab smgBullet;
     Prefab rocketBullet;
+    Prefab shotgunShell;
+    Prefab shotgunPellet;
 
     Prefab suicider;
     Prefab shooter;
@@ -59,6 +61,7 @@ class Game{
     Prefab pistolLoot;
     Prefab smgLoot;
     Prefab rocketLoot;
+    Prefab shotgunLoot;
 
     bool restartGame;
 };

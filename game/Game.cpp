@@ -4,6 +4,7 @@
 #include "GameObjects/Player/Player.h"
 #include "GameObjects/Player/Gun.h"
 #include "GameObjects/Helper/Spawner.h"
+#include "GameObjects/Helper/Lifetime.h"
 #include "GameObjects/Helper/Loot.h"
 #include "GameObjects/Helper/LootDropper.h"
 #include "GameObjects/Enemies/Shooter.h"
@@ -11,6 +12,7 @@
 #include "GameObjects/Bullets/PistolBullet.h"
 #include "GameObjects/Bullets/SMGBullet.h"
 #include "GameObjects/Bullets/RocketBullet.h"
+#include "GameObjects/Bullets/ShotgunShell.h"
 #include "GameObjects/Enemies/Shooter.h"
 
 #include <Engine/Renderer.h>
@@ -24,12 +26,14 @@
 #define ELITEB (ELITESIZE * 0.866025f) 
 
 using namespace phys2d;
-std::initializer_list<Vec2> bulletModel = {{-1,-1}, {0,0}, {-1,1}};
-std::initializer_list<Vec2> smgBulletModel = {{-0.75f,-1}, {2,0}, {-0.75f,1}};
+std::initializer_list<Vec2> bulletModel = {{-1,0}, {0,1}, {1,0}};
+std::initializer_list<Vec2> smgBulletModel = {{-0.75, 0}, {0,1.75f}, {0.75, 0}};
 std::initializer_list<Vec2> suiciderModel = {{-3,-3}, {3,-3}, {3, 3},{-3,3}};
-std::initializer_list<Vec2> shooterModel = {{0,2}, {-2,0}, {-1.2f, -2}, {1.2f, -2}, {2,0}};
+std::initializer_list<Vec2> shooterModel = {{0,3}, {-3,0}, {-2, -3}, {2, -3}, {3,0}};
 std::initializer_list<Vec2> eliteModel = {{-ELITEA, -ELITEB}, {ELITEA, -ELITEB}, {ELITESIZE, 0},  {ELITEA, ELITEB},  {-ELITEA, ELITEB}, {-ELITESIZE, 0} };
 std::initializer_list<Vec2> lootBoxModel = {{-1,-1}, {1,-1}, {1,1}, {-1,1}};
+std::initializer_list<Vec2> shotgunPelletModel = {{-0.75f,-1}, {1,-0.75f}, {1,1}, {-0.75f,1}};
+std::initializer_list<Vec2> shotgunShellModel = {{-2,0}, {-2.5f, 2}, {-1.8f, 1.f}, {-0.8f, 2.4f}, {0.2f, 1.9f}, {2,0}};
 
 Game::Game() : 
     window(sf::VideoMode(viewX, viewY), "My window"),
@@ -61,7 +65,8 @@ Game::Game() :
         GameObject eliteObj(std::make_unique<PolyRenderer>(eliteModel, 0x365259FF));
         eliteObj.addComponent<Elite>()->setBulletPrefab(&smgBullet);
         eliteObj.addComponent<Health>(9);
-        eliteObj.addComponent<LootDropper>(&smgLoot, 0.3f);
+        eliteObj.addComponent<LootDropper>(&smgLoot, 0.15f);
+        eliteObj.addComponent<LootDropper>(&shotgunLoot, 0.15f);
         elite = Prefab(std::move(eliteObj), Body(new ShapePoly(eliteModel), BodyData(0.5f), Body::BodyType::KINEMATIC));
 
         GameObject bulletObj(std::make_unique<PolyRenderer>(bulletModel, 0xFFC914FF));
@@ -72,9 +77,19 @@ Game::Game() :
         smgBulletObj.addComponent<SMGBullet>();
         smgBullet = Prefab(std::move(smgBulletObj), Body(new ShapePoly(smgBulletModel), BodyData(0.1f)));
 
-        GameObject rocketObj(std::make_unique<CircleRenderer>(1.5f, 0xFFC914FF));
+        GameObject rocketObj(std::make_unique<CircleRenderer>(1.25f, 0xFFC914FF));
         rocketObj.addComponent<RocketBullet>(&pistolBullet);
-        rocketBullet = Prefab(std::move(rocketObj), Body(new ShapeCircle(1.5f), BodyData(1)));
+        rocketBullet = Prefab(std::move(rocketObj), Body(new ShapeCircle(1.25f), BodyData(1)));
+
+        GameObject shotgunPelletObj(std::make_unique<PolyRenderer>(shotgunPelletModel, 0xFFC914AA));
+        shotgunPelletObj.addComponent<PistolBullet>(2);
+        shotgunPelletObj.addComponent<Lifetime>(0.75f);
+        shotgunPellet = Prefab(std::move(shotgunPelletObj), Body(new ShapePoly(shotgunPelletModel), BodyData(0.1f)));
+
+        GameObject shotgunShellObj(std::make_unique<PolyRenderer>(shotgunShellModel, 0xFFC914AA));
+        shotgunShellObj.addComponent<ShotgunShell>(&shotgunPellet);
+        shotgunShell = Prefab(std::move(shotgunShellObj), Body(new ShapeCircle(0), BodyData(0.1f)));
+
 
         GameObject pistolLootObj(std::make_unique<PolyRenderer>(lootBoxModel, 0x88423AFF));
         pistolLootObj.addComponent<Loot>(&pistolBullet);
@@ -87,6 +102,10 @@ Game::Game() :
         GameObject rocketLootObj(std::make_unique<PolyRenderer>(lootBoxModel, 0x7823FFF));
         rocketLootObj.addComponent<Loot>(&rocketBullet);
         rocketLoot = Prefab(std::move(rocketLootObj), Body(new ShapePoly(lootBoxModel), BodyData(1)));
+
+        GameObject shotgunLootObj(std::make_unique<PolyRenderer>(lootBoxModel, 0x9FC293FF));
+        shotgunLootObj.addComponent<Loot>(&shotgunShell);
+        shotgunLoot = Prefab(std::move(shotgunLootObj), Body(new ShapePoly(lootBoxModel), BodyData(1)));
     }
 
     window.setFramerateLimit(60);
@@ -95,10 +114,11 @@ Game::Game() :
     setupGame();
 
     // ImGui
-    //ImGui::SFML::Init(window);
-    //ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    //ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;    
-
+    /*
+    ImGui::SFML::Init(window);
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;    
+    */
 }
 
 void Game::setupGame(){
@@ -203,7 +223,6 @@ void Game::handleLogic(){
 void Game::handleImGui(){
 
     ImGui::Begin("Debug");
-    ImGui::Text("Mouse: (%.2f, %.2f)", Input::getMouseX(), Input::getMouseY());
     ImGui::Text("Objects: %u", GameObject::objects.size());
     ImGui::Text("dt: %ums", elapsed.asMilliseconds());
     ImGui::End();

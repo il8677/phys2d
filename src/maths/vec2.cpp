@@ -8,6 +8,11 @@ namespace phys2d{
 
     }
 
+    Vec2::Vec2(float rotation){
+        x = -sin(rotation);
+        y = cos(rotation);
+    }
+
     Vec2::Vec2() : x(0), y(0){
         
     }
@@ -96,7 +101,7 @@ namespace phys2d{
     }
 
     Rotation Vec2::getAngle() const {
-        return Rotation(std::atan2(x, y));
+        return -Rotation(std::atan2(x, y));
     }
 
     Vec2 operator*(const float lhs, const Vec2 rhs){

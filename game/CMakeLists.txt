@@ -18,11 +18,13 @@ set(GAME_SOURCES
     GameObjects/Bullets/SMGBullet.cpp
     GameObjects/Bullets/RocketBullet.cpp
     GameObjects/Bullets/Bullet.cpp
+    GameObjects/Bullets/ShotgunShell.cpp
     
     GameObjects/Helper/Spawner.cpp
     GameObjects/Helper/Health.cpp
     GameObjects/Helper/Loot.cpp
     GameObjects/Helper/LootDropper.cpp
+    GameObjects/Helper/Lifetime.cpp
 
     GameObjects/Enemies/EnemyController.cpp
     GameObjects/Enemies/Suicider.cpp

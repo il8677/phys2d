@@ -45,9 +45,8 @@ void Shooter::shoot(float dt){
 
         const phys2d::Vec2 targetVec = (playerBody->position - body->position + Random::randVec(Vec2(-5,-5), Vec2(5,5))).normalized();
 
-        GameObject& b = bullet->create(body->position + targetVec * 5);
+        GameObject& b = bullet->create(body->position + targetVec * 5, targetVec.getAngle());
         Bullet* bcomp = b.getComponent<Bullet>();
-        bcomp->setTravelVector(targetVec);
         bcomp->setColliderMask(1);
 
         fireRate = bcomp->getFireRate();

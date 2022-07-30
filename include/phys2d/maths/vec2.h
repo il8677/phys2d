@@ -7,6 +7,7 @@ namespace phys2d{
 		float x, y;
 
 		Vec2(float xx, float yy);
+		Vec2(float rotation);
 		Vec2();
 
 		// Unary -

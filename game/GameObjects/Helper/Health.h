@@ -16,6 +16,8 @@ class Health : public ComponentParent<Health>{
     void setDeathCB(std::function<void()> dc);
 
     private:
+    void updateIndicator();
+
     float health=10;
     float maxHealth = 10;
 

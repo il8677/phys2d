@@ -82,7 +82,7 @@ Game::Game() :
         rocketBullet = Prefab(std::move(rocketObj), Body(new ShapeCircle(1.25f), BodyData(1)));
 
         GameObject shotgunPelletObj(std::make_unique<PolyRenderer>(shotgunPelletModel, 0xFFC914AA));
-        shotgunPelletObj.addComponent<PistolBullet>(2);
+        shotgunPelletObj.addComponent<PistolBullet>(4);
         shotgunPelletObj.addComponent<Lifetime>(0.75f);
         shotgunPellet = Prefab(std::move(shotgunPelletObj), Body(new ShapePoly(shotgunPelletModel), BodyData(0.1f)));
 

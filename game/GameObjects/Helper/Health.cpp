@@ -18,20 +18,23 @@ void Health::damage(float amount){
         else gameObject->destroy();
     }
 
-    uint32_t currentColor = gameObject->getRenderer()->getColor();
-    gameObject->getRenderer()->setColor(currentColor & 0xFFFFFF00 | (int)(0xFF*health/(float)maxHealth));
+    updateIndicator();
 }
 
 void Health::heal(float amount){
     health += amount;
     if(health > maxHealth) health = maxHealth;
 
-    uint32_t currentColor = gameObject->getRenderer()->getColor();
-    gameObject->getRenderer()->setColor(currentColor & 0xFFFFFF00 | (int)(0xFF*health/(float)maxHealth));
+    updateIndicator();
 }
 
 void Health::update(float dt) {
 
+}
+
+void Health::updateIndicator(){
+    uint32_t currentColor = gameObject->getRenderer()->getColor();
+    gameObject->getRenderer()->setColor(currentColor & 0xFFFFFF00 | (0x55 + (int)(0xAA*health/(float)maxHealth)));
 }
 
 void Health::setDeathCB(std::function<void()> dc){

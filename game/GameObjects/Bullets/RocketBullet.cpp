@@ -19,6 +19,6 @@ void RocketBullet::destroy(){
         float angle = inc * i;
         Vec2 dir(angle);
 
-        projectile->create(dir*5 + gameObject->getPosition(), angle);
+        projectile->create(dir*2 + gameObject->getPosition(), angle);
     }
 }

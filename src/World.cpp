@@ -44,9 +44,6 @@ namespace phys2d{
     }
 
     void World::step(float dt){
-        broadphase.run();
-        narrowphase();
-
         for(auto it = bodies.begin(); it != bodies.end(); it++){
             Body& body = *it;
             if(body.doDestroy){
@@ -61,6 +58,9 @@ namespace phys2d{
 
             integrateBody(dt, body);
         }
+
+        broadphase.run();
+        narrowphase();
     }
     
     void World::stepCont(float dt, Body& body){

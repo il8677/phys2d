@@ -16,7 +16,7 @@ namespace phys2d{
     void dispatchContact(Contact& contact){
         static std::function<void(Contact&)> resolves[2][2] = {
             {circleCircle, circlePoly},
-            {circlePoly, polyPoly}};
+            {circlePoly, polyPoly}}; // 2d array with function pointers corresponding to the Enum pairs of two contact bodies
 
         Body* A = contact.A;
         Body* B = contact.B;
@@ -52,6 +52,7 @@ namespace phys2d{
 
         bool doFlip;
 
+        // Make A the cirlce body and B the polygon
         if(contact.A->shape->type == Shape::Type::CIRCLE){
             bA = contact.A;
             bB = contact.B;
@@ -67,14 +68,14 @@ namespace phys2d{
         ShapeCircle* A = (ShapeCircle*)bA->shape;
         ShapePoly* B = (ShapePoly*)bB->shape;
 
-        Mat2 aOrient(bA->rotation);
+        Mat2 aOrient(bA->rotation); // Rotation matricies of both objects
         Mat2 bOrient(bB->rotation);
 
         Vec2 circleCenter = bA->position;
 
-        circleCenter = bOrient.transposed() * (circleCenter - bB->position);
+        circleCenter = bOrient.transposed() * (circleCenter - bB->position); // Transform circle into B space
 
-        float bestPen = -FLT_MAX;
+        float bestPen = -FLT_MAX; // Find the vertex with the maxiumum penetration into the circle
         size_t bestIndex = 0;
 
         for(int i = 0; i < B->points.size(); i++){
@@ -87,39 +88,42 @@ namespace phys2d{
                 bestIndex = i;
             }
         }
-        if(bestPen < 0.1e-10f){
+        if(bestPen < 0.1e-10f){ // Only one collision point (Collision on a vertex)
             contact.contactCount = 1;
             contact.normal = -(bOrient * B->normals[bestIndex]);
             contact.contactPoints[0] = contact.normal * A->radius + bA->position;
             contact.pen = A->radius;
+            return;
         }
 
+        // Get the face of the collision
         Vec2 bFace[2];
         bFace[0] = B->points[bestIndex];
         size_t next = bestIndex + 1;
         if(next == B->points.size()) next = 0;
         bFace[1] = B->points[next];
 
+        // Calculate penetration across each direction of the face
         float d1 = (circleCenter-bFace[0]).dot(bFace[1] - bFace[0]);
         float d2 = (circleCenter-bFace[1]).dot(bFace[0] - bFace[1]);
         contact.pen = A->radius - bestPen;
 
-        if(d1 <= 0.0f){
-            float dist = (circleCenter - bFace[0]).dot(circleCenter - bFace[0]);
+        if(d1 <= 0.0f){ // Collision on vertex 1
+            float dist = (circleCenter - bFace[0]).dot(circleCenter - bFace[0]); // Distance between circle and colliding vertex
 
             if(dist > A->radius * A->radius) return;
 
             contact.contactCount = 1;
 
-            Vec2 n = bFace[0] - circleCenter;
+            Vec2 n = bFace[0] - circleCenter; // Colision normal
             n = bOrient * n;
             n.normalize();
             contact.normal = n;
 
-            bFace[0] = bOrient * bFace[0] + bB->position;
+            bFace[0] = bOrient * bFace[0] + bB->position; // Transform into world space
             contact.contactPoints[0] = bFace[0];
 
-        }else if (d2 <= 0.0f){
+        }else if (d2 <= 0.0f){ // Collision on vertex 2
             float dist = (circleCenter - bFace[1]).dot(circleCenter - bFace[1]);
 
             if(dist > A->radius * A->radius) return;
@@ -134,17 +138,17 @@ namespace phys2d{
             bFace[1] = bOrient * bFace[1] + bB->position;
             contact.contactPoints[0] = bFace[1];
 
-        }else{
+        }else{ // Collision on face
             Vec2 n = B->normals[bestIndex];
             if((circleCenter-bFace[0]).dot(n) > A->radius) return;
 
-            n = bOrient * n;
+            n = bOrient * n; // Transform normal line
             contact.normal = -n;
             contact.contactPoints[0] = contact.normal * A->radius + bA->position;
             contact.contactCount = 1;
         }
 
-        if(doFlip) contact.normal = -contact.normal;
+        if(doFlip) contact.normal = -contact.normal; // Flip if circle-polygon was flipped
     }
 
     // Returns the index of the face, and the amount it penetrates
@@ -158,13 +162,13 @@ namespace phys2d{
         for(size_t i = 0; i < A->points.size(); i++){
             Vec2 an = A->normals[i];
             Mat2 ar = Mat2(bA->rotation);
-            Vec2 ran = ar * an;
+            Vec2 ran = ar * an; // Rotated normal vertex
 
             // Space transformation
             Mat2 brT = Mat2(bB->rotation).transposed();
-            an = brT * ran;
+            an = brT * ran; // Normal vector in B space
 
-            Vec2 bmax = B->getMaxPoint(-an);
+            Vec2 bmax = B->getMaxPoint(-an); // Closest B vertex to the normal vector
 
             // Space transformation
             Vec2 ap = A->points[i];
@@ -172,6 +176,7 @@ namespace phys2d{
             ap -= bB->position;
             ap = brT * ap;
 
+            // Penetration of vertex with the closest point
             float bmodelpen = an.dot(bmax-ap);
 
             if(bmodelpen > bestPen){
@@ -217,6 +222,7 @@ namespace phys2d{
         ShapePoly* A = (ShapePoly*)bA->shape;
         ShapePoly* B = (ShapePoly*)bB->shape;
 
+        // Find penetration of both objects
         auto [indexa, pena] = getMaxPen(bA, bB);
         auto [indexb, penb] = getMaxPen(bB, bA);
 
@@ -226,6 +232,7 @@ namespace phys2d{
         size_t refFaceIndex;
         bool isB;
 
+        // Find which face is the reference face
         ShapePoly* ref;
         ShapePoly* inc;
         Body* bRef;
@@ -251,14 +258,14 @@ namespace phys2d{
             isB = true;
         }
 
-        // Find the incident face
-        Mat2 refOrient(bRef->rotation);
+        // Set up the incident face
+        Mat2 refOrient(bRef->rotation); // Rotation matricies of both objects
         Mat2 incOrient(bInc->rotation);
 
-        Vec2 refNorm = refOrient * ref->normals[refFaceIndex];
+        Vec2 refNorm = refOrient * ref->normals[refFaceIndex]; // Orient the ref face to incident face space
         refNorm = incOrient.transposed() * refNorm;
 
-        // find the face most away from the normal
+        // find the reference face most away from the normal
         size_t incFaceIndex = 0;
         float minDot = FLT_MAX;
 
@@ -270,6 +277,7 @@ namespace phys2d{
             }
         }
 
+        // Get the word verticies of the bodies
         Vec2 incidentFaceWorld[2];
         incidentFaceWorld[0] = incOrient * inc->points[incFaceIndex] + bInc->position;
         if(++incFaceIndex >= inc->points.size()) incFaceIndex = 0;
@@ -285,6 +293,7 @@ namespace phys2d{
         
         Vec2 refFaceNormal = refFace.getNormal();
 
+        // Calculating the clipping planes of the bodies
         float c = refFaceNormal.dot(referenceFaceWorld[0]);
         float n = -refFace.dot(referenceFaceWorld[0]);
         float p =  refFace.dot(referenceFaceWorld[1]);

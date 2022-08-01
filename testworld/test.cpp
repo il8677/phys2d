@@ -8,7 +8,9 @@
 
 // Debug header
 #include "../src/colliders/Collision.h"
+
 #include "GameObject.h"
+#include "Input.h"
 
 #include <imgui.h>
 #include <imgui-SFML.h>
@@ -498,34 +500,54 @@ int main(){
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
+            else if (event.type == sf::Event::KeyPressed){
+                Input::setKeyState(event.key.code, true);
+            } else if (event.type == sf::Event::KeyReleased){
+                Input::setKeyState(event.key.code, false);
+            } else if (event.type == sf::Event::MouseMoved){
+                Input::mouse.x = event.mouseMove.x;
+                Input::mouse.y = event.mouseMove.y;
+            } else if (event.type == sf::Event::MouseButtonPressed){
+                if(event.mouseButton.button == sf::Mouse::Right) {
+                    Input::mouse.buttonR = true;
+                } else if(event.mouseButton.button == sf::Mouse::Left) {
+                    Input::mouse.buttonL = true;
+                }
+            } else if (event.type == sf::Event::MouseButtonReleased) {
+                if(event.mouseButton.button == sf::Mouse::Right) {
+                    Input::mouse.buttonR = false;
+                } else if(event.mouseButton.button == sf::Mouse::Left) {
+                    Input::mouse.buttonL = false;
+                }
+            }
         }
 
         float moveAmount = 10.f;
 
         sf::Time elapsed = clock.restart();
 
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+        if(Input::getKeyState(sf::Keyboard::W)){
             mainView.move(0, -moveAmount*elapsed.asSeconds());
             window.setView(mainView);
         } 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+        if (Input::getKeyState(sf::Keyboard::A)){
             mainView.move(-moveAmount*elapsed.asSeconds(), 0);
             window.setView(mainView);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+        if (Input::getKeyState(sf::Keyboard::S)){
             mainView.move(0, moveAmount*elapsed.asSeconds());
             window.setView(mainView);
         } 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+        if (Input::getKeyState(sf::Keyboard::D)){
             mainView.move(moveAmount*elapsed.asSeconds(), 0);
             window.setView(mainView);
         }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)){
+        if(Input::getKeyState(sf::Keyboard::Q)){
             moveAmount+=1;
             mainView.zoom(1.1);
             window.setView(mainView);
         }
-        if(sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
+        if(Input::getKeyState(sf::Keyboard::E)){
             moveAmount-=1;
             mainView.zoom(0.9);
             window.setView(mainView);

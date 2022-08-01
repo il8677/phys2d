@@ -9,6 +9,7 @@ add_compile_definitions(PHYS_2D_DEBUG)
 set(TEST_SOURCES
     GameObject.cpp
     Renderer.cpp
+    Input.cpp
 )
 
 set(TEST_ADDITIONAL_SOURCES 

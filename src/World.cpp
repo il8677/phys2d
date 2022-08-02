@@ -46,10 +46,6 @@ namespace phys2d{
     void World::step(float dt){
         for(auto it = bodies.begin(); it != bodies.end(); it++){
             Body& body = *it;
-            if(body.doDestroy){
-                it = bodies.erase(it);
-                continue;
-            }
 
             if(body.isContinuous()){
                 stepCont(dt, body);
@@ -61,6 +57,13 @@ namespace phys2d{
 
         broadphase.run();
         narrowphase();
+        for(auto it = bodies.begin(); it != bodies.end(); it++){
+            Body& body = *it;
+            if(body.doDestroy){
+                it = bodies.erase(it);
+                continue;
+            }
+        }
     }
     
     void World::stepCont(float dt, Body& body){

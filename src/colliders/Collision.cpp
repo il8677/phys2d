@@ -265,7 +265,7 @@ namespace phys2d{
         Vec2 refNorm = refOrient * ref->normals[refFaceIndex]; // Orient the ref face to incident face space
         refNorm = incOrient.transposed() * refNorm;
 
-        // find the reference face most away from the normal
+        // find the incident normal least away from the normal
         size_t incFaceIndex = 0;
         float minDot = FLT_MAX;
 

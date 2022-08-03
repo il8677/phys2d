@@ -27,12 +27,6 @@ void CircleRenderer::render(RenderInfo ri, sf::RenderWindow& window){
     circle.setRotation(ri.rot * 180 / 3.14159265);
     circle.setPosition(ri.p.x, ri.p.y);
     circle.setFillColor(color);
-/*    sf::Vertex line[2] = {
-        sf::Vertex(sf::Vector2f(ri.p.x, ri.p.y)),
-        sf::Vertex(sf::Vector2f(ri.p.x + r*std::sin(ri.p.x), ri.p.y + r * std::cos(ri.p.x)))
-    };
-
-    window.draw(line, 2, sf::Lines);*/
 
     window.draw(circle);
 }

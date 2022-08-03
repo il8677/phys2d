@@ -39,16 +39,12 @@ void CircleRenderer::render(RenderInfo ri, sf::RenderWindow& window){
 
 CircleRenderer::CircleRenderer(float r_, uint32_t color_) : r(r_){
     color = sf::Color(color_);
-    if(init){
-        init = false;
-    }
 }
 
 Renderer* CircleRenderer::clone(){
     return new CircleRenderer(*this);
 }
 
-bool CircleRenderer::init = true;
 sf::CircleShape CircleRenderer::circle;
 
 void PolyRenderer::render(RenderInfo ri, sf::RenderWindow& window){

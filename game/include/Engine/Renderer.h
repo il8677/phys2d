@@ -37,7 +37,6 @@ class CircleRenderer : public Renderer {
 
     private:
     static sf::CircleShape circle;
-    static bool init;
 
     float r;
 };

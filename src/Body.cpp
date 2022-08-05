@@ -34,17 +34,21 @@ namespace phys2d{
         return inertiainv;
     }
 
+
+    // Body
     Body::Body() : data(1){
 
     }
 
     Body::Body(Shape* shape_, BodyData data_, BodyType type_) : 
         shape(shape_), data(data_) {
+
         setType(type_);
     }
 
     Body::Body(const Body& other) : data(other.data){
         shape = other.shape->clone();
+
         velocity = other.velocity;
         position = other.position;
         rotation = other.rotation;
@@ -61,6 +65,7 @@ namespace phys2d{
     Body& Body::operator=(const Body& other){
         delete shape;
         shape = other.shape->clone();
+
         velocity = other.velocity;
         position = other.position;
         rotation = other.rotation;
@@ -139,9 +144,6 @@ namespace phys2d{
 
     void Body::setContinuous(bool continuous_){
         continuous = continuous_;
-
-        if(continuous){
-        }
     }
 
     bool Body::isContinuous(){

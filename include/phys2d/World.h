@@ -22,7 +22,9 @@ namespace phys2d{
         World(Vec2 gravity=Vec2(0,9.8f));
         ~World();
 
+        // Creates a new body
         Body* createBody(Shape* shape, BodyData data, Body::BodyType type = Body::BodyType::DYNAMIC);
+        // Creates a new body copied from provided body
         Body* createBody(Body* b);
         void destroyBody(Body* body);
 
@@ -34,6 +36,7 @@ namespace phys2d{
 
         void reset();
 
+        // Debug functions
         #ifdef PHYS_2D_DEBUG
         std::function<void(Contact& c)> collCB;
         #else 
@@ -45,6 +48,7 @@ namespace phys2d{
         const std::list<Body>& d_getBodies() const;
 
         private:
+        // Step a continuous body
         void stepCont(float dt, Body& body);
 
         void integrateBody(float dt, Body& body);
@@ -52,9 +56,7 @@ namespace phys2d{
         void narrowphase();
 
         Vec2 gravity;
-
-        std::list<Body> bodies; // OPTIMIZATION: better data structure?
-
+        std::list<Body> bodies; 
         Broadphase broadphase;
     };
 }

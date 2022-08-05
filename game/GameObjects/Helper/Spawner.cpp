@@ -19,7 +19,7 @@ void Spawner::update(float dt){
 
         Vec2 loc = Random::randVecInViewport();
 
-        int randMax = std::min(enemies.size()-1, (unsigned long)spawns/4);
+        int randMax = std::min(enemies.size()-1, (size_t)spawns/4);
         int nextEnemyIndex = Random::randInt(0, randMax);
 
         GameObject& newEnemy = enemies[nextEnemyIndex]->create(loc);

@@ -1,7 +1,7 @@
 #pragma once
 
 namespace phys2d{
-	class Rotation;
+	struct Rotation;
 
 	struct Vec2{
 		float x, y;

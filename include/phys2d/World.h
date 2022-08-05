@@ -14,8 +14,8 @@ namespace phys2d{
     struct Body;
     struct BodyData;
     struct SPEntry;
-    class Shape;
-    class Contact;
+    struct Shape;
+    struct Contact;
 
     class World{
         public:
@@ -35,15 +35,11 @@ namespace phys2d{
         void setGravity(Vec2 gravity);
 
         // Debug functions
-        #ifdef PHYS_2D_DEBUG
-        std::function<void(Contact& c)> collCB;
-        #else 
-        private:
-        #endif
-
         Vec2& d_getGravity();
         const std::vector<Contact>& d_getContacts() const;
         const std::list<Body>& d_getBodies() const;
+
+        std::function<void(Contact& c)> collCB;
 
         private:
         // Step a continuous body

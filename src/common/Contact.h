@@ -9,8 +9,12 @@ namespace phys2d{
         Body* A;
         Body* B;
 
+        // Penetration of the two bodies
         float pen;
+
+        // The collision normal
         Vec2 normal;
+        
         Vec2 contactPoints[2];
         int contactCount=0;
 

@@ -37,12 +37,6 @@ namespace phys2d{
         gravity = g;
     }
 
-    void World::reset(){
-        bodies.clear();
-
-        broadphase.clear();
-    }
-
     void World::step(float dt){
         for(auto it = bodies.begin(); it != bodies.end(); it++){
             Body& body = *it;

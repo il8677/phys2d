@@ -34,8 +34,6 @@ namespace phys2d{
 
         void setGravity(Vec2 gravity);
 
-        void reset();
-
         // Debug functions
         #ifdef PHYS_2D_DEBUG
         std::function<void(Contact& c)> collCB;

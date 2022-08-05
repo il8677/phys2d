@@ -585,7 +585,7 @@ int main(){
                 for(size_t i = 0; i < kv.second.size(); i++){
                     if(ImGui::Button(kv.second[i].name)) {
                         objects.clear();
-                        world.reset();
+                        world.clear();
                         kv.second[i].setup();
                     }
                 }

@@ -37,13 +37,11 @@ namespace phys2d{
     }
 
     void Vec2::normalize(){
-        const float m = magnitude();
+        const float m = magnitudeSq();
         
         if(m == 0) return;
 
-        //OPTIMIZATION: Faster than division?
-
-        float minv = 1/m;
+        float minv = 1/sqrt(m);
 
         x *= minv;
         y *= minv;

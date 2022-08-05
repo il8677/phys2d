@@ -1,6 +1,9 @@
 phys2d/build
 build*
+
 .vscode
-imgui.ini
+.vs
+
+imgui.ini*
 
 .DS_STORE

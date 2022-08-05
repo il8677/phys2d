@@ -22,6 +22,7 @@ namespace phys2d{
 
 		Vec2 normalized() const;
 
+		// Returns one of the orthogonal vectors
 		Vec2 getNormal() const;
 
 		Vec2 operator+(const Vec2& rhs) const;
@@ -33,14 +34,16 @@ namespace phys2d{
 		float cross(const Vec2& rhs) const;
 		Vec2 cross(float s) const;
 
-		bool operator==(const Vec2& other) const;
 
 		float magnitude() const;
 		float magnitudeSq() const;
+
+		// Returns the angle between the down axis and the vector
 		Rotation getAngle() const;
 
 		friend Vec2 operator*(const float lhs, const Vec2 rhs);
 
+		bool operator==(const Vec2& other) const;
 		friend bool operator< (const Vec2& v1, const Vec2& v2);
 		friend bool operator> (const Vec2& v1, const Vec2& v2);
 		friend bool operator<= (const Vec2& v1, const Vec2& v2);

@@ -9,6 +9,7 @@
 namespace phys2d{
     struct Vec2;
 
+    // Helper struct to store mass, inertia, and commonly used calculations of such
     struct BodyData{
         BodyData(float mass, float restitution=0.1f);
 
@@ -30,6 +31,9 @@ namespace phys2d{
     };
 
     struct Body{
+        // Static = no movement
+        // Kinematic = no forces
+        // Dynamic = normal body
         enum BodyType { STATIC, DYNAMIC, KINEMATIC};
 
         Body(Shape* shape, BodyData data, BodyType type=DYNAMIC);
@@ -49,9 +53,13 @@ namespace phys2d{
         unsigned char layer=255;
         unsigned char collideWith=255;
 
+        // Trigger bodies don't collide
         bool isTrigger = false;
+
+        // Callback for collisions
         std::function<void(Body* obj, Body* other)> triggerCallback;
 
+        // Arbitrary data store
         void* userData=nullptr;
 
         bool doDestroy=false;

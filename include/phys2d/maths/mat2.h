@@ -3,6 +3,7 @@
 
 namespace phys2d{
     struct Vec2;
+
     struct Mat2{
         union {
             float m[2][2];
@@ -11,6 +12,8 @@ namespace phys2d{
 
         Mat2();
         Mat2(std::array<float,4> values);
+
+        // Generates rotation matrix for angle
         Mat2(float angle);
 
         Mat2 transposed() const;

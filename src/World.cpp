@@ -20,26 +20,26 @@ namespace phys2d{
         return b;
     }
 
+    Body* World::createBody(Body* body){
+        Body* b = &bodies.emplace_back(*body);
+
+        broadphase.addBody(b);
+
+        return b;
+    }
+
+    void World::clear(){
+        bodies.clear();
+        broadphase.clear();
+    }
+
     void World::setGravity(Vec2 g){
         gravity = g;
     }
 
-    void World::reset(){
-        bodies.clear();
-
-        broadphase.clear();
-    }
-
     void World::step(float dt){
-        broadphase.run();
-        narrowphase();
-
         for(auto it = bodies.begin(); it != bodies.end(); it++){
             Body& body = *it;
-            if(body.doDestroy){
-                it = bodies.erase(it);
-                continue;
-            }
 
             if(body.isContinuous()){
                 stepCont(dt, body);
@@ -47,6 +47,16 @@ namespace phys2d{
             }
 
             integrateBody(dt, body);
+        }
+
+        broadphase.run();
+        narrowphase();
+        for(auto it = bodies.begin(); it != bodies.end(); it++){
+            Body& body = *it;
+            if(body.doDestroy){
+                it = bodies.erase(it);
+                continue;
+            }
         }
     }
     

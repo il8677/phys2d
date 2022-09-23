@@ -14,10 +14,10 @@ namespace phys2d{
 
     void Contact::resolve(){
         if(A->triggerCallback)
-            A->triggerCallback(B);
+            A->triggerCallback(A, B);
         
         if(B->triggerCallback) 
-            B->triggerCallback(A);
+            B->triggerCallback(B, A);
 
         if(A->isTrigger || B->isTrigger) return;
 
@@ -26,24 +26,29 @@ namespace phys2d{
     }
 
     void Contact::updateVelocities(){
+        // The restitution value for the collision
         float r = std::min(A->data.restitution, B->data.restitution);
 
         for(int i = 0; i < contactCount; i++){
+            // The positions of the body relative to the contact point
             Vec2 ra = contactPoints[i] - A->position;
             Vec2 rb = contactPoints[i] - B->position;
 
             Vec2 rv = B->velocity - A->velocity + rb.cross(B->angularVel) - ra.cross(A->angularVel);
 
+            // Speed along the normal
             float sN = rv.dot(normal);
 
             if(std::abs(sN) <= 1e-7) return;
 
+            // Relative veocities along normal
             float raN = ra.cross(normal);
             float rbN = rb.cross(normal);
 
             float invMSum = A->data.getMassInv() + B->data.getMassInv();
             invMSum += raN * raN * A->data.getInertiaInv() + rbN * rbN * A->data.getInertiaInv();
 
+            // Magnitude of impulse vector
             float impulse = -(1.0f+r) * sN;
             impulse /= invMSum;
             impulse /= (float)contactCount;
@@ -58,12 +63,15 @@ namespace phys2d{
 
             // Friction
 
+            // Tangent
             Vec2 t = rv - normal * rv.dot(normal);
             t.normalize();
 
+            // Impulse magnitude
             float jt = -rv.dot(t) / invMSum / (float)contactCount;
 
             Vec2 tanJ;
+
             if(std::abs(jt) < impulse * 0.01f)
                 tanJ = -t * jt;
             else
@@ -81,6 +89,7 @@ namespace phys2d{
     void Contact::fixError(){
         const float correction = 0.4f;
 
+        // Penetration weighted by mass
         float mWeightedPen = pen / ((A->data.getMassInv() + B->data.getMassInv()));
 
         Vec2 correctionVec = mWeightedPen * correction * normal;

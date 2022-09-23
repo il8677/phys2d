@@ -14,34 +14,35 @@ namespace phys2d{
     struct Body;
     struct BodyData;
     struct SPEntry;
-    class Shape;
-    class Contact;
+    struct Shape;
+    struct Contact;
 
     class World{
         public:
         World(Vec2 gravity=Vec2(0,9.8f));
         ~World();
 
+        // Creates a new body
         Body* createBody(Shape* shape, BodyData data, Body::BodyType type = Body::BodyType::DYNAMIC);
+        // Creates a new body copied from provided body
+        Body* createBody(Body* b);
         void destroyBody(Body* body);
+
+        void clear();
 
         void step(float dt);
 
         void setGravity(Vec2 gravity);
 
-        void reset();
-
-        #ifdef PHYS_2D_DEBUG
-        std::function<void(Contact& c)> collCB;
-        #else 
-        private:
-        #endif
-
+        // Debug functions
         Vec2& d_getGravity();
         const std::vector<Contact>& d_getContacts() const;
         const std::list<Body>& d_getBodies() const;
 
+        std::function<void(Contact& c)> collCB;
+
         private:
+        // Step a continuous body
         void stepCont(float dt, Body& body);
 
         void integrateBody(float dt, Body& body);
@@ -49,9 +50,7 @@ namespace phys2d{
         void narrowphase();
 
         Vec2 gravity;
-
-        std::list<Body> bodies; // OPTIMIZATION: better data structure?
-
+        std::list<Body> bodies; 
         Broadphase broadphase;
     };
 }

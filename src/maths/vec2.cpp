@@ -8,6 +8,11 @@ namespace phys2d{
 
     }
 
+    Vec2::Vec2(float rotation){
+        x = -sin(rotation);
+        y = cos(rotation);
+    }
+
     Vec2::Vec2() : x(0), y(0){
         
     }
@@ -32,13 +37,11 @@ namespace phys2d{
     }
 
     void Vec2::normalize(){
-        const float m = magnitude();
+        const float m = magnitudeSq();
         
         if(m == 0) return;
 
-        //OPTIMIZATION: Faster than division?
-
-        float minv = 1/m;
+        float minv = 1/sqrt(m);
 
         x *= minv;
         y *= minv;
@@ -96,7 +99,7 @@ namespace phys2d{
     }
 
     Rotation Vec2::getAngle() const {
-        return Rotation(std::atan2(y, x));
+        return -Rotation(std::atan2(x, y));
     }
 
     Vec2 operator*(const float lhs, const Vec2 rhs){

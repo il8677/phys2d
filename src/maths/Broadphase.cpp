@@ -88,18 +88,12 @@ namespace phys2d{
 
     void Broadphase::clear(){
         bodiesX.clear();
-        bodiesY.clear();
     }
 
     void Broadphase::insertInPlace(Body* body){
-        
         bodiesX.insert(
             std::upper_bound(bodiesX.begin(), bodiesX.end(), SPEntry(body, 0)), 
             SPEntry(body, 0));
-
-        bodiesY.insert(
-            std::upper_bound(bodiesY.begin(), bodiesY.end(), SPEntry(body, 1)), 
-            SPEntry(body,1));
     }
 
     void Broadphase::run(){
@@ -107,26 +101,29 @@ namespace phys2d{
         continuousContacts.clear();
 
         insertionSort(bodiesX);
-        insertionSort(bodiesY);
 
         std::vector<SPEntry> current;
         current.reserve(bodiesX.size());
 
         std::unordered_set<Contact> possibleX;
-        std::unordered_set<Contact> possibleY;
 
-        possibleX.reserve(bodiesY.size()/2);
-        possibleY.reserve(bodiesY.size()/2);
+        possibleX.reserve(bodiesX.size()/2);
 
         for(SPEntry& entry : bodiesX){
+            // Remove all entries out of bounds
             current.erase(std::remove_if(
                 current.begin(), current.end(), [&](const SPEntry& e){
                     return e.isBehind(entry);
                 }), current.end());
 
             for(auto it = current.begin(); it != current.end(); it++){
-                if(!(it->body->layer & entry.body->layer)) continue;
+                // Skip for layers
+                if(!(it->body->layer & entry.body->collideWith && it->body->collideWith & entry.body->layer)) continue;
+                
+                // Flag body
                 contacts.emplace_back(entry.body, it->body);
+
+                // Add to continuous collision list
                 if(entry.body->isContinuous()) continuousContacts[entry.body].push_back(contacts.back());
                 if(it->body->isContinuous()) continuousContacts[it->body].push_back(contacts.back());
             }
@@ -135,28 +132,5 @@ namespace phys2d{
 
         }
         return;
-        current.clear();
-
-        for(SPEntry& entry : bodiesY){
-            current.erase(std::remove_if(
-                current.begin(), current.end(), [&](const SPEntry& e){
-                    return e.isBehind(entry);
-                }), current.end());
-            for(auto it = current.begin(); it != current.end(); it++){
-                possibleY.emplace(entry.body, it->body);
-            }
-
-            current.push_back(entry);
-        }
-
-        /*
-        for(auto A = bodies.begin(); A != bodies.end(); A++){
-            for(auto B = std::next(A); B != bodies.end(); B++){
-                contacts.emplace_back(&*A, &*B);
-            }
-        }*/
-    }
-
-    // TODO: Rewrite
-    
+    }    
 }

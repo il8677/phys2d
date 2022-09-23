@@ -68,15 +68,23 @@ namespace phys2d{
         std::vector<Vec2> normals_(points.size());
 
         for(int i = 0; i < points.size(); i++){
-            int next = i+1;
-            if(next == points.size()) next = 0;
+            int nextVert = i+1;
+            if(nextVert == points.size()) nextVert = 0;
 
-            Vec2 face = points[next] - points[i];
+            Vec2 face = points[nextVert] - points[i];
 
             normals_[i] = face.getNormal();
         }
 
         return normals_;
+    }
+
+    Shape* ShapePoly::clone(){
+        return new ShapePoly(*this);
+    }
+
+    Shape* ShapeCircle::clone(){
+        return new ShapeCircle(*this);
     }
 
     ShapeCircle::ShapeCircle(float radius_) :

@@ -3,11 +3,11 @@ set(CMAKE_CXX_STANDARD 20)
 set(PHYS_SOURCES
     maths/vec2.cpp
     maths/mat2.cpp
-    maths/rotation.cpp
+    maths/Rotation.cpp
     maths/Broadphase.cpp
 
-    body.cpp
-    world.cpp
+    Body.cpp
+    World.cpp
     colliders/Shape.cpp
     common/Contact.cpp
     colliders/Collision.cpp

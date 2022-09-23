@@ -120,6 +120,8 @@ int main(){
     window.setFramerateLimit(60);
     window.setView(mainView);
 
+    window.setKeyRepeatEnabled(false);
+
     std::vector<GameObject> objects;
 
     // Scenes

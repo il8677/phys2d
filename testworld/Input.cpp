@@ -1,5 +1,7 @@
 #include "Input.h"
 
+#include <iostream>
+
 float Input::getMouseX(){
     return mouse.x/maxX * viewportX;
 }

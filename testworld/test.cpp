@@ -636,6 +636,14 @@ int main(){
             ImGui::Checkbox("Velocity Render", &doVelRender);
         }
 
+		if(ImGui::CollapsingHeader("Statistics")){
+			float totalMomentum = 0;
+			for(const GameObject& go : objects){
+				totalMomentum += go.body->data.getMass() * go.body->velocity.magnitudeSq();
+			}
+			ImGui::Text("Total momentum: %f", totalMomentum);
+		}
+
         ImGui::Text("Object count: %lu", objects.size());
         if(ImGui::CollapsingHeader("Objects")){
             for(const GameObject& go : objects){

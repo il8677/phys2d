@@ -474,7 +474,7 @@ int main(){
     }
 
     // IMGUI debug
-    ImGui::SFML::Init(window);
+    if(!ImGui::SFML::Init(window)) return -1;
     ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;    
 
@@ -606,7 +606,7 @@ int main(){
         }
         ImGui::Checkbox("Rendering", &doRender);
         ImGui::Text("dt %dms", elapsed.asMilliseconds());
-        ImGui::Text("Ct %u", world.d_getContacts().size());
+        ImGui::Text("Ct %lu", world.d_getContacts().size());
         ImGui::End();
 
         ImGui::Begin("Debug");
@@ -647,7 +647,7 @@ int main(){
         ImGui::Text("Object count: %lu", objects.size());
         if(ImGui::CollapsingHeader("Objects")){
             for(const GameObject& go : objects){
-                ImGui::Text("m %f vx %f vy %f\n av %f px %f py %f", go.body->data.getMass(), go.body->velocity.x, go.body->velocity.y, go.body->angularVel, go.body->position.x, go.body->position.y);
+                ImGui::Text("m %f vx %f vy %f\n av %f px %f py %f", go.body->data.getMass(), go.body->velocity.x, go.body->velocity.y, static_cast<float>(go.body->angularVel), go.body->position.x, go.body->position.y);
             }
         }
         ImGui::End();

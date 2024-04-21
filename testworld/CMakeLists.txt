@@ -29,5 +29,3 @@ target_link_libraries(phystest PUBLIC OpenGL sfml-graphics sfml-window sfml-syst
 target_include_directories(phystest PRIVATE ../vendor/SFML/include)
 target_include_directories(phystest PRIVATE ../vendor/imgui-sfml)
 target_include_directories(phystest PRIVATE ../vendor/imgui-docking)
-
-message(${CMAKE_CXX_FLAGS_DEBUG})

@@ -6,7 +6,7 @@ project(phys_2d)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wextra -g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wextra")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fsanitize=address")
 set(CMAKE_XCODE_ATTRIBUTE_DEBUG_INFORMATION_FORMAT "dwarf-with-dsym")
 

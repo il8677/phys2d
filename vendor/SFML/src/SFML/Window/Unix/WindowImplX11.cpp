@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2022 Laurent Gomila (laurent@sfml-dev.org)
+// Copyright (C) 2007-2023 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -29,11 +29,13 @@
 #include <SFML/Window/Unix/ClipboardImpl.hpp>
 #include <SFML/Window/Unix/Display.hpp>
 #include <SFML/Window/Unix/InputImpl.hpp>
+#include <SFML/Window/Unix/KeyboardImpl.hpp>
 #include <SFML/System/Utf.hpp>
 #include <SFML/System/Err.hpp>
 #include <SFML/System/Mutex.hpp>
 #include <SFML/System/Lock.hpp>
 #include <SFML/System/Sleep.hpp>
+#include <bitset> // <X11/Xlibint.h> defines min/max as macros, so <bitset> has to come before that
 #include <X11/Xlibint.h>
 #include <X11/Xutil.h>
 #include <X11/Xatom.h>
@@ -68,6 +70,7 @@ namespace
     {
         sf::priv::WindowImplX11*              fullscreenWindow = NULL;
         std::vector<sf::priv::WindowImplX11*> allWindows;
+        std::bitset<256>                      isKeyFiltered;
         sf::Mutex                             allWindowsMutex;
         sf::String                            windowManagerName;
 
@@ -82,28 +85,25 @@ namespace
 
         static const unsigned int             maxTrialsCount = 5;
 
-        // Predicate we use to find key repeat events in processEvent
-        struct KeyRepeatFinder
-        {
-            KeyRepeatFinder(unsigned int initalKeycode, Time initialTime) : keycode(initalKeycode), time(initialTime) {}
-
-            // Predicate operator that checks event type, keycode and timestamp
-            bool operator()(const XEvent& event)
-            {
-                return ((event.type == KeyPress) && (event.xkey.keycode == keycode) && (event.xkey.time - time < 2));
-            }
-
-            unsigned int keycode;
-            Time time;
-        };
-
-        // Filter the events received by windows (only allow those matching a specific window)
+        // Filter the events received by windows (only allow those matching a specific window or those needed for the IM to work)
         Bool checkEvent(::Display*, XEvent* event, XPointer userData)
         {
-            // Just check if the event matches the window
-            // The input method sometimes sends ClientMessages with a different window ID,
-            // our event loop has to process them for the IM to work
-            return (event->xany.window == reinterpret_cast< ::Window >(userData)) || (event->type == ClientMessage);
+            if (event->xany.window == reinterpret_cast<::Window>(userData))
+            {
+                // The event matches the current window so pick it up
+                return true;
+            }
+            if (event->type == ClientMessage)
+            {
+                // The input method sometimes sends ClientMessage with a different window ID.
+                // Our event loop has to process them for the IM to work.
+                // We assume ClientMessage events not having WM_PROTOCOLS message type are such events.
+                // ClientMessage events having WM_PROTOCOLS message type should be handled by their own window,
+                // so we ignore them here. They will eventually be picked up with the first condition.
+                static const Atom wmProtocols = sf::priv::getAtom("WM_PROTOCOLS");
+                return event->xclient.message_type != wmProtocols;
+            }
+            return false;
         }
 
         // Find the name of the current executable
@@ -375,117 +375,6 @@ namespace
             }
 
             return false;
-        }
-
-        sf::Keyboard::Key keysymToSF(KeySym symbol)
-        {
-            switch (symbol)
-            {
-                case XK_Shift_L:      return sf::Keyboard::LShift;
-                case XK_Shift_R:      return sf::Keyboard::RShift;
-                case XK_Control_L:    return sf::Keyboard::LControl;
-                case XK_Control_R:    return sf::Keyboard::RControl;
-                case XK_Alt_L:        return sf::Keyboard::LAlt;
-                case XK_Alt_R:        return sf::Keyboard::RAlt;
-                case XK_Super_L:      return sf::Keyboard::LSystem;
-                case XK_Super_R:      return sf::Keyboard::RSystem;
-                case XK_Menu:         return sf::Keyboard::Menu;
-                case XK_Escape:       return sf::Keyboard::Escape;
-                case XK_semicolon:    return sf::Keyboard::Semicolon;
-                case XK_slash:        return sf::Keyboard::Slash;
-                case XK_equal:        return sf::Keyboard::Equal;
-                case XK_minus:        return sf::Keyboard::Hyphen;
-                case XK_bracketleft:  return sf::Keyboard::LBracket;
-                case XK_bracketright: return sf::Keyboard::RBracket;
-                case XK_comma:        return sf::Keyboard::Comma;
-                case XK_period:       return sf::Keyboard::Period;
-                case XK_apostrophe:   return sf::Keyboard::Quote;
-                case XK_backslash:    return sf::Keyboard::Backslash;
-                case XK_grave:        return sf::Keyboard::Tilde;
-                case XK_space:        return sf::Keyboard::Space;
-                case XK_Return:       return sf::Keyboard::Enter;
-                case XK_KP_Enter:     return sf::Keyboard::Enter;
-                case XK_BackSpace:    return sf::Keyboard::Backspace;
-                case XK_Tab:          return sf::Keyboard::Tab;
-                case XK_Prior:        return sf::Keyboard::PageUp;
-                case XK_Next:         return sf::Keyboard::PageDown;
-                case XK_End:          return sf::Keyboard::End;
-                case XK_Home:         return sf::Keyboard::Home;
-                case XK_Insert:       return sf::Keyboard::Insert;
-                case XK_Delete:       return sf::Keyboard::Delete;
-                case XK_KP_Add:       return sf::Keyboard::Add;
-                case XK_KP_Subtract:  return sf::Keyboard::Subtract;
-                case XK_KP_Multiply:  return sf::Keyboard::Multiply;
-                case XK_KP_Divide:    return sf::Keyboard::Divide;
-                case XK_Pause:        return sf::Keyboard::Pause;
-                case XK_F1:           return sf::Keyboard::F1;
-                case XK_F2:           return sf::Keyboard::F2;
-                case XK_F3:           return sf::Keyboard::F3;
-                case XK_F4:           return sf::Keyboard::F4;
-                case XK_F5:           return sf::Keyboard::F5;
-                case XK_F6:           return sf::Keyboard::F6;
-                case XK_F7:           return sf::Keyboard::F7;
-                case XK_F8:           return sf::Keyboard::F8;
-                case XK_F9:           return sf::Keyboard::F9;
-                case XK_F10:          return sf::Keyboard::F10;
-                case XK_F11:          return sf::Keyboard::F11;
-                case XK_F12:          return sf::Keyboard::F12;
-                case XK_F13:          return sf::Keyboard::F13;
-                case XK_F14:          return sf::Keyboard::F14;
-                case XK_F15:          return sf::Keyboard::F15;
-                case XK_Left:         return sf::Keyboard::Left;
-                case XK_Right:        return sf::Keyboard::Right;
-                case XK_Up:           return sf::Keyboard::Up;
-                case XK_Down:         return sf::Keyboard::Down;
-                case XK_KP_Insert:    return sf::Keyboard::Numpad0;
-                case XK_KP_End:       return sf::Keyboard::Numpad1;
-                case XK_KP_Down:      return sf::Keyboard::Numpad2;
-                case XK_KP_Page_Down: return sf::Keyboard::Numpad3;
-                case XK_KP_Left:      return sf::Keyboard::Numpad4;
-                case XK_KP_Begin:     return sf::Keyboard::Numpad5;
-                case XK_KP_Right:     return sf::Keyboard::Numpad6;
-                case XK_KP_Home:      return sf::Keyboard::Numpad7;
-                case XK_KP_Up:        return sf::Keyboard::Numpad8;
-                case XK_KP_Page_Up:   return sf::Keyboard::Numpad9;
-                case XK_a:            return sf::Keyboard::A;
-                case XK_b:            return sf::Keyboard::B;
-                case XK_c:            return sf::Keyboard::C;
-                case XK_d:            return sf::Keyboard::D;
-                case XK_e:            return sf::Keyboard::E;
-                case XK_f:            return sf::Keyboard::F;
-                case XK_g:            return sf::Keyboard::G;
-                case XK_h:            return sf::Keyboard::H;
-                case XK_i:            return sf::Keyboard::I;
-                case XK_j:            return sf::Keyboard::J;
-                case XK_k:            return sf::Keyboard::K;
-                case XK_l:            return sf::Keyboard::L;
-                case XK_m:            return sf::Keyboard::M;
-                case XK_n:            return sf::Keyboard::N;
-                case XK_o:            return sf::Keyboard::O;
-                case XK_p:            return sf::Keyboard::P;
-                case XK_q:            return sf::Keyboard::Q;
-                case XK_r:            return sf::Keyboard::R;
-                case XK_s:            return sf::Keyboard::S;
-                case XK_t:            return sf::Keyboard::T;
-                case XK_u:            return sf::Keyboard::U;
-                case XK_v:            return sf::Keyboard::V;
-                case XK_w:            return sf::Keyboard::W;
-                case XK_x:            return sf::Keyboard::X;
-                case XK_y:            return sf::Keyboard::Y;
-                case XK_z:            return sf::Keyboard::Z;
-                case XK_0:            return sf::Keyboard::Num0;
-                case XK_1:            return sf::Keyboard::Num1;
-                case XK_2:            return sf::Keyboard::Num2;
-                case XK_3:            return sf::Keyboard::Num3;
-                case XK_4:            return sf::Keyboard::Num4;
-                case XK_5:            return sf::Keyboard::Num5;
-                case XK_6:            return sf::Keyboard::Num6;
-                case XK_7:            return sf::Keyboard::Num7;
-                case XK_8:            return sf::Keyboard::Num8;
-                case XK_9:            return sf::Keyboard::Num9;
-            }
-
-            return sf::Keyboard::Unknown;
         }
     }
 }
@@ -832,14 +721,61 @@ void WindowImplX11::processEvents()
 
     // Pick out the events that are interesting for this window
     while (XCheckIfEvent(m_display, &event, &checkEvent, reinterpret_cast<XPointer>(m_window)))
-        m_events.push_back(event);
-
-    // Handle the events for this window that we just picked out
-    while (!m_events.empty())
     {
-        event = m_events.front();
-        m_events.pop_front();
-        processEvent(event);
+        // This function implements a workaround to properly discard
+        // repeated key events when necessary. The problem is that the
+        // system's key events policy doesn't match SFML's one: X server will generate
+        // both repeated KeyPress and KeyRelease events when maintaining a key down, while
+        // SFML only wants repeated KeyPress events. Thus, we have to:
+        // - Discard duplicated KeyRelease events when m_keyRepeat is true
+        // - Discard both duplicated KeyPress and KeyRelease events when m_keyRepeat is false
+
+        bool processThisEvent = true;
+
+        // Detect repeated key events
+        while (event.type == KeyRelease)
+        {
+            XEvent nextEvent;
+            if (XCheckIfEvent(m_display, &nextEvent, checkEvent, reinterpret_cast<XPointer>(m_window)))
+            {
+                if ((nextEvent.type == KeyPress) && (nextEvent.xkey.keycode == event.xkey.keycode) &&
+                    (event.xkey.time <= nextEvent.xkey.time) && (nextEvent.xkey.time <= event.xkey.time + 1))
+                {
+                    // This sequence of events comes from maintaining a key down
+                    if (m_keyRepeat)
+                    {
+                        // Ignore the KeyRelease event and process the KeyPress event
+                        event = nextEvent;
+                        break;
+                    }
+                    else
+                    {
+                        // Ignore both events
+                        processThisEvent = false;
+                        break;
+                    }
+                }
+                else
+                {
+                    // This sequence of events does not come from maintaining a key down,
+                    // so process the KeyRelease event normally,
+                    processEvent(event);
+                    // but loop because the next event can be the first half
+                    // of a sequence coming from maintaining a key down.
+                    event = nextEvent;
+                }
+            }
+            else
+            {
+                // No event after this KeyRelease event so assume it can be processed.
+                break;
+            }
+        }
+
+        if (processThisEvent)
+        {
+            processEvent(event);
+        }
     }
 
     // Process clipboard window events
@@ -1723,35 +1659,6 @@ bool WindowImplX11::processEvent(XEvent& windowEvent)
 {
     using namespace WindowsImplX11Impl;
 
-    // This function implements a workaround to properly discard
-    // repeated key events when necessary. The problem is that the
-    // system's key events policy doesn't match SFML's one: X server will generate
-    // both repeated KeyPress and KeyRelease events when maintaining a key down, while
-    // SFML only wants repeated KeyPress events. Thus, we have to:
-    // - Discard duplicated KeyRelease events when KeyRepeatEnabled is true
-    // - Discard both duplicated KeyPress and KeyRelease events when KeyRepeatEnabled is false
-
-    // Detect repeated key events
-    if (windowEvent.type == KeyRelease)
-    {
-        // Find the next KeyPress event with matching keycode and time
-        std::deque<XEvent>::iterator iter = std::find_if(
-            m_events.begin(),
-            m_events.end(),
-            KeyRepeatFinder(windowEvent.xkey.keycode, windowEvent.xkey.time)
-        );
-
-        if (iter != m_events.end())
-        {
-            // If we don't want repeated events, remove the next KeyPress from the queue
-            if (!m_keyRepeat)
-                m_events.erase(iter);
-
-            // This KeyRelease is a repeated event and we don't want it
-            return false;
-        }
-    }
-
     // Convert the X11 event to a sf::Event
     switch (windowEvent.type)
     {
@@ -1880,31 +1787,40 @@ bool WindowImplX11::processEvent(XEvent& windowEvent)
         // Key down event
         case KeyPress:
         {
-            Keyboard::Key key = Keyboard::Unknown;
-
-            // Try each KeySym index (modifier group) until we get a match
-            for (int i = 0; i < 4; ++i)
-            {
-                // Get the SFML keyboard code from the keysym of the key that has been pressed
-                key = keysymToSF(XLookupKeysym(&windowEvent.xkey, i));
-
-                if (key != Keyboard::Unknown)
-                    break;
-            }
-
             // Fill the event parameters
             // TODO: if modifiers are wrong, use XGetModifierMapping to retrieve the actual modifiers mapping
             Event event;
-            event.type        = Event::KeyPressed;
-            event.key.code    = key;
-            event.key.alt     = windowEvent.xkey.state & Mod1Mask;
-            event.key.control = windowEvent.xkey.state & ControlMask;
-            event.key.shift   = windowEvent.xkey.state & ShiftMask;
-            event.key.system  = windowEvent.xkey.state & Mod4Mask;
-            pushEvent(event);
+            event.type         = Event::KeyPressed;
+            event.key.code     = KeyboardImpl::getKeyFromEvent(windowEvent.xkey);
+            event.key.scancode = KeyboardImpl::getScancodeFromEvent(windowEvent.xkey);
+            event.key.alt      = windowEvent.xkey.state & Mod1Mask;
+            event.key.control  = windowEvent.xkey.state & ControlMask;
+            event.key.shift    = windowEvent.xkey.state & ShiftMask;
+            event.key.system   = windowEvent.xkey.state & Mod4Mask;
 
-            // Generate a TextEntered event
-            if (!XFilterEvent(&windowEvent, None))
+            const bool filtered = XFilterEvent(&windowEvent, None);
+
+            // Generate a KeyPressed event if needed
+            if (filtered)
+            {
+                pushEvent(event);
+                isKeyFiltered.set(windowEvent.xkey.keycode);
+            }
+            else
+            {
+                // Push a KeyPressed event if the key has never been filtered before
+                // (a KeyPressed event would have already been pushed if it had been filtered).
+                //
+                // Some dummy IMs (like the built-in one you get by setting XMODIFIERS=@im=none)
+                // never filter events away, and we have to take care of that.
+                //
+                // In addition, ignore text-only KeyPress events generated by IMs (with keycode set to 0).
+                if (!isKeyFiltered.test(windowEvent.xkey.keycode) && windowEvent.xkey.keycode != 0)
+                    pushEvent(event);
+            }
+
+            // Generate TextEntered events if needed
+            if (!filtered)
             {
                 #ifdef X_HAVE_UTF8_STRING
                 if (m_inputContext)
@@ -1967,26 +1883,15 @@ bool WindowImplX11::processEvent(XEvent& windowEvent)
         // Key up event
         case KeyRelease:
         {
-            Keyboard::Key key = Keyboard::Unknown;
-
-            // Try each KeySym index (modifier group) until we get a match
-            for (int i = 0; i < 4; ++i)
-            {
-                // Get the SFML keyboard code from the keysym of the key that has been released
-                key = keysymToSF(XLookupKeysym(&windowEvent.xkey, i));
-
-                if (key != Keyboard::Unknown)
-                    break;
-            }
-
             // Fill the event parameters
             Event event;
-            event.type        = Event::KeyReleased;
-            event.key.code    = key;
-            event.key.alt     = windowEvent.xkey.state & Mod1Mask;
-            event.key.control = windowEvent.xkey.state & ControlMask;
-            event.key.shift   = windowEvent.xkey.state & ShiftMask;
-            event.key.system  = windowEvent.xkey.state & Mod4Mask;
+            event.type         = Event::KeyReleased;
+            event.key.code     = KeyboardImpl::getKeyFromEvent(windowEvent.xkey);
+            event.key.scancode = KeyboardImpl::getScancodeFromEvent(windowEvent.xkey);
+            event.key.alt      = windowEvent.xkey.state & Mod1Mask;
+            event.key.control  = windowEvent.xkey.state & ControlMask;
+            event.key.shift    = windowEvent.xkey.state & ShiftMask;
+            event.key.system   = windowEvent.xkey.state & Mod4Mask;
             pushEvent(event);
 
             break;
@@ -1995,8 +1900,7 @@ bool WindowImplX11::processEvent(XEvent& windowEvent)
         // Mouse button pressed
         case ButtonPress:
         {
-            // XXX: Why button 8 and 9?
-            // Because 4 and 5 are the vertical wheel and 6 and 7 are horizontal wheel ;)
+            // Buttons 4 and 5 are the vertical wheel and 6 and 7 the horizontal wheel.
             unsigned int button = windowEvent.xbutton.button;
             if ((button == Button1) ||
                 (button == Button2) ||
@@ -2110,6 +2014,15 @@ bool WindowImplX11::processEvent(XEvent& windowEvent)
                 event.type = Event::MouseLeft;
                 pushEvent(event);
             }
+            break;
+        }
+
+        // Keyboard mapping changed
+        case MappingNotify:
+        {
+            if (windowEvent.xmapping.request == MappingKeyboard)
+                XRefreshKeyboardMapping(&windowEvent.xmapping);
+
             break;
         }
 
@@ -2257,5 +2170,4 @@ Vector2i WindowImplX11::getPrimaryMonitorPosition()
 }
 
 } // namespace priv
-
 } // namespace sf

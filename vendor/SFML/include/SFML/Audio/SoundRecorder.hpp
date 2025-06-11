@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2022 Laurent Gomila (laurent@sfml-dev.org)
+// Copyright (C) 2007-2023 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -359,12 +359,14 @@ private:
 /// \code
 /// class CustomRecorder : public sf::SoundRecorder
 /// {
+/// public:
 ///     ~CustomRecorder()
 ///     {
 ///         // Make sure to stop the recording thread
 ///         stop();
 ///     }
 ///
+/// private:
 ///     virtual bool onStart() // optional
 ///     {
 ///         // Initialize whatever has to be done before the capture starts
@@ -374,7 +376,7 @@ private:
 ///         return true;
 ///     }
 ///
-///     virtual bool onProcessSamples(const Int16* samples, std::size_t sampleCount)
+///     virtual bool onProcessSamples(const sf::Int16* samples, std::size_t sampleCount)
 ///     {
 ///         // Do something with the new chunk of samples (store them, send them, ...)
 ///         ...
@@ -388,7 +390,7 @@ private:
 ///         // Clean up whatever has to be done after the capture ends
 ///         ...
 ///     }
-/// }
+/// };
 ///
 /// // Usage
 /// if (CustomRecorder::isAvailable())

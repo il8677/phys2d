@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2020 Andrew Mickelson
+// Copyright (C) 2023 Andrew Mickelson
 //               2013 Jonathan De Wachter (dewachter.jonathan@gmail.com)
 //
 // This software is provided 'as-is', without any express or implied warranty.
@@ -33,7 +33,6 @@
 #include <SFML/Window/EGLCheck.hpp>
 #include <SFML/Window/GlContext.hpp>
 #include <SFML/Window/VideoMode.hpp>
-#include <drm-common.h>
 #include <glad/egl.h>
 #include <gbm.h>
 #include <xf86drmMode.h>
@@ -43,6 +42,20 @@ namespace sf
 {
 namespace priv
 {
+struct Drm
+{
+    int fileDescriptor;
+
+    drmModeModeInfoPtr mode;
+    Uint32 crtcId;
+    Uint32 connectorId;
+
+    drmModeCrtcPtr originalCrtc;
+
+    drmModeConnectorPtr savedConnector;
+    drmModeEncoderPtr savedEncoder;
+};
+
 class WindowImplDRM;
 
 class DRMContext : public GlContext
@@ -176,7 +189,7 @@ protected:
     /// \brief Get Direct Rendering Manager pointer
     ///
     ////////////////////////////////////////////////////////////
-    static drm* getDRM();
+    static Drm& getDRM();
 
 private:
 

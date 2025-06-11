@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2022 Laurent Gomila (laurent@sfml-dev.org)
+// Copyright (C) 2007-2023 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -34,22 +34,28 @@
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4242 4244 4267 4456 4706)
+#else
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-overflow"
 #endif
 
 #include <minimp3_ex.h>
 
 #ifdef _MSC_VER
 #pragma warning(pop)
+#else
+#pragma GCC diagnostic pop
 #endif
 
 #undef NOMINMAX
 #undef MINIMP3_NO_STDIO
 
 #include <SFML/Audio/SoundFileReaderMp3.hpp>
-#include <SFML/System/MemoryInputStream.hpp>
+#include <SFML/System/InputStream.hpp>
 #include <SFML/System/Err.hpp>
 #include <algorithm>
 #include <cstring>
+#include <stdint.h>
 
 
 namespace
@@ -60,7 +66,7 @@ std::size_t readCallback(void* ptr, std::size_t size, void* data)
     return static_cast<std::size_t>(stream->read(ptr, static_cast<sf::Int64>(size)));
 }
 
-int seekCallback(std::uint64_t offset, void* data)
+int seekCallback(uint64_t offset, void* data)
 {
     sf::InputStream* stream = static_cast<sf::InputStream*>(data);
     sf::Int64 position = stream->seek(static_cast<sf::Int64>(offset));

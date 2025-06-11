@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2022 Laurent Gomila (laurent@sfml-dev.org)
+// Copyright (C) 2007-2023 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -71,6 +71,9 @@ public:
 
     ////////////////////////////////////////////////////////////
     /// \brief Check if a mouse button is pressed
+    ///
+    /// \warning Checking the state of buttons Mouse::XButton1 and
+    /// Mouse::XButton2 is not supported on Linux with X11.
     ///
     /// \param button Button to check
     ///

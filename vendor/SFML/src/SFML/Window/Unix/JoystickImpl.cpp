@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2022 Laurent Gomila (laurent@sfml-dev.org)
+// Copyright (C) 2007-2023 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -234,12 +234,12 @@ namespace
                 // If not mapped before, map it now
                 if (record == joystickList.end())
                 {
-                    JoystickRecord nweRecord;
-                    nweRecord.deviceNode = devnode;
-                    nweRecord.systemPath = syspath;
-                    nweRecord.plugged    = true;
+                    JoystickRecord newRecord;
+                    newRecord.deviceNode = devnode;
+                    newRecord.systemPath = syspath;
+                    newRecord.plugged    = true;
 
-                    joystickList.push_back(nweRecord);
+                    joystickList.push_back(newRecord);
                 }
             }
 

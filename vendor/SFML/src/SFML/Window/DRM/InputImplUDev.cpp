@@ -218,7 +218,7 @@ namespace
             case KEY_L:             return sf::Keyboard::L;
             case KEY_SEMICOLON:     return sf::Keyboard::Semicolon;
             case KEY_APOSTROPHE:    return sf::Keyboard::Quote;
-            case KEY_GRAVE:         return sf::Keyboard::Tilde;
+            case KEY_GRAVE:         return sf::Keyboard::Grave;
             case KEY_LEFTSHIFT:     return sf::Keyboard::LShift;
             case KEY_BACKSLASH:     return sf::Keyboard::Backslash;
             case KEY_Z:             return sf::Keyboard::Z;
@@ -407,12 +407,13 @@ namespace
                             //
                             event.type = inputEvent.value ? sf::Event::KeyPressed : sf::Event::KeyReleased;
                             event.key.code = kb;
+                            event.key.scancode = sf::Keyboard::Scan::Unknown; // TODO: not implemented
                             event.key.alt = altDown();
                             event.key.control = controlDown();
                             event.key.shift = shiftDown();
                             event.key.system = systemDown();
 
-                            keyMap[kb] = inputEvent.value;
+                            keyMap[static_cast<std::size_t>(kb)] = inputEvent.value;
 
                             if (special && inputEvent.value)
                                 doDeferredText = special;
@@ -493,7 +494,7 @@ namespace
         //
         // We only clear the ICANON flag for the time of reading
 
-        newTerminalConfig.c_lflag &= ~(tcflag_t)ICANON;
+        newTerminalConfig.c_lflag &= ~static_cast<tcflag_t>(ICANON);
         tcsetattr(STDIN_FILENO, TCSANOW, &newTerminalConfig);
 
         timeval timeout;
@@ -564,7 +565,42 @@ bool InputImpl::isKeyPressed(Keyboard::Key key)
         return false;
 
     update();
-    return keyMap[key];
+    return keyMap[static_cast<std::size_t>(key)];
+}
+
+////////////////////////////////////////////////////////////
+bool InputImpl::isKeyPressed(Keyboard::Scancode /* code */)
+{
+    // TODO: not implemented
+    err() << "sf::Keyboard::isKeyPressed(Keyboard::Scancode) is not implemented for DRM." << std::endl;
+    return false;
+}
+
+
+////////////////////////////////////////////////////////////
+Keyboard::Key InputImpl::localize(Keyboard::Scancode /* code */)
+{
+    // TODO: not implemented
+    err() << "sf::Keyboard::localize is not implemented for DRM." << std::endl;
+    return Keyboard::Unknown;
+}
+
+
+////////////////////////////////////////////////////////////
+Keyboard::Scancode InputImpl::delocalize(Keyboard::Key /* key */)
+{
+    // TODO: not implemented
+    err() << "sf::Keyboard::delocalize is not implemented for DRM." << std::endl;
+    return Keyboard::Scan::Unknown;
+}
+
+
+////////////////////////////////////////////////////////////
+String InputImpl::getDescription(Keyboard::Scancode /* code */)
+{
+    // TODO: not implemented
+    err() << "sf::Keyboard::getDescription is not implemented for DRM." << std::endl;
+    return "";
 }
 
 
@@ -692,8 +728,8 @@ void InputImpl::setTerminalConfig()
 
     tcgetattr(STDIN_FILENO, &newTerminalConfig);          // get current terminal config
     oldTerminalConfig = newTerminalConfig;                // create a backup
-    newTerminalConfig.c_lflag &= ~(tcflag_t)ECHO;         // disable console feedback
-    newTerminalConfig.c_lflag &= ~(tcflag_t)ISIG;         // disable signals
+    newTerminalConfig.c_lflag &= ~static_cast<tcflag_t>(ECHO);         // disable console feedback
+    newTerminalConfig.c_lflag &= ~static_cast<tcflag_t>(ISIG);         // disable signals
     newTerminalConfig.c_lflag |= ICANON;                  // disable noncanonical mode
     newTerminalConfig.c_iflag |= IGNCR;                   // ignore carriage return
     tcsetattr(STDIN_FILENO, TCSANOW, &newTerminalConfig); // set our new config

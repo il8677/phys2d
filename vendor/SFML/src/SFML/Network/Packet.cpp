@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2022 Laurent Gomila (laurent@sfml-dev.org)
+// Copyright (C) 2007-2023 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -150,7 +150,7 @@ Packet& Packet::operator >>(Int16& data)
     if (checkSize(sizeof(data)))
     {
         std::memcpy(&data, &m_data[m_readPos], sizeof(data));
-        data = static_cast<Int16>(ntohs(static_cast<uint16_t>(data)));
+        data = static_cast<Int16>(ntohs(static_cast<Uint16>(data)));
         m_readPos += sizeof(data);
     }
 
@@ -178,7 +178,7 @@ Packet& Packet::operator >>(Int32& data)
     if (checkSize(sizeof(data)))
     {
         std::memcpy(&data, &m_data[m_readPos], sizeof(data));
-        data = static_cast<Int32>(ntohl(static_cast<uint32_t>(data)));
+        data = static_cast<Int32>(ntohl(static_cast<Uint32>(data)));
         m_readPos += sizeof(data);
     }
 
@@ -412,7 +412,7 @@ Packet& Packet::operator <<(Uint8 data)
 ////////////////////////////////////////////////////////////
 Packet& Packet::operator <<(Int16 data)
 {
-    Int16 toWrite = static_cast<Int16>(htons(static_cast<uint16_t>(data)));
+    Int16 toWrite = static_cast<Int16>(htons(static_cast<Uint16>(data)));
     append(&toWrite, sizeof(toWrite));
     return *this;
 }
@@ -430,7 +430,7 @@ Packet& Packet::operator <<(Uint16 data)
 ////////////////////////////////////////////////////////////
 Packet& Packet::operator <<(Int32 data)
 {
-    Int32 toWrite = static_cast<Int32>(htonl(static_cast<uint32_t>(data)));
+    Int32 toWrite = static_cast<Int32>(htonl(static_cast<Uint32>(data)));
     append(&toWrite, sizeof(toWrite));
     return *this;
 }

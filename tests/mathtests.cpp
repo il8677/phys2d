@@ -55,6 +55,7 @@ TEST_CASE("SP"){
     REQUIRE(!(ae == be));
 
     b->position = {0.9, 0};
+    be = SPEntry(b,0);
 
     REQUIRE(!(ae < be));
     REQUIRE(!(ae != be));
